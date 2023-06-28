@@ -1,0 +1,119 @@
+
+<%- include("../user/layouts/user_header.ejs") %>
+
+<div class="page-content">
+    <div class="container">
+        <table class="table table-wishlist table-mobile">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Stock Status</th>
+                    <th>Add to Cart </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% if( wishlist.length > 0){
+                    wishlist.forEach((wish)=>{   %>
+              
+                <tr>
+             
+                    
+                    <td class="product-col">
+                        <div class="product">
+                            <figure class="product-media">
+                                <a href="">
+                                    <img src="/adminassets/imgs/<%= wish.productId.image[0]%>" alt="Product image">
+                                </a>
+                            </figure>
+
+                            <h3 class="product-title">
+                                <a href="#"><%= wish.productId.name %></a>
+                            </h3><!-- End .product-title -->
+                        </div><!-- End .product -->
+                    </td>
+                    <td class="price-col"><%=  wish.productId.price %></td>
+                    <td class="stock-col"><span class="in-stock"><%=  wish.productId.stock %></span></td>
+                    <!-- <td class="action-col">
+                        <div class="dropdown">
+                        <button class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-list-alt"></i>Select Options
+                        </button>
+
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">First option</a>
+                            <a class="dropdown-item" href="#">Another option</a>
+                            <a class="dropdown-item" href="#">The best option</a>
+                         
+                          </div>
+                        </div>
+                    </td> -->
+                    <td style="width: 10vb;"><button onclick="addToCart('<%= wish.productId._id %>')" class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded>
+                       Add to wishList
+                    </button>
+                    </td>
+                    <td class="remove-col"><a href="/removeItem?id=<%= wish.productId._id%>"><button class="btn-remove"><i class="icon-close"></i></button></a></td>
+                </tr>
+              
+                <%   }) %>
+            <%   } else { %>
+        </tbody>
+      </table><!-- End .table table-wishlist -->      
+      
+      <div class="error-content text-center" style="background-image: url(userassets/images/backgrounds/error-bg.jpg)">
+        <div class="container">
+            <h1 class="error-title">No items in WishList </h1><!-- End .error-title -->
+            <p>Add Products in Wish List</p>
+            <a href="/home" class="btn btn-outline-primary-2 btn-minwidth-lg">
+                <span>BACK TO HOMEPAGE</span>
+                <i class="icon-long-arrow-right"></i>
+            </a>
+        </div>
+       </div>
+       <% } %>
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
+
+<script>
+    function addToCart(productId){
+          $.ajax({
+              url:'/addToCart',
+              method:'post',
+              data:{
+                  id: productId
+              },
+              success:(response)=>{  
+                  if(response.success){
+                      swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'Product added to cart',
+                      showConfirmButton: false,
+                      timer: 1500,     
+                      });
+                  }else{
+                      swal.fire({ 
+                      icon: 'error',
+                      title: 'Already added',
+                      text: response.message
+                      });
+                  }
+              }
+          })
+      }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+

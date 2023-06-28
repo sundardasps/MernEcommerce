@@ -1,0 +1,134 @@
+<%- include("../admin/layouts/admin_header.ejs") %>
+<div class="main-panel">
+<div class="content-wrapper">
+<div class="row">
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Add Products</h4>
+        <!-- <p class="card-description"> Basic form elements </p> -->
+        <form class="forms-sample"  method="post" enctype="multipart/form-data" >
+          <div  class="form-group">
+            <label  for="exampleInputName1">Name</label>
+            <input type="text"  name="name" class="form-control" id="exampleInputName1" placeholder="Name" required>
+          </div>
+          <div  class="form-group">
+            <label  for="exampleInputName1">Brand</label>
+            <input type="text"  name="brand" class="form-control" id="exampleInputBrand1" placeholder="Brand" required>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputprice3">Price</label>
+            <input type="number" name="price" class="form-control" id="exampleInputprice3" placeholder="Price" required>
+          </div>
+          <!-- <div class="form-group">
+            <label for="exampleInputPassword4"></label>
+            <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+          </div> -->
+          <!-- <div class="form-group">
+            <label for="exampleSelectGender">Category</label>
+            <select class="form-control" id="exampleSelectGender">
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div> -->
+          <div class="form-group">
+            <label for="exampleInputEmail3">Category</label>
+            <input type="text" name="category" class="form-control" id="exampleInputcategoryl3" placeholder="Category">
+          </div>
+          <div class="form-group">
+            <label>File upload</label>
+            <input type="file" name="image" class="file-upload-default" id="image">
+            <div class="input-group col-xs-12">
+
+
+              <input type="file"  placeholder="Upload Image" name="image" multiple>
+              
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword4">Stock</label>
+            <input type="text" name="stock" class="form-control" id="exampleInputstock4" placeholder="Stock" >
+          </div>
+          <div class="form-group">
+            <label for="exampleInputquantity4">Quantity</label>
+            <input type="text" name="quantity" class="form-control" id="exampleInputquantity4" placeholder="Quantity">
+          </div>
+          <!-- <div class="form-group">
+            <label for="exampleInputCity1">City</label>
+            <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
+          </div> -->
+          <div class="form-group">
+            <label for="exampleTextarea1">Description</label>
+            <input type="text" name="description" class="form-control" id="exampleTextarea1" rows="4" required></input>
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <button class="btn btn-dark">Cancel</button>
+          <% if(typeof message !== 'undefined'){ %>
+            <span id="er2" style="color: rgb(0, 246, 12); text-align: center "
+              ><%= message%>
+            </span>
+            <% } %>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<!-- <script>
+
+const Name = document.getElementById('exampleInputName1')
+const Price = document.getElementById('exampleInputprice3')
+const Category = document.getElementById('exampleInputcategoryl3')
+const image = document.getElementById('image')
+const Stock = document.getElementById('exampleInputstock4')
+const Quantity = document.getElementById('exampleInputquantity4')
+const Discription = document.getElementById('exampleTextarea1')
+
+Name.addEventListener('input',() => {
+  if(Name.value.length == ''){
+    Name.setCustomValidity('please Enter Your Name')
+  } 
+});
+
+Price.addEventListener('input',() => {
+  if(Price.value.length<0 ){
+    Price.setCustomValidity('please Enter Prize ')
+  } 
+});
+
+Category.addEventListener('input',() => {
+  if(Category.value.length == ''){
+    Category.setCustomValidity('please Add Category')
+  } 
+});
+
+image.addEventListener('input',() => {
+  if(image.value.length == ''){
+    image.setCustomValidity('please Add Images')
+  } 
+});
+
+Stock.addEventListener('input',() => {
+  if(Stock.value.length == ''){
+    Stock.setCustomValidity('please Enter Stock Details')
+  } 
+});
+
+Quantity.addEventListener('input',() => {
+  if(Quantity.value.length == ''){
+    Quantity.setCustomValidity('please Enter Quantity')
+  } 
+});
+
+Discription.addEventListener('input',() => {
+  if(Discription.value.length == ''){
+    Discription.setCustomValidity('please Enter discription ')
+  } 
+});
+
+</script> -->
+<%- include("../admin/layouts/admin_footer.ejs") %>
+
+
+

@@ -1,0 +1,70 @@
+<%- include("../admin/layouts/admin_header.ejs") %>
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Add Products</h4>
+                            <!-- <p class="card-description"> Basic form elements </p> -->
+                            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Update Name</label>
+                                    <input type="text" name="name" class="form-control" id="exampleInputName1"
+                                       value="<%= product.name %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Update Brand</label>
+                                    <input type="text" name="brand" class="form-control" id="exampleInputBrand1"
+                                    value="<%= product.brand %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputprice3">Update Price</label>
+                                    <input type="number" name="price" class="form-control" id="exampleInputprice3"
+                                    value="<%= product.price %>" required >
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail3">Update Category</label>
+                                    <input type="text" name="category" class="form-control" id="exampleInputcategoryl3"
+                                    value="<%= product.category %>">
+                                </div>
+                                <div class="form-group">
+                                    <label>Update File</label>
+                                    <input type="file" name="image" class="file-upload-default" id="image">
+                                    <div class="input-group col-xs-12">
+
+
+                                        <input type="file" placeholder="Upload Image" name="image" multiple>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword4">Update Stock</label>
+                                    <input type="text" name="stock" class="form-control" id="exampleInputstock4"
+                                    value="<%= product.stock %>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputquantity4">Update Quantity</label>
+                                    <input type="text" name="quantity" class="form-control" id="exampleInputquantity4"
+                                    value="<%= product.quantity %>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea1">Update Description</label>
+                                    <input type="text" name="description" class="form-control" id="exampleTextarea1"
+                                        rows="4" value="<%= product.description %>" required></input>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                <button class="btn btn-dark">Cancel</button>
+                                <% if(typeof message !=='undefined' ){ %>
+                                    <span id="er2" style="color: rgb(0, 246, 12); text-align: center ">
+                                        <%= message%>
+                                    </span>
+                                    <% } %>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include("../admin/layouts/admin_footer.ejs") %>

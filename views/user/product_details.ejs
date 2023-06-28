@@ -1,0 +1,300 @@
+<%- include("../user/layouts/user_header.ejs") %>
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="container">
+                <div class="product-details-top mb-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="product-gallery product-gallery-vertical">
+                                <div class="row">
+                                    <figure class="product-main-image">
+                                        <img id="product-zoom" src="/adminassets/imgs/<%=products.image[1] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[1] %>"
+                                            alt="product image">
+
+                                        <a href="/adminassets/imgs/<%=products.image[1] %>" id="btn-product-gallery" class="btn-product-gallery">
+                                            <i class="icon-arrows"></i>
+                                        </a>
+                                    </figure><!-- End .product-main-image -->
+
+                                    <div id="product-zoom-gallery" class="product-image-gallery">
+
+                                        <a class="product-gallery-item active"
+                                            href="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product side">
+                                        </a>
+                                        <a class="product-gallery-item "
+                                            href="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product cross">
+                                        </a>
+                                        <a class="product-gallery-item "
+                                            href="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product with model">
+                                        </a>
+                                        <a class="product-gallery-item "
+                                            href="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[0] %>"
+                                                alt="product back">
+                                        </a>
+
+
+                                    </div><!-- End .product-image-gallery -->
+                                </div><!-- End .row -->
+                            </div><!-- End .product-gallery -->
+                        </div><!-- End .col-md-6 -->
+
+                        <div class="col-md-6">
+                            <div class="product-details product-details-centered">
+                                <h1 class="product-title" style="font-weight: 700; font-size:xx-large;">
+                                    <%= products.name %>
+                                </h1><!-- End .product-title -->
+                                <div class="ratings-container">
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews
+                                        )</a>
+                                </div><!-- End .rating-container -->
+
+                                <div class="product-price">
+                                    $ <%= products.price %>
+                                </div><!-- End .product-price -->
+
+                                <div class="product-content">
+                                    <p>
+                                        <%= products.description %>
+                                    </p>
+                                </div><!-- End .product-content -->
+
+                                <div class="product-details-action">
+                                    <div class="details-action-col">
+                                        
+                                        <a onclick="addToCart('<%= products._id %>')" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    </div><!-- End .details-action-col -->
+
+                                   
+                                    <div class="details-action-wrapper">
+                                        <% if(session != null ){
+                                            %>
+                                        <a onclick="show('<%= products._id %>')" class="btn-product btn-wishlist" ><span>add to wishlist</span></a>
+                                        <% }else {
+                                            %>
+                                            <a onclick="show('<%= products._id %>')" class="btn-product btn-wishlist" ><span>add to wishlist</span></a>
+                                        <% } %>
+                                    </div><!-- End .produ
+                                </div><!-- End .product-details-action -->
+
+                                <div class="product-details-footer">
+                                    <div class="product-cat">
+                                        <span>Brand:</span>
+                                        <a href="#">
+                                            <%= products.brand %>
+                                        </a>
+                                    </div><!-- End .product-cat -->
+
+                                    <!-- <div class="social-icons social-icons-sm">
+                                        <span class="social-label">Share:</span>
+                                        <a href="#" class="social-icon" title="Facebook" target="_blank"><i
+                                                class="icon-facebook-f"></i></a>
+                                        <a href="#" class="social-icon" title="Twitter" target="_blank"><i
+                                                class="icon-twitter"></i></a>
+                                        <a href="#" class="social-icon" title="Instagram" target="_blank"><i
+                                                class="icon-instagram"></i></a>
+                                        <a href="#" class="social-icon" title="Pinterest" target="_blank"><i
+                                                class="icon-pinterest"></i></a>
+                                    </div> -->
+                                </div><!-- End .product-details-footer -->
+                            </div><!-- End .product-details -->
+                        </div><!-- End .col-md-6 -->
+
+                    </div><!-- End .row -->
+                </div><!-- End .product-details-top -->
+
+
+                <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+                <div class="tab-content tab-content-carousel">
+                    <div class="tab-pane p-0 fade show active" id="trendy-all-tab" role="tabpanel"
+                        aria-labelledby="trendy-all-link">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                            data-toggle="owl" data-owl-options='{
+                "nav": false, 
+                "dots": true,
+                "margin": 20,
+                "loop": false,
+                "responsive": {
+                    "0": {
+                        "items":2
+                    },
+                    "480": {
+                        "items":2
+                    },
+                    "768": {
+                        "items":3
+                    },
+                    "992": {
+                        "items":4
+                    },
+                    "1200": {
+                        "items":4,
+                        "nav": true,
+                        "dots": false
+                    }
+                }
+            }'>
+                           <% if(  all.length > 0 ){
+                                all.forEach((data)=>{ %>
+                          
+                            <div class="product product-11 text-center" >
+                        
+                                <figure class="product-media">
+                                    <a href="/product_details?id=<%= data._id%>">
+                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image">
+                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <% if(session != null ){
+                                            %>
+                                        <a onclick="show('<%= data._id %>')" class="btn-product-icon btn-wishlist"><span>add to wishlist</span></a>
+                                        <% }else {
+                                            %>
+                                            <a onclick="show('<%= data._id %>')" class="btn-product-icon btn-wishlist"><span>add to wishlist</span></a>
+                                        <% } %>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <h3 class="product-title"><a href="product.html"><%= data.name %></a></h3><!-- End .product-title -->
+                                    <div class="product-price">$
+                                        <%= data.price %>
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a onclick="addToCart('<%= data._id %>')"  class="btn-product btn-cart"><span>add to cart</span></a>
+                                </div><!-- End .product-action -->
+                        
+                            </div><!-- End .product -->
+                    
+                            <% }) %>
+                            <% } else {%>
+
+                                <% } %>
+                        </div><!-- End .owl-carousel -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-details-tab -->
+        </div><!-- End .product-details-tab -->
+    </div><!-- End .product-details-tab -->
+
+
+    <script>
+
+        function show(id){
+           $.ajax({
+             url:"/wishList",
+             method:"post",
+             data:{
+              proId:id
+             },
+             success:(response)=>{
+              if(response.success){
+                  swal.fire({
+                    position:'center',
+                    icon:'success',
+                    title:'Product added to wishList',
+                    showConfirmButton:true,
+                    timer:1500,
+                  })
+              } else {
+                  swal.fire({
+                      position:'center',
+                      icon:"error",
+                      title:'Already added',
+                      timer:1500,
+                  })
+                }
+             }
+      
+           })
+      
+        }
+      
+        function addToCart(productId){
+            $.ajax({
+                url:'/addToCart',
+                method:'post',
+                data:{
+                    id: productId
+                },
+                success:(response)=>{  
+                    if(response.success){
+                        swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Product added to cart',
+                        showConfirmButton: false,
+                        timer: 1500,        
+                        });
+                    }else{
+                        swal.fire({ 
+                        icon: 'error',
+                        title: 'Product Already in Cart ',
+                        text: response.message
+                        });
+                    }
+                }
+            })
+        }
+  
+      
+      </script>
+      <script>
+                function deleteCartItem(proId) {
+         
+            swal.fire({
+                title: "Are You Sure?",
+                Text: " You wont be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                 cancelButtonColor: "#d33",
+                 confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "cancel",
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/removeCartItem",
+                        data: {
+                            product: proId,
+                        },
+                        method: "post",
+                        success: (response) => {
+                            if ((response.remove = true)) {
+                                location.reload();
+                                swal.fire({
+                                    title: 'Deleted!',
+                                    text: 'Your itemhas been deleted.',
+                                    icon: 'Suscces',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+
+
+        }
+      
+      </script>
+    <%- include("../user/layouts/user_footer.ejs") %>

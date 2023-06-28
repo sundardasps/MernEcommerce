@@ -1,0 +1,32 @@
+<%- include("../admin/layouts/admin_header.ejs") %>
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <form class="forms-sample" method="post">
+                <div class="form-group row">
+                  <div class="col-sm-9">
+                    <input type="text" name="name" class="form-control" id="exampleInputUsername2"  value=" <%= data.name %>">
+                   
+                  </div>
+                </div>
+                <a href="/category">
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              </a>
+                <button class="btn btn-dark">Cancel</button>
+              </form>
+             
+            </div>
+            <% if(typeof message !== 'undefined'){ %>
+              <span id="er2" style="color: rgb(0, 246, 12); text-align: center "
+                ><%= message%>
+              </span>
+              <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
