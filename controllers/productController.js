@@ -2,13 +2,12 @@ const User = require("../models/userModel");
 const admin = require("../models/admin_model");
 const productdb = require("../models/product_model");
 const catagoryDb = require("../models/category_model");
-
+const sharp = require("sharp")
 //================================ LOAD PRODUCTS ===================================
 
 const loadProducts = async (req, res) => {
   try {
-    const data = await productdb.find();
-
+    const data = await productdb.find({ is_delete:false});
     res.render("products", { data });
   } catch (error) {
     console.log(error.message);
@@ -19,7 +18,8 @@ const loadProducts = async (req, res) => {
 
 const LoadAddProducts = async (req, res) => {
   try {
-    res.render("add_products");
+    const categoryData = await catagoryDb.find();
+    res.render("add_products",{cartData : categoryData});
   } catch (error) {
     console.log(error.message);
   }
@@ -40,7 +40,28 @@ const productDetails = async (req, res) => {
 
 const addProducts = async (req, res) => {
   try {
-    const images = req.files.map((image) => image.filename);
+     const images = []
+      // for(let i= 0 ;i< req.files.length;i++){
+      //   images[i] = req.files[i].filename;
+      //   await sharp("./public/adminassets/imgs/" + req.files[i].filename)
+      //   .resize(800,800)
+      //   .toFile(
+      //     "./public/adminassets/productImages/"+ req.files[i].filename
+      //   )
+      // }
+      for (let i = 0; i < req.files.length; i++) {
+        images[i] = req.files[i].filename;
+        await sharp("./public/adminassets/imgs/" + req.files[i].filename)
+          .resize({
+            width: 500,
+            height: 500,
+          
+          })
+          .toFile(
+            "./public/adminassets/productImages/" + req.files[i].filename
+          );
+      }
+      
     const product = new productdb({
       name: req.body.name,
       brand: req.body.brand,
@@ -78,6 +99,8 @@ const editProduct = async (req, res) => {
 
 const addeditProduct = async (req, res) => {
   try {
+   
+    const id = req.query.id; 
     const name = req.body.name;
     const brand = req.body.brand;
     const price = req.body.price;
@@ -85,13 +108,14 @@ const addeditProduct = async (req, res) => {
     const stock = req.body.stock;
     const quantity = req.body.quantity;
     const description = req.body.description;
-    const id = req.body.id;
     const image = [];
     for (i = 0; i < req.files.length; i++) {
       image[i] = req.files[i].filename;
     }
     if (image.length != 0) {
-      await productdb.findByIdAndUpdate(
+   
+
+   await productdb.findByIdAndUpdate(
         { _id: id },
         {
           $set: {
@@ -102,12 +126,17 @@ const addeditProduct = async (req, res) => {
             category: category,
             quantity: quantity,
             description: description,
-            image: image,
+            image: image, 
           },
         }
       );
+      
+      res.redirect("/admin/products");
+
     } else {
-      await productdb.findByIdAndUpdate(
+    console.log("3");
+
+   const productData2 =  await productdb.findByIdAndUpdate(
         { _id: id },
         {
           $set: {
@@ -121,8 +150,9 @@ const addeditProduct = async (req, res) => {
           },
         }
       );
+      res.redirect("/admin/products");
+
     }
-    res.redirect("/product_details");
   } catch (error) {
     console.log(error.message);
   }
@@ -130,18 +160,19 @@ const addeditProduct = async (req, res) => {
 
 //======================== DELETE PRODUCT ==================
 
-// const deleteProduct = async (req, res) => {
-//   try {
-//     const id = req.query.id;
-//     await productdb.deleteOne({ _id: id });
-//     res.redirect("/products");
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
-
-//========================= 
-
+const deleteProduct = async (req, res) => {
+   
+    try {
+    
+      const deleteProduct = await productdb.updateOne(
+        {_id:req.query.id},
+        {$set:{is_delete:true}}
+       )
+       res.redirect('/admin/products')
+    } catch (error) {
+       console.log(error.message);
+    }
+};
 
 //============================================================
 
@@ -157,5 +188,5 @@ module.exports = {
   productDetails,
   editProduct,
   addeditProduct,
-  // deleteProduct,
+  deleteProduct,
 };

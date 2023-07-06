@@ -1,0 +1,79 @@
+<%- include("../user/layouts/user_header.ejs") %>
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Update<span>Address</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Update address </li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+                <form action="/updateAddress?id=<%= addresses._id %>" method="post">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>User Name</label>
+                                        <input type="text" class="form-control" name="userName"  value="<%=  addresses.userName %>">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+                                 
+                                 <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Mobile Number*</label>
+                                        <input type="number" name="mobile" class="form-control"value="<%= addresses.mobile %>">
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Alternative number </label>
+                                        <input type="number" name="alternativenumber" class="form-control" value="<%= addresses.altrenativeMob %>">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <label>Housename*</label>
+                                <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%= addresses.houseName %>">
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Town / City *</label>
+                                        <input type="text" name="city" class="form-control" value="<%= addresses.city%>">
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>State / County *</label>
+                                        <input type="text" name="state" class="form-control" value="<%= addresses.state%>">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Postcode</label>
+                                        <input type="number" name="pincode" class="form-control" value="<%= addresses.pincode %>">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>SAVE CHANGES</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+                              
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </form>
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+<%- include("../user/layouts/user_footer.ejs") %>

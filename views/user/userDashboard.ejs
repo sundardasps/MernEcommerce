@@ -1,15 +1,15 @@
 <%- include("../user/layouts/user_header.ejs") %>
 
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="page-header text-center" style="background-image: url('/adminassets/imgs/1687180326718-desert-eagle.jpg')">
         <div class="container">
-            <h1 class="page-title">My Account<span>Shop</span></h1>
+            <h1 class="page" style="font-weight: 1000; color: aliceblue;" > # PEP energy</h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
                 <li class="breadcrumb-item"><a href="#">Shop</a></li>
                 <li class="breadcrumb-item active" aria-current="page">My Account</li>
             </ol>
@@ -28,17 +28,18 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
                             </li>
+ 
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+                                <a class="nav-link" id="tab-address-link" href="./addAddress">Add New Adresses</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Add Account Details</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Sign Out</a>
+                                <a class="nav-link" href="./logout">Sign Out</a>
                             </li>
                         </ul>
                     </aside><!-- End .col-lg-3 -->
@@ -46,10 +47,11 @@
                     <div class="col-md-8 col-lg-9">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-                                <p>Hello <span class="font-weight-normal text-dark"><%= user.user_name %></span> <%  if(session === null){ %>(not <span class="font-weight-normal text-dark">User</span>? <a href="#">Log In</a>) <% }else{ %>
-                                    (<a href="/logout">Log out</a>) <%}%>
-                                <br>
-                                From your account dashboard you can view your <a href="#tab-orders" class="tab-trigger-link link-underline">recent orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">shipping and billing addresses</a>, and <a href="#tab-account" class="tab-trigger-link">edit your password and account details</a>.</p>
+                                <p>Hello <%  if(session != null){ %><span class="font-weight-normal text-dark"><%= user.user_name %></span><% }else{ %> (<span class="font-weight-normal text-dark">User</span>? <a href="/login">Log In</a>)<%}%>
+   
+                                <p>email <span class="font-weight-normal text-dark"><%= user.email %></span> </p>
+                           
+                                <p>Wallet Balence:</p>
                             </div><!-- .End .tab-pane -->
 
                             <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
@@ -69,16 +71,7 @@
                                     <div class="col-lg-6">
                                         <div class="card card-dashboard">
                                             <div class="card-body">
-                                                <h3 class="card-title">Billing Address</h3><!-- End .card-title -->
-                                           
-                                                <p><%= addresses.username %><br>
-                                                <%= addresses.mobile %><br>
-                                                <%= addresses.altrenativeMob %><br>
-                                                <%= addresses.houseName %><br>
-                                                <%= addresses.city %><br>
-                                                <%=  addresses.state %><br>
-                                                <%=  addresses.pincode %><br>
-                                                <a href="#">Edit <i class="icon-edit"></i></a></p>
+                                          
                                                
                                             </div><!-- End .card-body -->
                                         </div><!-- End .card-dashboard -->
@@ -95,39 +88,6 @@
                                         </div><!-- End .card-dashboard -->
                                     </div><!-- End .col-lg-6 -->
                                 </div><!-- End .row -->
-                            </div><!-- .End .tab-pane -->
-
-                            <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
-                                <form action="/addUserAddress"  method="post">
-                                    
-
-                                    <label>User Name</label>
-                                    <input type="text" name="userName" class="form-control" required>
-                                    <!-- <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> -->
-
-                                    <label>Mobile number </label>
-                                    <input type="number" name="mobile" class="form-control" required>
-
-                                    <label>Alternative number</label>
-                                    <input type="number" name="alternativenumber" class="form-control">
-
-                                    <label> Housename</label>
-                                    <input type="text" name="hoseName" class="form-control mb-2">
-
-                                    <label>  City</label>
-                                    <input type="text" name="city" class="form-control mb-2">
-
-                                    <label> State</label>
-                                    <input type="text" name="state" class="form-control mb-2">
-
-                                    <label>Enter pincode</label>
-                                    <input type="number" name="pincode" class="form-control mb-2">
-
-                                    <button type="submit" class="btn btn-outline-primary-2">
-                                        <span>SAVE CHANGES</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </button>
-                                </form>
                             </div><!-- .End .tab-pane -->
                         </div>
                     </div><!-- End .col-lg-9 -->

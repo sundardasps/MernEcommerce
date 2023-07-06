@@ -7,7 +7,7 @@
                         <h4 class="card-title">Products List</h4>
                         <!-- <p class="card-description"> Add class <code>.table-dark</code> -->
                         </p>
-                        <div class="table-responsive">
+                        <div class="table-responsive" >
                             <div class="card-title">
                                 <a href="./add_products">
                                     <button type="button" class="btn btn-success btn-md">Add</button>
@@ -18,12 +18,13 @@
                                     <tr>
                                         <th> Name </th>
                                         <th> Price</th>
+                                        <th>Product</th>
                                         <th> Category </th>
                                         <th> Stock Status </th>
                                         <th> Stock Quantity </th>
                                         <th> Stock Actions </th>
-                                        <th> Details </th>
-                                        <th> Delete </th>
+                                     
+                                    
 
                                     </tr>
                                 </thead>
@@ -31,23 +32,23 @@
 
                                     <tbody>
                                         <tr>
-                                            <td>
+                                            <td style="color: aliceblue;">
                                                 <%= data.name %>
                                             </td>
-                                            <td>
-                                                <%= data.price %>
+                                            <td style="color: aliceblue;">
+                                                Rs:<%= data.price %>
                                             </td>
                                             <td>
                                                 <img src="/adminassets/imgs/<%=data.image[0] %>" alt="">
                                             </td>
-                                            <td>
+                                            <td style="color: aliceblue;">
                                                 <%= data.category %>
                                             </td>
-                                            <td>
+                                            <td style="color: aliceblue;" >
                                                 <%= data.quantity %>
                                              
                                             </td>
-                                            <td>
+                                            <td style="color: aliceblue;">
                                                 <%= data.stock %>
                                             </td>
                                             <td>
@@ -62,7 +63,7 @@
                                                 <div class="card-title">
                                                     <a href="/admin/product_delete?id=<%= data._id %>">
                                                         <button type="button"
-                                                            class="btn btn-outline-danger btn-icon-text">
+                                                            class="btn btn-outline-danger btn-icon-text" onclick="return confirm('Are you sure you want to Delete    <%= data.name %>?')">
                                                             Delete </button>
                                                     </a>
                                                 </div>

@@ -22,7 +22,7 @@ const securePassword = async (password) => {
     console.log(error.message);
   }
 };
-//======================================OTP GENERATOR =================================
+//====================================== OTP GENERATOR =================================
 
 const generateOtp = () => {
   const otp = otpGenerator.generate(6, {
@@ -107,8 +107,10 @@ const resendVarifyMail = async (userName, email, token) => {
 };
 
 //=======================================USER DATA INSERT==========================
+
 const insertUser = async (req, res) => {
   try {
+    console.log("hi reached");
     const userName = req.body.name;
     const email = req.body.email;
     registedEmail = email;
@@ -345,8 +347,9 @@ const loadProductdetails = async (req, res) => {
 const loadShop = async (req, res) => {
   try {
     const session = req.session.user_id;
-    const productdata = await productDb.find();
+    const productdata = await productDb.find({is_delete:false});
     const data = await categoryDb.find();
+    console.log(data);
     res.render("shop", {
       session: session,
       category: data,

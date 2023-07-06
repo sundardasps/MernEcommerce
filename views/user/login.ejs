@@ -9,7 +9,7 @@
   <title>PEP signup</title>
 </head>
 
-<body style="background-image: url();">
+<body  background="/adminassets/images/background.jpg" style="background-size: cover;">
   <!-- Section: Design Block -->
   <section class="background-radial-gradient overflow-hidden">
     <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
@@ -35,12 +35,12 @@
                   <h2>User Login</h2>
                 <!-- Email input -->
                 <div class="form-outline mb-4">
-                  <input type="email" id="email" name="email" class="form-control" required/>
+                  <input type="email" id="email" name="email" class="form-control">
                   <label class="form-label" for="form3Example3">Email address</label>
                 </div>
                 <!-- Password input -->
                 <div class="form-outline mb-4">
-                  <input type="password" id="password" name="password" class="form-control" required/>
+                  <input type="password" id="password" name="password" class="form-control">
                   <label class="form-label" for="form3Example4">Password</label>
                 </div>
 
@@ -51,8 +51,8 @@
                     Subscribe to our newsletter
                   </label>
                 </div> -->
-                
-
+                  
+                <a href="/signUp" style="float: right;"><span>New user ?</span></a>
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">
                  Login
@@ -90,24 +90,26 @@
     </div>
   </section>
   <script>
-   const email = document.getElementById('email')
-   const password = document.getElementById('password')
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
 
-   email.addEventListener('input',() =>{
-      if(email.value.trim().length ==''){
-        email.setCustomValidity('Please enter your email')
+    email.addEventListener('input', () => {
+      if (email.value.trim().length == 0) {
+        email.setCustomValidity('Please enter your email');
+      } else {
+        email.setCustomValidity('');
       }
-   })
+    });
 
-   password.addEventListener('input',() =>{
-     if(password.value.trim().length < 8){
-       password.setCustomValidity('password must 8 digits')
-     } else{
-       password.setCustomValidity("")
-     }
-   })
-
+    password.addEventListener('input', () => {
+      if (password.value.trim().length < 8) {
+        password.setCustomValidity('Password must be at least 8 characters long');
+      } else {
+        password.setCustomValidity('');
+      }
+    });
   </script>
+
 
 
   <!-- Section: Design Block -->

@@ -9,59 +9,53 @@
   <title>PEP signup</title>
 </head>
 
-<body>
-  <!-- Section: Design Block -->
-  <section class="background">
+<body background="/adminassets/images/background.jpg" style="background-size: cover; ">
+  <style>
+    .form-group p {
+      font-size: small;
+      visibility: hidden;
+    }
 
-    <!-- <style>
-      .background-radial-gradient {
-        background-color: hsl(218, 41%, 15%);
-        background-image: radial-gradient(650px circle at 0% 0%,
-            hsl(218, 41%, 35%) 15%,
-            hsl(218, 41%, 30%) 35%,
-            hsl(218, 41%, 20%) 75%,
-            hsl(218, 41%, 19%) 80%,
-            transparent 100%),
-          radial-gradient(1250px circle at 100% 100%,
-            hsl(218, 41%, 45%) 15%,
-            hsl(218, 41%, 30%) 35%,
-            hsl(218, 41%, 20%) 75%,
-            hsl(218, 41%, 19%) 80%,
-            transparent 100%);
-      }
-  
-      #radius-shape-1 {
-        height: 220px;
-        width: 220px;
-        top: -60px;
-        left: -130px;
-        background: radial-gradient(#44006b, #ad1fff);
-        overflow: hidden;
-      }
-  
-      #radius-shape-2 {
-        border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-        bottom: -60px;
-        right: -110px;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(#44006b, #ad1fff);
-        overflow: hidden;
-      }
-  
-      .bg-glass {
-        background-color: hsla(0, 0%, 100%, 0.9) !important;
-        backdrop-filter: saturate(200%) blur(25px);
-      }
-    </style> -->
-    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-      <div class="row gx-lg-5 align-items-center mb-5">
+    .form-group.error p {
+      color: rgb(255, 75, 75);
+      visibility: visible;
+    }
+
+    .form-group.success p {
+      color: rgb(45, 223, 113);
+    }
+    .form-group input{
+      border:  2px solid;
+    }
+
+    .form-group.error input {
+      border-color: coral;
+    }
+
+    .form-group.success input {
+      border-color: rgb(45, 223, 113);
+   
+    }
+    .p{
+      font-size: 4vh;
+      font-weight:1000;
+      font-family:Arial, Helvetica, sans-serif;
+      
+    }
+  </style>
+ 
+  <!-- Section: Design Block -->
+  <section class="background" >
+   
+   
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5" >
+      <div class="row gx-lg-5 align-items-center mb-5"> 
         <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-          <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(220, 70%, 36%)">
+          <h1 class="my-5 display-5 fw-bold ls-tight" >
 
 
           </h1>
-          <p class="mb-4 opacity-70" style="color: hsl(221, 32%, 10%)">
+          <p class="p" style="color: hsl(221, 32%, 10%)">
             PEP ENERGY
           </p>
         </div>
@@ -73,7 +67,7 @@
           <div class="card bg-glass">
             <div class="card-body px-4 py-5 px-md-5">
               
-              <form action="" method="post">
+              <form action="" method="post" id="form">
                 <!-- 2 column grid layout with text inputs for the first and last names -->
                 <!-- <div class="row">
                   <div class="col-md-6 mb-4">
@@ -90,42 +84,50 @@
                   </div>
                 </div> -->
                 <!--Username Input-->
-                <div class="form-outline mb-4">
-                  <input type="text" id="name" name="name" class="form-control" />
+                <div class="form-group">
                   <label class="form-label" for="form3Example3">User name</label>
+                  <input type="text" id="name" data-name="User name" name="name" class="form-control" />
+                  <p>Error messsage</p>
+
                 </div>
 
                 <!-- Email input -->
-                <div class="form-outline mb-4">
-                  <input type="email" id="email" name="email" class="form-control" />
+                <div class="form-group">
                   <label class="form-label" for="form3Example3">Email address</label>
+                  <input type="text" id="email" data-name="Email" name="email" class="form-control" />
+                  <p>Error messsage</p>
+
                 </div>
 
                 <!--Phoneno input-->
-                <div class="form-outline mb-4">
-                  <input type="number" id="number" name="number" class="form-control" />
+                <div class="form-group">
                   <label class="form-label" for="form3Example3">Phone number</label>
+                  <input type="number" id="number" data-name="Mobile number" name="number" class="form-control" />
+                  <p>Error messsage</p>
+
                 </div>
 
                 <!-- Password input -->
-                <div class="form-outline mb-4">
-                  <input type="password" id="password" name="password" class="form-control" />
+                <div class="form-group">
                   <label class="form-label" for="form3Example4">Password</label>
+                  <input type="password" id="password" data-name="Password" name="password" class="form-control" />
+                  <p>Error messsage</p>
+
                 </div>
 
                 <!-- Checkbox -->
-                <!-- <div class="form-check d-flex justify-content-center mb-4">
-                  <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+                <div class="form-check d-flex justify-content-center mb-4">
+                  <!-- <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
                   <label class="form-check-label" for="form2Example33">
                     Subscribe to our newsletter
-                  </label>
-                </div> -->
+                  </label> -->
+                </div>
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">
                   Sign up
                 </button>
-
+                 <a href="/login" style="float: right;"><span>Already user ?</span></a>
                 <!-- Register buttons -->
                 <div class="text-center">
                   <p>or sign up with:</p>
@@ -155,50 +157,132 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>    
   </section>
+
+ <!-- ====================================== FORM VALIDATION ====================== -->
   <script>
 
     const name = document.getElementById("name")
     const email = document.getElementById("email")
     const number = document.getElementById("number")
     const password = document.getElementById('password')
-  
-  
-    //User name
-    name.addEventListner('input', () => {
-      if (name.value.trim().length < 3) {
-        name.setCustomValidity("mininum 3 characters are Requierd !");
+
+   
+    String.prototype.isEmail = function() {
+  return !!this.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/);
+     }
+
+     String.prototype.isLettters = function(){
+      return !!this.match( /^[a-zA-Z]+$/ )
+     }
+ 
+    function checkRequired(inputs) {
+      inputs.forEach((input) => {
+        if (input.value.trim() === "") {
+          errorInput(input,`${getName(input)} is Required`);
+        }
+        else{
+       
+        }
+      })
+    }
+
+    function getName(input){
+      return input.getAttribute("data-name");
+    }
+
+    function errorInput(input, message) {
+      const formGroup = input.parentElement;
+      formGroup.className = " form-group error";
+      const p = formGroup.querySelector("p");
+      p.innerHTML = message;
+
+    }
+    function successInput(input) {
+      const formGroup = input.parentElement;
+      formGroup.className = "form-group success"
+      const p = formGroup.querySelector("p");
+      p.innerHTML = "";
+    }
+   
+
+    function  checkLength(input,min,max){
+      const data = input.value.trim().length;
+    if(data<min){
+      errorInput(input,`${getName(input)} must be atleast greater than ${min} charecters`);
+
+    } else if (data>max){
+
+      errorInput(input,`${getName(input)} must be atleast lesser than ${max} charecters`);
+      
+    } else {
+      successInput(input);
+      isvalid=false
+    }
+    }
+    function checkEmail(input){
+       if(!input.value.trim().isEmail()){
+      errorInput(input,`This  is not a valid email address `);
+          
+       } else {
+         successInput(input)
+       }
+    }
+
+    function isLettters(input){
+       if(!input.value.trim().isLettters()){
+       errorInput(input,`${getName(input)} Only contain letters `);
+             
+       } else {
+         successInput(input)
+       }
+    }
+    function checkNumber(input,min,max){
+      const data = input.value.trim().length;
+      if( data < min){
+      errorInput(input,`${getName(input)} must be  ${min} charecters`);
+      } else if (data > max) {
+      errorInput(input,`${getName(input)} Only take  ${min} charecters`);
       } else {
-        name.setCustomValidity("")
+
+      successInput(input);
+ 
       }
+      
+     
+      
+    }
+     
+   
+   
+
+    const form = document.getElementById("form");;
+    form.addEventListener("submit",function(e){
+      // e.preventDefault()
+      checkRequired([email,name,password,number]);
+      checkLength(name,5,10)
+      checkLength(password,5,8)
+      checkNumber(number,10,10)
+      checkEmail(email)
+      isLettters(name)
+ 
+    
     })
   
-    //Mobile number
-    number.addEventListner('input', () => {
-      if (number.value.trim().length == '') {
-        number.setCustomValidity('Mobile number required');
-      } else if (number.value.trim().length < 10) {
-        number.setCustomValidity("Mobile number  must requied 10 Numbers ");
-      } else if (number.value.trim().length > 10) {
-        number.setCustomValidity('Mobile Number greater than 10')
-      } else {
-        number.setCustomValidity("");
-      }
-    })
-  
-    //password
-    password.addEventListener('inpur', () => {
-      if (password.value.trim().length == '') {
-        password.setCustomValidity('Please Enter Your Password !');
-      } else if (password.value.trim().length < 8) {
-        password.setCustomValidity('Minimum 8 Characters Requierd');
-      } else {
-        password.setCustomValidity("");
-      }
-    })
+
+
+
+
+
   </script>
   
+
+
+
+
+
+
   <!-- Section: Design Block -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

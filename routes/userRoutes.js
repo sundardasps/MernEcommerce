@@ -52,15 +52,25 @@ user_route.get('/cart',auth.isLogin,cartController.loadCart);
 user_route.post('/addToCart',auth.isLogin,cartController.addCartItem);
 user_route.post('/removeCartItem',auth.isLogin,cartController.removeFromCart)
 user_route.post('/cartQuantityIncrease',auth.isLogin,cartController.cartQuantityIncrease)
+user_route.get('placeOrder',)
 
 //========================== CHECKOUT ===================================
 user_route.get('/checkOut',auth.isLogin,cartController.loadcheckOut)
+user_route.get('/editAddress',auth.isLogin,adderssController.loadEditAddress);
+user_route.get('/addAddress',auth.isLogin,adderssController.loadAddAddress);
+user_route.post('/updateAddress',adderssController.updateAddress)
+user_route.post("/deleteAddress",auth.isLogin,adderssController.deleteAddress)
+user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
 
 
-
-//=========================USER ACCOUNT =================================
+//========================= USER ACCOUNT ============================
 user_route.get('/userDashboard',adderssController.loadUserDashboard)
 user_route.post('/addUserAddress',adderssController.addUserAddress)
+
+//==========================================================
+const orderController = require('../controllers/orderControllers');
+user_route.post('/checkOut',orderController.placeOrder);
+user_route.get("/orderSuccess",orderController.successPage)
 
 module.exports = user_route;
 

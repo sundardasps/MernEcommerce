@@ -1,7 +1,7 @@
 const UserDb = require("../models/userModel");
 const CartDb = require("../models/cart_model");
 const ProductDb = require("../models/product_model");
-
+const addressDb = require("../models/userAddress_model")
 //=================== LOAD CART ======================
 
 const loadCart = async (req, res) => {
@@ -11,7 +11,6 @@ const loadCart = async (req, res) => {
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
-    console.log(cartData)
     const session = req.session.user_id;
     if (req.session.user_id) {
       if (cartData) {
@@ -25,15 +24,14 @@ const loadCart = async (req, res) => {
                 _id: null,
                 total: {
                   $sum: {
-                    $multiply: ["$products.productPrice", "$products.count"],
+                    $multiply:["$products.productPrice","$products.count"],
                   },
                 },
               },
             },
           ]);
-
           const Total = total.length > 0 ? total[0].total : 0;
-          const totalamout = total + 0;
+          const totalamout = Total
           const userId = userName._id;
           const userData = await UserDb.find();
           res.render("cart", {
@@ -83,17 +81,16 @@ const emptyCartLoad = async (req, res) => {
 
 const addCartItem = async (req, res) => {
   try {
+   
     const userId = req.session.user_id;
     const userData = await UserDb.findOne({ _id: userId });
     const proId = req.body.id;
     const productData = await ProductDb.findById({ _id: proId });
-    const userCart = await CartDb.findOne({ userId: userId });
+    const userCart = await CartDb.findOne({ userId: req.session.user_id });
+   
+   
 
-    const alredyInCart = userCart.products.find(
-      (product) => product.productId === proId
-    );
-
-    if (!alredyInCart) {
+    
       if (userCart) {
         await CartDb.findOneAndUpdate(
           { userId: userId },
@@ -105,6 +102,7 @@ const addCartItem = async (req, res) => {
         );
         res.json({ success: true });
       } else {
+        console.log("hhghghghg");
         const cartData = new CartDb({
           userId: userId,
           userName: userData.user_name,
@@ -118,9 +116,7 @@ const addCartItem = async (req, res) => {
         const savedCartData = await cartData.save();
         res.json({ success: true });
       }
-    } else {
-      res.json({ success: false });
-    }
+     
   } catch (error) {
     console.log(error.massage);
   }
@@ -154,6 +150,7 @@ const cartQuantityIncrease = async (req, res, next) => {
     const proId = req.body.product;
     let count = req.body.count;
     count = parseInt(count);
+  
     const cartData = await CartDb.findOne({ userId: userData });
     const product = cartData.products.find(
       (product) => product.productId === proId
@@ -165,7 +162,7 @@ const cartQuantityIncrease = async (req, res, next) => {
       (product) => product.productId === proId
     );
     const updatedQuantity = updatedProduct.count;
-
+   
     if (count > 0) {
       if (updatedQuantity + count > productQuantity) {
         res.json({ success: false, message: "Quantity limit reached!" });
@@ -198,6 +195,7 @@ const cartQuantityIncrease = async (req, res, next) => {
     // const discountAmount = Math.round((price*discount)/100)
     // const total = price - discountAmount
     // const prices = updateQuantity * total;
+ 
 
     const productTotal = productPrice * updateQuantity;
     await CartDb.updateOne(
@@ -210,41 +208,70 @@ const cartQuantityIncrease = async (req, res, next) => {
   }
 };
 
-//======================== FOR TOTAL PRODUCTPRICE =====================
 
-const totalProductPrice = async (req, res) => {
+//==================================== LOAD CHECKOUT ======================================
+
+
+
+const loadcheckOut = async (req, res) => {
   try {
-    const userId = await UserDb.findOne({ _id: req.session.user_id });
+   
+    const  session = req.session.user_id;
+    const userName = await UserDb.findOne({ _id: req.session.user_id });
+    const addressdata = await addressDb.findOne({userId:req.session.user_id});
+    const cartData = await CartDb.findOne({
+      userId: req.session.user_id,
+    }).populate("products.productId");
+    const products = cartData.products;
+          const total = await CartDb.aggregate([
+            { $match: { userId: req.session.user_id } },
+            { $unwind: "$products" },
+            {
+              $group: {
+                _id: null,
+                total: {
+                  $sum: {
+                    $multiply: ["$products.productPrice","$products.count"],
+                  },
+                },
+              },
+            },
+          ]);
+          if (req.session.user_id) {
+            if(addressdata) {
+              if(addressdata.addresses.length > 0){
+                const address = addressdata.addresses
+          const Total = total.length > 0 ? total[0].total : 0;
+          const totalamout = Total
+          const userId = userName._id;
+       
+          res.render("checkOut",{
+            products: products,
+            Total: Total,
+            userId,
+            session,
+            totalamout,
+            user: userName,
+            address
+          });
 
-    let total = await CartDb.aggregate([
-      { $match: { user: userId._id } },
-      { $unwind: "$product" },
-      { $project: { price: "$product.price", quantity: "$product.quantity" } },
-      {
-        $group: {
-          _id: null,
-          total: { $sum: { $multiply: ["$price", "$quantity"] } },
-        },
-      },
-    ]);
+          } else {
+            res.render("emptyCheckOut",{session,user:userName,message:"Please enter a valid addresss"})
+          }
 
-    let Total = total[0].total;
-    res.json({ success: true, Total });
+        } else {
+           res.render("emptyCheckOut",{session,user:userName,message:"Please enter a valid addresss"})
+        }
+    } else {
+      res.redirect("/login");
+    }
   } catch (error) {
     console.log(error.message);
     res.render("404");
   }
 };
 
-//==================================== LOAD CHECKOUT ======================================
 
-const loadcheckOut = async (req, res) => {
-  try {
-    res.render("checkOut");
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 
 module.exports = {
   loadCart,
@@ -252,5 +279,5 @@ module.exports = {
   loadcheckOut,
   removeFromCart,
   cartQuantityIncrease,
-  totalProductPrice,
+
 };

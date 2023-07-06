@@ -33,6 +33,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  is_delete:{
+    type:Boolean,
+    default:false
+  }
 });
 
 module.exports = mongoose.model("product", productSchema);

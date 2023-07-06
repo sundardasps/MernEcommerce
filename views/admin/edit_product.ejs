@@ -38,6 +38,14 @@
 
                                     </div>
                                 </div>
+                                <div class="col-4 col-sm-3 col-xl-2">
+                                    <p>Product Image</p>
+                                    <img src="/adminassets/imgs/<%=product.image[0] %>" class="gradient-corona-img img-fluid" alt="">
+                                    <br><br>
+                                    <img src="/adminassets/imgs/<%=product.image[0] %>" class="gradient-corona-img img-fluid" alt="">
+
+                                 </div>
+                                 <br>
                                 <div class="form-group">
                                     <label for="exampleInputPassword4">Update Stock</label>
                                     <input type="text" name="stock" class="form-control" id="exampleInputstock4"
@@ -53,7 +61,7 @@
                                     <input type="text" name="description" class="form-control" id="exampleTextarea1"
                                         rows="4" value="<%= product.description %>" required></input>
                                 </div>
-                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                <a href=""><button type="submit" class="btn btn-primary mr-2">Submit</button></a>
                                 <button class="btn btn-dark">Cancel</button>
                                 <% if(typeof message !=='undefined' ){ %>
                                     <span id="er2" style="color: rgb(0, 246, 12); text-align: center ">

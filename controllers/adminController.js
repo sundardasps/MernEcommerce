@@ -31,15 +31,16 @@ const verifyLogin = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const adminData = await admin.findOne({ email: email });
-    if (adminData) {
+
+    if (adminData && adminData.email === email) {
       if (password == adminData.password) {
         req.session.admin_id = adminData;
         res.redirect("/admin/home");
       } else {
-        res.render("login", { message: "your    password incorrect" });
+        res.render("login", { message: "your   Email or password is incorrect" });
       }
     } else {
-      res.render("login", { message: "email and password incorrect" });
+      res.render("login", { message: "your   Email or password is incorrect" });
     }
   } catch (error) {
     console.log(error.message);
@@ -270,5 +271,5 @@ module.exports = {
   addCategory,
   loadEditCat,
   updateCate,
-  activeOrNot
+  activeOrNot,
 };

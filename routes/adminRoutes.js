@@ -40,8 +40,8 @@ admin_route.get('/add_products',auth.isLogin,productController.LoadAddProducts);
 admin_route.post('/add_products',auth.isLogin,upload.array("image", 2),productController.addProducts)
 admin_route.get('/product_details',auth.isLogin,productController.productDetails)
 admin_route.get('/edit_product',auth.isLogin,productController.editProduct)
-admin_route.post('/edit_product',auth.isLogin,upload.array("image", 2),productController.addeditProduct)
-// admin_route.get('/product_delete',auth.isLogin,productController.deleteProduct)
+admin_route.post('/edit_product',auth.isLogin,upload.array("image", 4),productController.addeditProduct)
+admin_route.get('/product_delete',auth.isLogin,productController.deleteProduct)
 
 
 

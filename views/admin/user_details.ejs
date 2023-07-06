@@ -307,22 +307,19 @@
                       <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" action="/admin/searchuser" method="post">
                         <input type="text" class="form-control" name="search" placeholder="Search User">
                       </form>
+                      <br>
                     </li>
                   </ul>
                   <thead>
                     <tr>
                       <th>
-                        <div class="form-check form-check-muted m-0">
-                          <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input">
-                          </label>
-                        </div>
-                      </th>
-                      <th> No</th>
-                      <th> User name</th>
-                      <th> Email </th>
-                      <th> Phone</th>
-                      <!-- <th> Verified </th> -->
+                       
+                      </th >
+                      <th style="font-size: large;"> No</th>
+                      <th style="font-size: large;"> User name</th>
+                      <th style="font-size: large;"> Email </th>
+                      <th style="font-size: large;"> Phone</th>
+                   
                       <th> Block/Unblock </th>
                     </tr>
                   </thead>
@@ -333,26 +330,16 @@
 
                     <tr>
                       <td>
-                           <td> <%= i+1 %> </td>
+                           <td style="color: aliceblue;"> <%= i+1 %> </td>
                       </td>
                       <td>
                         <!-- <img src="assets/images/faces/face1.jpg" alt="image" /> -->
-                        <span class="pl-2"><%= data[i].user_name %></span>
+                        <span class="pl-2"style="color: aliceblue;"><%= data[i].user_name %></span>
                       </td>
-                      <td> <%= data[i].email %> </td>
-                      <td> <%= data[i].mobile_number %> </td>
-                      <!-- <td> <% if( data[i].email_varified == false){ %>
-                    <a href="/admin/verify_user?id=<%= data[i]._id %>">
-                  <button type="button" class="btn btn-inverse-danger btn-fw">Not Verified</button>
-                     </a>
-                    <% }else{%>
-                        <a href="/admin/verify_user?id=<%= data[i]._id %>">
-                 <button type="button" class="btn btn-success btn-fw"> Verified</button>
-                      <% } %>
- 
-                      </td> -->
-
-                      <td>
+                      <td style="color: aliceblue;"> <%= data[i].email %> </td>
+                      <td style="color: aliceblue;"> <%= data[i].mobile_number %> </td>
+                     
+                      <td style="color: aliceblue;">
                       <% if(data[i].is_blocked === true ){ %>
 
                      <a href="/admin/block_unblockUser?id=<%=data[i]._id %>">

@@ -85,7 +85,7 @@ app.get('/auth/google/callback',
 
   function(req, res) {
 
-  console.log();
+  // console.log();
     // Successful authentication, redirect success.
     res.redirect('/success');
   });
