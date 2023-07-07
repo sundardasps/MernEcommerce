@@ -346,14 +346,46 @@ const loadProductdetails = async (req, res) => {
 
 const loadShop = async (req, res) => {
   try {
+  
+    const search='';
+    if(req.query.search){
+      search = req.query.search
+    }
+    var page = 1;
+    if(req.query.page){ 
+      page = req.query.page;
+    }
+    const limit = 8
     const session = req.session.user_id;
-    const productdata = await productDb.find({is_delete:false});
+    const productdata = await productDb.find({is_delete:false,
+      $or:[
+        {name:{$regex:'.*'+search+'.*',$options:'i'}},
+        {category:{$regex:'.*'+search+'.*',$options:'i'}},
+      ]
+    })
+    .limit(limit*1)
+    .skip((page-1)*limit)
+    .exec()
+
+    const count = await productDb.find({is_delete:false,
+     $or:[  
+      {name:{$regex:'.*'+search+'.*',$options:'i'}},
+        {category:{$regex:'.*'+search+'.*',$options:'i'}},
+     ]
+    }).countDocuments()
+
+    
+
     const data = await categoryDb.find();
-    console.log(data);
+ 
+  
     res.render("shop", {
       session: session,
       category: data,
       products: productdata,
+      totalPages:Math.ceil(count/limit),
+      currentPage: page,
+      previousPage: page -1
     });
   } catch (error) {
     console.log(error.message);

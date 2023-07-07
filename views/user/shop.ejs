@@ -49,8 +49,8 @@
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img style="max-height: 200px;" src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image">
-                                        <img style="max-height: 200px; " src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image-hover">
+                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image">
+                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image-hover">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -65,15 +65,15 @@
                                 </figure><!-- End .product-media -->
 
                                 <div class="product-body">
-                                    <h3 class="product-title"><a href="product.html"><%= data.name %></a></h3><!-- End .product-title -->
-                                    <div class="product-price">$
-                                        <%= data.price %>
+                                    <h3 class="product-title"><a href="product.html"><span style="font-size: larger; color: #545454;"><%= data.name %></span></a></h3><!-- End .product-title -->
+                                    <div class="product-price">Price:
+                                       <span style="color: rgb(255, 136, 0);"><%= data.price %>/-</span> 
                                     </div><!-- End .product-price -->
                                 </div><!-- End .product-body -->
-                                <div class="product-action">
+                                <div class="product-action" >
                                   
                                     
-                                    <button onclick="addToCart('<%= data._id %>')" class="btn-product btn-cart"><span>add to cart</span></button>
+                                    <button onclick="addToCart('<%= data._id %>')" class="btn-product btn-cart"  ><span>add to cart</span></button>
                                     
                               
                                 </div><!-- End .product-action -->
@@ -88,12 +88,23 @@
                         <% } %>
                     
                    
-                 <div class="load-more-container text-center">
+                 <!-- <div class="load-more-container text-center">
                     <a href="" class="btn btn-outline-darker btn-load-more">More Products <i class="icon-refresh"></i></a>
-                </div><!-- End .load-more-container -->
+                </div> -->
               </div>
             </div><!-- End .products -->
-
+         
+            <nav aria-label="">
+                <ul class="pagination  justify-content-center" >
+                   <li class="page-item">
+                    <% for(let i=1;i<=totalPages;i++){%>
+                  <a class="page-link" href="?page=<%= i %>" ><%= i %></a>
+                     <% } %>                  
+                </li>
+                   
+                </ul>
+            </nav>
+          
             <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
             <aside class="sidebar-shop sidebar-filter">
                 <div class="sidebar-filter-wrapper">
@@ -117,7 +128,7 @@
                                             <input type="checkbox" class="custom-control-input" id="cat-1">
                                             <label class="custom-control-label" for="cat-1"><%= data.name %></label>
                                         </div><!-- End .custom-checkbox -->
-                                        <span class="item-count"><%= data.is_active %></span>
+                                        <span class="item-count"></span>
                                     </div><!-- End .filter-item -->
 
                                    <% }) %>
@@ -217,7 +228,7 @@
                                 Price
                             </a>
                         </h3><!-- End .widget-title -->
-
+                         
                         <div class="collapse show" id="widget-5">
                             <div class="widget-body">
                                 <div class="filter-price">

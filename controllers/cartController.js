@@ -8,6 +8,7 @@ const loadCart = async (req, res) => {
   try {
     let id = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
+    
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
