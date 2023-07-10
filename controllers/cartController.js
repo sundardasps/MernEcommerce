@@ -6,17 +6,19 @@ const addressDb = require("../models/userAddress_model")
 
 const loadCart = async (req, res) => {
   try {
+    
     let id = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
-    
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
+   
     const session = req.session.user_id;
-    if (req.session.user_id) {
+
       if (cartData) {
         if (cartData.products.length > 0) {
           const products = cartData.products;
+         
           const total = await CartDb.aggregate([
             { $match: { userId: req.session.user_id } },
             { $unwind: "$products" },
@@ -59,9 +61,7 @@ const loadCart = async (req, res) => {
           massage: "No products Added to cart",
         });
       }
-    } else {
-      res.redirect("/login");
-    }
+   
   } catch (error) {
     console.log(error.message);
     res.render("404");
@@ -103,7 +103,7 @@ const addCartItem = async (req, res) => {
         );
         res.json({ success: true });
       } else {
-        console.log("hhghghghg");
+        
         const cartData = new CartDb({
           userId: userId,
           userName: userData.user_name,

@@ -377,11 +377,11 @@ const loadShop = async (req, res) => {
     
 
     const data = await categoryDb.find();
- 
-  
+   
     res.render("shop", {
       session: session,
       category: data,
+    
       products: productdata,
       totalPages:Math.ceil(count/limit),
       currentPage: page,

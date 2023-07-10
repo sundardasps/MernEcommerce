@@ -67,10 +67,11 @@ user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
 user_route.get('/userDashboard',adderssController.loadUserDashboard)
 user_route.post('/addUserAddress',adderssController.addUserAddress)
 
-//==========================================================
+//===========================USER ORDER ===========================
 const orderController = require('../controllers/orderControllers');
 user_route.post('/checkOut',orderController.placeOrder);
-user_route.get("/orderSuccess",orderController.successPage)
+user_route.get("/orderSuccess",orderController.successPage);
+user_route.get('/cancelOrder',orderController.orderCancel)
 
 module.exports = user_route;
 

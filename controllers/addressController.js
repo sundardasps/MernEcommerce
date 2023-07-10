@@ -1,6 +1,7 @@
 const { session } = require("passport");
 const addressDb = require("../models/userAddress_model");
 const UserDb = require("../models/userModel");
+const orderDb = require('..//models/order_model')
 const { query } = require("express");
 
 //==================== LOAD USER DASHBOARD ==========================
@@ -9,13 +10,14 @@ const loadUserDashboard = async (req, res) => {
     const id = req.session.user_id;
     const userData = await UserDb.findOne({ _id: id });
     const userAddress = await addressDb.findOne({ userId: id });
-
+    const orderData = await orderDb.find()
     const session = req.session.user_id;
 
-    res.render("userDashboard", {
+    res.render("userDashboard",{
       user: userData,
       session,
       addresses: userAddress,
+      orders:orderData,
     });
   } catch (error) {
     console.log(error.message);

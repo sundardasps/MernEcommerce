@@ -66,7 +66,9 @@
                                 </div><!-- End .rating-container -->
 
                                 <div class="product-price">
-                                    $ <%= products.price %>
+                                    <div class="fa fa-rupee" style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;">price:</span>
+                                        <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><%= products.price %></span> /-
+                                     </div><!-- End .product-price -->
                                 </div><!-- End .product-price -->
 
                                 <div class="product-content">
@@ -99,7 +101,12 @@
                                         <a href="#">
                                             <%= products.brand %>
                                         </a>
+                                        
+                                      
+                                          
                                     </div><!-- End .product-cat -->
+                                   
+                                      
 
                                     <!-- <div class="social-icons social-icons-sm">
                                         <span class="social-label">Share:</span>
@@ -113,10 +120,16 @@
                                                 class="icon-pinterest"></i></a>
                                     </div> -->
                                 </div><!-- End .product-details-footer -->
+                                
                             </div><!-- End .product-details -->
                         </div><!-- End .col-md-6 -->
 
                     </div><!-- End .row -->
+                    <div class="container" >
+                        <span id="rateMe4"  class="feedback">$().mdbRate(); </span>
+                    </div>
+                      
+                     
                 </div><!-- End .product-details-top -->
 
 
@@ -297,5 +310,11 @@
 
         }
       
+      </script>
+      <script>
+        // Rating Initialization
+       $(document).ready(function() {
+        $('#rateMe4').mdbRate();
+         });
       </script>
     <%- include("../user/layouts/user_footer.ejs") %>

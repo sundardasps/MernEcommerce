@@ -37,6 +37,9 @@ const orderSchema = new mongoose.Schema({
         deliveryDate:{
             type:Date,
           },
+        cancelreason:{
+            type:String,
+          },
     }],
     totalAmount: {
         type: Number,
