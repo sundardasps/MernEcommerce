@@ -1,185 +1,336 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("../user/common/commonHeader.ejs") %>
+<main class="main">
+<style>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <title>PEP signup</title>
-</head>
+/* BASIC */
 
-<body class="body" background="/adminassets/images/background.jpg" style="background-size: cover;">
-  <!-- Section: Design Block -->
-  
-  <style>
-    .form-group p {
-      font-size: medium;
-      visibility: hidden;
-    }
+html {
+  background-color: #56baed;
+}
 
-    .form-group.error p {
-      color: rgb(255, 75, 75);
-      visibility: visible;
-    }
+body {
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
 
-    .form-group.success p {
-      color: rgb(45, 223, 113);
-    }
-    .form-group input{
-      border:  2px solid;
-    }
+a {
+  color: #92badd;
+  display:inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
 
-    .form-group.error input {
-      border-color: coral;
-    }
-
-    .form-group.success input {
-      border-color: rgb(45, 223, 113);
-   
-    }
-
-  
-  </style>
-  <section class="background">
-
-    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-      <div class="row gx-lg-5 align-items-center mb-5">
-        <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-          <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(220, 70%, 36%)">
+h2 {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display:inline-block;
+  margin: 40px 8px 10px 8px; 
+  color: #cccccc;
+}
 
 
-          </h1>
-          <p class="mb-4 opacity-70" style="font-size: larger;">
-            PEP ENERGY
-          </p>
-        </div>
 
-        <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-          <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-          <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+/* STRUCTURE */
 
-          <div class="card bg-glass">
-            <div class="card-body px-4 py-5 px-md-5">
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
 
-              <form action="" method="post" class="form" id="form">
-                <h2>Admin Login</h2>
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fffafa; /* background color in form */
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+#formFooter {
+  background-color: #f6f6f6;
+  border-top: 1px solid #dce8f1;
+  padding: 25px;
+  text-align: center;
+  -webkit-border-radius: 0 0 10px 10px;
+  border-radius: 0 0 10px 10px;
+}
 
 
-                <!-- Email input -->
-                <div class="form-group ">
-                  <label class="form-label" for="form3Example3">Email address</label>
-                  <input type="text" id="email" data-name="Email"  name="email" class="form-control" />
-                  <p>Error messsage</p>
+
+/* TABS */
+
+h2.inactive {
+  color: #cccccc;
+}
+
+h2.active {
+  color: #0d0d0d;
+  border-bottom: 2px solid #5fbae9;
+}
 
 
-                </div>
 
-                <!-- Password input -->
-                <div class="form-group ">
-                  <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" data-name="Password" id="password" name="password" class="form-control" />
-                  <p>Error messsage</p>
-                </div>
+/* FORM TYPOGRAPHY*/
 
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">
-                  Login
-                </button>
+input[type=button], input[type=submit], input[type=reset]  {
+  background-color: #000000;
+  border: none;
+  color: white;
+  padding: 15px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 5px 20px 40px 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
 
-                <!-- Register buttons -->
-                <div class="text-center">
-                  <p>or sign up with:</p>
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-facebook-f"></i>
-                  </button>
+input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
+  background-color: #3db51f;
+}
 
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-google"></i>
-                  </button>
+input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+  -moz-transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
 
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-twitter"></i>
-                  </button>
+input[type=text] {
+  background-color: #f6f6f6;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
 
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-github"></i>
-                  </button>
-                </div>
-                <% if(typeof message !=='undefined' ){%>
+input[type=text]:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #33af28;
+}
+
+input[type=text]:placeholder {
+  color: #cccccc;
+}
+
+
+
+/* ANIMATIONS */
+
+/* Simple CSS3 Fade-in-down Animation */
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+/* Simple CSS3 Fade-in Animation */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fadeIn {
+  opacity:0;
+  -webkit-animation:fadeIn ease-in 1;
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:1s;
+  -moz-animation-duration:1s;
+  animation-duration:1s;
+}
+
+.fadeIn.first {
+  -webkit-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+
+.fadeIn.second {
+  -webkit-animation-delay: 0.6s;
+  -moz-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+}
+
+.fadeIn.third {
+  -webkit-animation-delay: 0.8s;
+  -moz-animation-delay: 0.8s;
+  animation-delay: 0.8s;
+}
+
+.fadeIn.fourth {
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+/* Simple CSS3 Fade-in Animation */
+.underlineHover:after {
+  display: block;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 2px;
+  background-color: #47c93b;
+  content: "";
+  transition: width 0.2s;
+}
+
+.underlineHover:hover {
+  color: #0d0d0d;
+}
+
+.underlineHover:hover:after{
+  width: 100%;
+}
+
+
+
+/* OTHERS */
+
+*:focus {
+    outline: none;
+} 
+
+#icon {
+  width:60%;
+}
+
+</style>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <br>
+      <h3><span style="color: #49a219;">Green</span> Energy</h3>
+      <h5 style=" color: dimgray;">Admin Login</h5>
+    </div>
+
+    <!-- Login Form -->
+    <div  id="error" style="color: red;"></div>
+    <form action="" method="post" id="form">
+           <% if(typeof message !=='undefined' ){%>
                   <p style="color: green; font-size: large; font-weight: 300;">
                     <%= message %>
                   </p>
                   <% } %>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      <input type="text" id="login" class="fadeIn second" name="email" placeholder="Email" style=" text-align: start; ">
+      <input type="text" id="password" class="fadeIn third" name="password" placeholder="password" style=" text-align: start; ">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    
+
+    </form>
+  
+     <a href="./adminSignUp">+</a>
+  </div>
+</div>
 
   <script>
 
-    const email = document.getElementById("email")
-    const password = document.getElementById("password")
 
-    //Form 
+    const email = document.getElementById('login');
+    const password = document.getElementById('password');
+    const  form  = document.getElementById('form')
+    const errorElement = document.getElementById("error")
 
-    function checkRequired(inputs) {
-      inputs.forEach((input) => {
-        if (input.value.trim() === "") {
-          errorInput(input,`${getName(input)} is Required`);
-        }
-        else{
-           successInput(input);
-        }
-      })
+    form.addEventListener('submit',(e)=>{
+    let messages = []
+    if(  email.value =="" || email.value == null){
+      messages.push('Email')
     }
 
-    function getName(input){
-      return input.getAttribute("data-name");
+    if( password.value =="" || password.value == null){
+         messages.push("Password is required!")
     }
 
-    function errorInput(input, message) {
-      const formGroup = input.parentElement;
-      formGroup.className = " form-group error";
-      const p = formGroup.querySelector("p");
-      p.innerHTML = message;
-
-    }
-    function successInput(input) {
-      const formGroup = input.parentElement;
-      formGroup.className = "form-group success"
-      const p = formGroup.querySelector("p");
-      p.innerHTML = "";
+    if( messages.length > 0  ){
+      e.preventDefault()
+      errorElement.innerText = messages.join(' & ')
+      
     }
 
-
-
-    const form = document.getElementById("form");;
-    form.onsubmit = function (e) {
-      checkRequired([email, password]);
-    };
+    })
+    
 
 
   </script>
-
-
-  <!-- Section: Design Block -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-</body>
-
-</html>
-
+  </main>
+<%- include("../user/common/commonFooter.ejs") %>
 
 
 

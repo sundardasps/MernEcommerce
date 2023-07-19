@@ -223,7 +223,7 @@
                   <img src="/adminassets/imgs/<%=product.image[0] %>" alt="">
                 </div>
                 <div class="item">
-                  <img src="/adminassets/imgs/<%=product.image[2] %>" alt="">
+                  <img src="/adminassets/imgs/<%=product.image[1] %>" alt="">
                 </div>
               </div>
               <div class="d-flex py-4">
@@ -241,7 +241,7 @@
                         <br>
                         <p class="mb-0 font-weight-normal d-none d-sm-block"><span style="color: rgb(85, 202, 213);">Category:</span>  <%=  product.category %></p>
                         <br>
-                        <p class="mb-0 font-weight-normal d-none d-sm-block"><span style="color: rgb(85, 202, 213);">Quantity: </span> <%= product.quantity %>></p>
+                        <p class="mb-0 font-weight-normal d-none d-sm-block"><span style="color: rgb(85, 202, 213);">Quantity: </span> <%= product.quantity %></p>
                         <br>
                         <p class="mb-0 font-weight-normal d-none d-sm-block"><span style="color: rgb(85, 202, 213);">stock Status:</span>  <%= product.stock %></p>
                         <br>
@@ -249,7 +249,7 @@
                         <br>
                         <div class=" text-center">
                           <span>
-                            <a href="/admin/edit_product/?id=<%= product._id %>" target="_blank" class="btn btn-outline-light btn-rounded get-started-btn">Edit Product</a>
+                            <a href="./edit_product/?id=<%= product._id %>"  class="btn btn-outline-light btn-rounded get-started-btn">Edit Product</a>
                           </span>
                         </div>
                       </div>

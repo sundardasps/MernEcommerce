@@ -34,9 +34,9 @@
                             </h3><!-- End .product-title -->
                         </div><!-- End .product -->
                     </td>
-                    <td class="fa fa-rupee"> <%=  wish.productId.price %>/-</td>
+                    <td style=" font-size: large;" >Rs: <%=  wish.productId.price %>/-</td>
                    
-                    <td class="stock-col"><span class="in-stock"><%=  wish.productId.quantity %> </span>Products</td>
+                    <td class="stock-col"><span  class="in-stock"><%=  wish.productId.quantity %> </span>Products</td>
                     <!-- <td class="action-col">
                         <div class="dropdown">
                         <button class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,29 +51,29 @@
                           </div>
                         </div>
                     </td> -->
-                    <td style="width: 10vb;"><button onclick="addToCart('<%= wish.productId._id %>')" class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded>
+                    <td style="width: 10vb;"><button onclick="addToCart('<%= wish.productId._id %>')" class="btn btn-block btn-outline-primary-2" style="background-color: rgb(46, 202, 88);">
                        Add to Cart
                     </button>
                     </td>
                     <td class="remove-col"><a href="/removeItem?id=<%= wish.productId._id%>"><button class="btn-remove"><i class="icon-close"></i></button></a></td>
                 </tr>
               
-                <%   }) %>
+            </tbody>
+            <%   }) %>
             <%   } else { %>
-        </tbody>
-      </table><!-- End .table table-wishlist -->      
-      
-      <div class="error-content text-center" style="background-image: url(userassets/images/backgrounds/error-bg.jpg)">
-        <div class="container">
-            <h1 class="error-title">No items in WishList </h1><!-- End .error-title -->
-            <p>Add Products in Wish List</p>
-            <a href="/home" class="btn btn-outline-primary-2 btn-minwidth-lg">
-                <span>BACK TO HOMEPAGE</span>
-                <i class="icon-long-arrow-right"></i>
-            </a>
-        </div>
-       </div>
-       <% } %>
+            
+            <div class="error-content text-center">
+            <div class="container">
+                <h1 class="error-title"> <span style="color: rgb(46, 202, 88);">Your</span> wishList is empty </h1><!-- End .error-title -->
+                <p>Add Products in Wish List</p>
+                <a href="/shop" class="btn btn-outline" style="color: rgb(46, 202, 88);;">
+                    <span>Keep shopping</span>
+                    <i class="">>>></i>
+                </a>
+            </div>
+            </div>
+            <% } %>
+        </table><!-- End .table table-wishlist -->      
     </div><!-- End .container -->
 </div><!-- End .page-content -->
 

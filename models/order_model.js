@@ -6,9 +6,13 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    user:{
+      type: mongoose.Types.ObjectId,
+    },
    
     userId:{
-        type:mongoose.Types.ObjectId
+      type: String,
+      required: true,
 
     },
     userName:{
@@ -40,6 +44,15 @@ const orderSchema = new mongoose.Schema({
         cancelreason:{
             type:String,
           },
+          returnReason:{
+            type:String
+          },
+        
+          status:{
+          type:String,
+          default:'placed'
+        }
+
     }],
     totalAmount: {
         type: Number,

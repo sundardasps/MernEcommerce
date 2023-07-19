@@ -3,17 +3,31 @@
  
   
                                         <div class="error-content text-center">
+                                            
                                             <div class="container">
                                                 <h1 class="error-title"></h1>
                                                 <!-- End .error-title -->
-                                                <h5 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Your order Placed</h5>
+                                       
+                                                <h5 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color: rgb(0, 255, 76);">Your order Placed</h5>
+                                                <h6><span style="font-size: small; color: rgb(133, 133, 133);">Total amount:</span>  <%= orderedProduct.totalAmount %>/-</h6>
+                                                <h6><span style="font-size: small; color: rgb(133, 133, 133)">Order placed date:</span>  <%= orderedProduct.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></h6>
+                                                <h6><span style="font-size: small; color: rgb(133, 133, 133);">Order Status:</span>  <%= orderedProduct.status %></h6>
+                                                <h6><span style="font-size: small; color: rgb(133, 133, 133)">Payment method:</span>  <%= orderedProduct.paymentMethod %></h6>
+                                                <h6><span style="font-size: small; color: rgb(133, 133, 133)">Deliverying address:</span></h6>
+                                                <div style="text-align: center;">
+                                                    <div>
+                                                      <h6 id="deliveryDetails"><%= orderedProduct.deliveryDetails %></h6>
+                                                    </div>
+                                                  </div>
+                                                  
+ 
                                                 <a href="/Shop" class="btn btn-outline-primary-2 btn-minwidth-lg">
-                                                    <span>Add addresss</span>
+                                                    <span>Continue shopping </span>
                                                     <i class="icon-long-arrow-right"></i>
                                                 </a>
+                                                
                                             </div>
                                         </div>
-
-   
-
+ 
+ 
 <%- include("../user/layouts/user_footer.ejs") %>

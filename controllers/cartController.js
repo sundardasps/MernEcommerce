@@ -33,6 +33,7 @@ const loadCart = async (req, res) => {
               },
             },
           ]);
+          
           const Total = total.length > 0 ? total[0].total : 0;
           const totalamout = Total
           const userId = userName._id;
@@ -82,42 +83,63 @@ const emptyCartLoad = async (req, res) => {
 
 const addCartItem = async (req, res) => {
   try {
-   
     const userId = req.session.user_id;
     const userData = await UserDb.findOne({ _id: userId });
     const proId = req.body.id;
-    const productData = await ProductDb.findById({ _id: proId });
-    const userCart = await CartDb.findOne({ userId: req.session.user_id });
-   
-   
-
-    
-      if (userCart) {
-        await CartDb.findOneAndUpdate(
-          { userId: userId },
-          {
-            $push: {
-              products: { productId: proId, productPrice: productData.price },
-            },
-          }
-        );
-        res.json({ success: true });
-      } else {
-        
-        const cartData = new CartDb({
+    const productData = await ProductDb.findOne({ _id: proId });
+    const productQuantity = productData.quantity;
+    const cartData = await CartDb.findOneAndUpdate(
+      { userId: userId },
+      {
+        $setOnInsert: {
           userId: userId,
           userName: userData.user_name,
-          products: [
-            {
-              productId: proId,
-              productPrice: productData.price,
-            },
-          ],
-        });
-        const savedCartData = await cartData.save();
-        res.json({ success: true });
-      }
+          products: [],
+        },
+      },
+      { upsert: true, new: true }
+    );
+
+    const updatedProduct = cartData.products.find(
+      (product) => product.productId === proId
+    );
+    const updatedQuantity = updatedProduct ? updatedProduct.count : 0;
+    if (updatedQuantity + 1 > productQuantity) {
+      return res.json({
+        success: false,
+        message: "Quantity limit reached!",
+      });
+    }
+
+    
+    const discount =  productData.discountPercentage;          
+    const price =  productData.price 
+    // const discountAmount = Math.round((price*discount)/100)
+    const total = price 
+   
+    if (updatedProduct) {
+      await CartDb.updateOne(
+        { userId: userId, "products.productId": proId },
+        {
+          $inc: {
+            "products.$.count": 1,
+            "products.$.totalPrice": total,
+          },
+        }
+      );
+    } else {
+      cartData.products.push({
+        productId: proId,
+        productPrice:total,
+        totalPrice: total,
+      });
+      await cartData.save();
      
+    }
+
+    res.json({ success: true });
+
+
   } catch (error) {
     console.log(error.massage);
   }
@@ -238,6 +260,8 @@ const loadcheckOut = async (req, res) => {
               },
             },
           ]);
+           
+         
           if (req.session.user_id) {
             if(addressdata) {
               if(addressdata.addresses.length > 0){
@@ -245,7 +269,7 @@ const loadcheckOut = async (req, res) => {
           const Total = total.length > 0 ? total[0].total : 0;
           const totalamout = Total
           const userId = userName._id;
-       
+         
           res.render("checkOut",{
             products: products,
             Total: Total,

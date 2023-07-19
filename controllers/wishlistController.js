@@ -13,10 +13,13 @@ const loadWishList = async (req, res) => {
     const wishlistData = await wishListDb
       .find({ user: session })
       .populate("products.productId");
+      
+   
 
     if (wishlistData.length > 0) {
       const wishlist = wishlistData[0].products;
       const products = wishlist.map((wish) => wish.productId);
+      
       res.render("wishList", { user: session, session, wishlist, products });
     } else {
       res.render("wishList", { user: session, wishlist: [], products: [] });
@@ -31,13 +34,14 @@ const loadWishList = async (req, res) => {
 
 const addToWishList = async (req, res) => {
   try {
+    
     const id = req.body.proId;
     const user = req.session.user_id;
     const userData = await User.findById(user);
     const wishlistData = await wishListDb.findOne({ user: user });
 
     if (wishlistData) {
-      const checkWishlist = await wishlistData.products.findIndex(
+      const checkWishlist =  wishlistData.products.findIndex(
         (wish) => wish.productId == id
       );
 
@@ -51,7 +55,7 @@ const addToWishList = async (req, res) => {
         res.json({ success: true });
       }
     } else {
-      const wishlist = new wishList({
+      const wishlist = new wishListDb({
         user: req.session.user_id,
         user_name: userData.user_name,
         products: [

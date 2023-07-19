@@ -27,24 +27,24 @@
                                             <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product side">
                                         </a>
                                         <a class="product-gallery-item "
-                                            href="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product cross">
+                                            href="/adminassets/imgs/<%=products.image[2] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[2] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[2] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[2] %>" alt="product cross">
                                         </a>
                                         <a class="product-gallery-item "
-                                            href="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product with model">
+                                            href="/adminassets/imgs/<%=products.image[3] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[3] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[3] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[3] %>" alt="product with model">
                                         </a>
-                                        <a class="product-gallery-item "
-                                            href="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[0] %>"
+                                        <!-- <a class="product-gallery-item "
+                                            href="/adminassets/imgs/<%=products.image[4] %>"
+                                            data-image="/adminassets/imgs/<%=products.image[4] %>"
+                                            data-zoom-image="/adminassets/imgs/<%=products.image[4] %>">
+                                            <img src="/adminassets/imgs/<%=products.image[4] %>"
                                                 alt="product back">
-                                        </a>
+                                        </a> -->
 
 
                                     </div><!-- End .product-image-gallery -->
@@ -76,11 +76,13 @@
                                         <%= products.description %>
                                     </p>
                                 </div><!-- End .product-content -->
-
+                                <% if(products.quantity <=0 ){ %>
+                                    <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 500;">Out of stock</p>
+                                    <%}%>
                                 <div class="product-details-action">
                                     <div class="details-action-col">
                                         
-                                        <a onclick="addToCart('<%= products._id %>')" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <a onclick="addToCart('<%= products._id %>')" class="btn-product btn-cart" style="background-color: rgb(46, 202, 88);"><span style="color: aliceblue;">add to cart</span></a>
                                     </div><!-- End .details-action-col -->
 
                                    
@@ -126,7 +128,7 @@
 
                     </div><!-- End .row -->
                     <div class="container" >
-                        <span id="rateMe4"  class="feedback">$().mdbRate(); </span>
+                        <span id="rateMe4"  class="feedback"></span>
                     </div>
                       
                      
@@ -170,8 +172,8 @@
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image">
-                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image-hover">
+                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image-hover">
+                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -186,14 +188,30 @@
                                 </figure><!-- End .product-media -->
 
                                 <div class="product-body">
-                                    <h3 class="product-title"><a href="product.html"><%= data.name %></a></h3><!-- End .product-title -->
-                                    <div class="product-price">$
-                                        <%= data.price %>
-                                    </div><!-- End .product-price -->
+                                    <h3 class="product-title"><a href=""><span style="font-weight: 600; font-size: 20px; color: #515151;"><%= data.name %></span></a></h3><!-- End .product-title -->
+
+                                     <br>
+                                     <div class="fa fa-rupee" style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;"></span>
+                                        <span style="color: rgb(0, 0, 0); font-family: Verdana, Geneva, Tahoma, sans-serif"><span style="font-size: large;font-weight: 600;"><%= data.price %>/-</span></span> 
+                                        
+                                     </div><!-- End .product-price --> 
+
+                                    <% if(data.quantity <=0 ){ %>
+                                        <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
+                                        <%}%>
                                 </div><!-- End .product-body -->
-                                <div class="product-action">
-                                    <a onclick="addToCart('<%= data._id %>')"  class="btn-product btn-cart"><span>add to cart</span></a>
-                                </div><!-- End .product-action -->
+                                <div class="product-action ">
+                                      
+                                    <% if(data.quantity <=0 ){ %>
+  
+                                      <button  class="btn-product " style="background-color: rgb(229, 80, 80);"  ><span>Out of stock</span></button>
+  
+                                        
+                                      <% }else{%>
+                                      <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+                                        <%}%>
+                                
+                                  </div><!-- End .product-action -->
                         
                             </div><!-- End .product -->
                     
@@ -260,7 +278,7 @@
                     }else{
                         swal.fire({ 
                         icon: 'error',
-                        title: 'Product Already in Cart ',
+                        title: 'Sorry Quantity reached ',
                         text: response.message
                         });
                     }

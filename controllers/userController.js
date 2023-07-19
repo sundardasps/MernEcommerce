@@ -9,6 +9,10 @@ const cartDb = require('../models/cart_model')
 const { name } = require("ejs");
 
 
+
+
+
+
 let userOtp;
 let registedEmail;
 
@@ -36,18 +40,19 @@ const generateOtp = () => {
 
 const sendVarifyMAil = async (userName, email, otp) => {
   try {
+    console.log("REACHED MAIL OPPTION");
     const transporter = nodemailar.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
       requireTLS: true,
       auth: {
-        user: process.env.email,
-        pass: process.env.pass,
+        user:process.env.email,
+        pass:process.env.password,
       },
     });
     const mailOptions = {
-      from: process.env.email,
+      from:process.env.email,
       to: email,
       subject: "For varification mail",
       text: `Hi ${userName}Your OTP is:${otp}`,
@@ -60,13 +65,14 @@ const sendVarifyMAil = async (userName, email, otp) => {
       }
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
 //=======================================FOR USER SIGNUP==============================
 const register = async (req, res) => {
   try {
+   
     res.render("signup");
   } catch (error) {
     console.log(error.message);
@@ -90,7 +96,7 @@ const resendVarifyMail = async (userName, email, token) => {
     });
     const mailOptions = {
       from: process.env.email,
-      to: process.env.pass,
+      to: email,
       subject: "For Reset password",
       html: `<p>hi ${userName}, please click here to <a href="https://localhost:3000/reset_password?token=${token}">Reset</a> your password</p>`,
     };
@@ -110,7 +116,7 @@ const resendVarifyMail = async (userName, email, token) => {
 
 const insertUser = async (req, res) => {
   try {
-    console.log("hi reached");
+  
     const userName = req.body.name;
     const email = req.body.email;
     registedEmail = email;
@@ -140,6 +146,7 @@ const insertUser = async (req, res) => {
           const result = await data.save();
           const otp = generateOtp();
           userOtp = otp;
+          console.log(userOtp);
           sendVarifyMAil(userName, email, otp);
           res.render("varifyOtp");
         }
@@ -161,6 +168,7 @@ const varifyOtp = async (req, res) => {
       );
       res.redirect("login");
     } else {
+      //===========================================================================================================NEED TO ADD DELETE OPTION
       res.render("varifyotp", { message: "Entered OTP is wrong !" });
     }
   } catch (error) {
@@ -347,8 +355,10 @@ const loadProductdetails = async (req, res) => {
 const loadShop = async (req, res) => {
   try {
   
-    const search='';
+    let search='';
+  
     if(req.query.search){
+
       search = req.query.search
     }
     var page = 1;
@@ -381,7 +391,6 @@ const loadShop = async (req, res) => {
     res.render("shop", {
       session: session,
       category: data,
-    
       products: productdata,
       totalPages:Math.ceil(count/limit),
       currentPage: page,

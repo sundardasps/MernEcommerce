@@ -17,13 +17,13 @@
                     <a href="#" class="sidebar-toggler"><i class="icon-bars"></i>Filters</a>
                 </div><!-- End .toolbox-left -->
 
-                <div class="toolbox-center">
+                <!-- <div class="toolbox-center">
                     <div class="toolbox-info">
                         Showing <span>12 of 56</span> Products
-                    </div><!-- End .toolbox-info -->
-                </div><!-- End .toolbox-center -->
+                    </div>
+                </div> -->
 
-                <div class="toolbox-right">
+                <!-- <div class="toolbox-right">
                     <div class="toolbox-sort">
                         <label for="sortby">Sort by:</label>
                         <div class="select-custom">
@@ -33,8 +33,8 @@
                                 <option value="date">Date</option>
                             </select>
                         </div>
-                    </div><!-- End .toolbox-sort -->
-                </div><!-- End .toolbox-right -->
+                    </div>
+                </div> -->
             </div><!-- End .toolbox -->
 
             <div class="products">
@@ -49,8 +49,8 @@
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image">
-                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image-hover">
+                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image-hover">
+                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -65,18 +65,28 @@
                                 </figure><!-- End .product-media -->
 
                                 <div class="product-body">
-                                    <h3 class="product-title"><a href="product.html"><span style="font-weight: 900; font-size: 25px; color: #000000;"><%= data.name %></span></a></h3><!-- End .product-title -->
-                                    <div class="fa fa-rupee" style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;">Price:</span>
-                                       <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><%= data.price %></span> /-
+                                    <h3 class="product-title"><a href=""><span style="font-weight: 600; font-size: 20px; color: #515151;"><%= data.name %></span></a></h3><!-- End .product-title -->
+                                    <h6 style="color: #737171; font-size: small; font-weight: 500;"><%= data.category %></h6>
+                                    <div class="fa fa-rupee" style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;"></span>
+                                       <span style="color: rgb(0, 0, 0); font-family: Verdana, Geneva, Tahoma, sans-serif"><span style="font-size: large;font-weight: 600;"><%= data.price %>/-</span></span> 
+                                       
                                     </div><!-- End .product-price -->
+                                    <% if(data.quantity <=0 ){ %>
+                                        <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
+                                        <%}%>
+                                    <div class="product-action ">
+                                      
+                                      <% if(data.quantity <=0 ){ %>
+    
+                                        <button  class="btn-product " style="background-color: rgb(229, 80, 80);"  ><span>Out of stock</span></button>
+    
+                                          
+                                        <% }else{%>
+                                        <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+                                          <%}%>
+                                  
+                                    </div><!-- End .product-action -->
                                 </div><!-- End .product-body -->
-                                <div class="product-action" >
-                                  
-                                  
-                                    <button onclick="addToCart('<%= data._id %>')" class="btn-product btn-cart"  ><span>add to cart</span></button>
-                                 
-                              
-                                </div><!-- End .product-action -->
                         
                             </div><!-- End .product -->
                     
@@ -100,7 +110,7 @@
                     <% for(let i=1;i<=totalPages;i++){%>
                   <a class="page-link" href="?page=<%= i %>" ><%= i %></a>
                      <% } %>                  
-                </li>
+                </li> 
                    
                 </ul>
             </nav>
@@ -301,8 +311,8 @@
                     }else{
                         swal.fire({ 
                         icon: 'error',
-                        title: 'Already added',
-                        text: response.message
+                        title: 'Limit Reached',
+                        text: response.message,
                         });
                     }
                 }

@@ -12,7 +12,7 @@ const loadUserDashboard = async (req, res) => {
     const userAddress = await addressDb.findOne({ userId: id });
     const orderData = await orderDb.find()
     const session = req.session.user_id;
-
+    
     res.render("userDashboard",{
       user: userData,
       session,
@@ -173,7 +173,26 @@ const emptyCheckOut = async (req,res) => {
 
 }
 
+//======================USER SHOW ADDRESSS ========================
 
+const showAddress = async (req,res) => {
+
+
+   try {
+    const addressData = await addressDb.findOne({userId:req.session.user_id})
+    if(addressData.addresses.length > 0 ){
+      const address = addressData.addresses
+      res.render('showAddress',{address})
+    }
+    
+   } catch (error) {
+    
+   }
+
+
+
+  
+}
 
 
 module.exports = {
@@ -184,4 +203,5 @@ module.exports = {
   deleteAddress,
   updateAddress,
   emptyCheckOut,
+  showAddress
 };

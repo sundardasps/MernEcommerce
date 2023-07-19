@@ -1,7 +1,8 @@
-const admin = require("../models/admin_model");
-const User = require("../models/userModel");
+const adminDb = require("../models/admin_model");
+const UserDb = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const catagoryDb = require("../models/category_model");
+const orderDb = require("../models/order_model");
 const { name } = require("ejs");
 const session = require("express-session");
 
@@ -10,6 +11,16 @@ const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
     return passwordHash;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//==================ADMIN SIGN UP================
+
+const loadAdminSignUp = async (req, res) => {
+  try {
+    res.render("adminSignUp");
   } catch (error) {
     console.log(error.message);
   }
@@ -28,19 +39,19 @@ const loadLogin = async (req, res) => {
 
 const verifyLogin = async (req, res) => {
   try {
-    const email = req.body.email; 
+    const email = req.body.email;
     const password = req.body.password;
-    const adminData = await admin.findOne({ email: email });
+    const adminData = await adminDb.findOne({ email: email });
 
     if (adminData && adminData.email === email) {
       if (password == adminData.password) {
         req.session.admin_id = adminData;
         res.redirect("/admin/home");
       } else {
-        res.render("login", { message: "your   Email or password is incorrect" });
+        res.render("login", { message: "your Email or password is incorrect" });
       }
     } else {
-      res.render("login", { message: "your   Email or password is incorrect" });
+      res.render("login", { message: "your Email or password is incorrect" });
     }
   } catch (error) {
     console.log(error.message);
@@ -51,11 +62,6 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-
-
-    
-
-
     res.render("home");
   } catch (error) {
     console.log(error.message);
@@ -75,7 +81,7 @@ const logout = async (req, res) => {
 //================== LOAD USER DETAILS ======================
 const loadusers = async (req, res) => {
   try {
-    const userData = await User.find({ is_admin: 0 });
+    const userData = await UserDb.find({ is_admin: 0 });
 
     res.render("user_details", { data: userData });
   } catch (error) {
@@ -89,7 +95,7 @@ const verifyUser = async (req, res) => {
   try {
     const id = req.query.id;
 
-    const userData = await User.findById({ _id: id });
+    const userData = await UserDb.findById({ _id: id });
     if (userData.email_varified == false) {
       await User.updateOne({ _id: id }, { $set: { email_varified: true } });
       res.redirect("/admin/user_details");
@@ -108,14 +114,14 @@ const verifyUser = async (req, res) => {
 const blockOrUnblock = async (req, res) => {
   try {
     const id = req.query.id;
-    const userData = await User.findById({ _id: id });
+    const userData = await UserDb.findById({ _id: id });
 
     if (userData.is_blocked == true) {
-      await User.updateOne({ _id: id }, { $set: { is_blocked: false } });
+      await UserDb.updateOne({ _id: id }, { $set: { is_blocked: false } });
       res.redirect("/admin/user_details");
     }
     if (userData.is_blocked == false) {
-      const block = await User.updateOne(
+      const block = await UserDb.updateOne(
         { _id: id },
         { $set: { is_blocked: true } }
       );
@@ -135,7 +141,7 @@ const searchUser = async (req, res) => {
   try {
     const value = req.body.search;
     // value = value.trim()
-    const user = await User.find({
+    const user = await UserDb.find({
       user_name: { $regex: `^${value}` },
       is_admin: 0,
     });
@@ -211,7 +217,7 @@ const loadEditCat = async (req, res) => {
   }
 };
 
-//================================== UPDATE CATEGORY ==================================
+//================================== UPDATE CATEGORY ================================
 const updateCate = async (req, res) => {
   try {
     const name = req.body.name;
@@ -262,7 +268,104 @@ const activeOrNot = async (req, res) => {
   }
 };
 
+//========================= ADMIN SALES REPORT =======================
+
+const loadSalesReport = async (req, res) => {
+  try {
+    // const adminData = await user.findById(req.session.auser_id);
+    const order = await orderDb.aggregate([
+      { $unwind: "$products" },
+      { $match: { "products.status": "Delivered" } },
+      { $sort: { date: -1 } },
+      {
+        $lookup: {
+          from: "products",
+          let: { productId: { $toObjectId: "$products.productId" } },
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$productId"] } } }],
+          as: "products.productDetails",
+        },
+      },
+      {
+        $addFields: {
+          "products.productDetails": {
+            $arrayElemAt: ["$products.productDetails", 0],
+          },
+        },
+      },
+    ]);
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 4;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const orderCount = order.length;
+    const totalPages = Math.ceil(orderCount / limit);
+    const paginatedOrder = order.slice(startIndex, endIndex);
+
+    res.render("salesReport", {
+      order: paginatedOrder,
+      activePage: "salesReport",
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//===================== SALES REPORT SORTING ======================
+
+const sortsalesReport = async (req, res) => {
+  try {
+    const fromDate = req.body.fromDate;
+    const toDate = req.body.toDate;
+
+    const order = await orderDb.aggregate([
+      { $unwind: "$products" },
+      {
+        $match: {
+          "products.status": "Delivered",
+          $and: [
+            { "products.deliveryDate": { $gt: new Date(fromDate) } },
+            { "products.deliveryDate": { $lt: new Date(toDate) } },
+          ],
+        },
+      },
+      { $sort: { deliveryDate: -1 } },
+      {
+        $lookup: {
+          from: "products",
+          let: { productId: { $toObjectId: "$products.productId" } },
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$productId"] } } }],
+          as: "products.productDetails",
+        },
+      },
+      {
+        $addFields: {
+          "products.productDetails": {
+            $arrayElemAt: ["$products.productDetails", 0],
+          },
+        },
+      },
+    ]);
+
+    console.log(order);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 4;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const orderCount = order.length;
+    const totalPages = Math.ceil(orderCount / limit);
+    const paginatedOrder = order.slice(startIndex, endIndex);
+
+    res.render("salesReport", { order });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
+  loadAdminSignUp,
   loadLogin,
   verifyLogin,
   loadHome,
@@ -277,4 +380,6 @@ module.exports = {
   loadEditCat,
   updateCate,
   activeOrNot,
+  loadSalesReport,
+  sortsalesReport,
 };

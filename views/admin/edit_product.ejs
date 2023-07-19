@@ -20,7 +20,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputprice3">Update Price</label>
-                                    <input type="number" name="price" class="form-control" id="exampleInputprice3"
+                                    <input type="number" name="price" min="0" class="form-control" id="exampleInputprice3"
                                     value="<%= product.price %>" required >
                                 </div>
                                 <div class="form-group">
@@ -35,14 +35,23 @@
 
 
                                         <input type="file" placeholder="Upload Image" name="image" multiple>
-
+                                        <a type="button" href="./imageCropper"><samp style="font-size: larger; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: rgb(46, 202, 88);">Crop and upload</samp> <span style="color: aliceblue;">(Size 3400*2400)</span></a>
                                     </div>
+                                    
                                 </div>
                                 <div class="col-4 col-sm-3 col-xl-2">
                                     <p>Product Image</p>
                                     <img src="/adminassets/imgs/<%=product.image[0] %>" class="gradient-corona-img img-fluid" alt="">
-                                    <br><br>
-                                    <img src="/adminassets/imgs/<%=product.image[0] %>" class="gradient-corona-img img-fluid" alt="">
+                                    <br>
+                                    <br>
+                                    <img src="/adminassets/imgs/<%=product.image[1] %>" class="gradient-corona-img img-fluid" alt="">
+                                    <br>
+                                    <br>
+                                    <img src="/adminassets/imgs/<%=product.image[2] %>" class="gradient-corona-img img-fluid" alt="">
+                                    <br>
+                                    <br>
+                                    <img src="/adminassets/imgs/<%=product.image[3] %>" class="gradient-corona-img img-fluid" alt="">
+
 
                                  </div>
                                  <br>

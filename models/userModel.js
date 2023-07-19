@@ -39,6 +39,10 @@ const userSchema = mongoose.Schema({
   token:{
     type:String,
     default:''
+  },
+  wallet:{
+    type:Number,
+    default:0,
   }
 });
 

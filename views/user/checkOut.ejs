@@ -20,13 +20,13 @@
         <div class="checkout">
             <div class="container">
                 <div class="checkout-discount">
-                    <form action="#">
-                        <input type="text" class="form-control" required id="checkout-discount-input">
-                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
-                    </form>
-                </div><!-- End .checkout-discount -->
-                <form action="" method="post">
-                    <div class="row">
+                  <form id="checkout">
+                    
+                        <!-- <input type="text" class="form-control" required id="checkout-discount-input">
+                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label> -->
+                    
+                       </div><!-- End .checkout-discount -->
+                        <div class="row">
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
                             <div class="row">
@@ -61,13 +61,13 @@
                                                     </li>
                                                    
                                                     <a href="/editAddress?id=<%=  address._id %>">
-                                                        <button type="button" class="btn btn-outline-primary btn-rounded">
+                                                        <button type="button" class="btn btn-outline-primary btn-rounded"  style="color: black; border-color: rgb(46, 202, 88);">
                                                             Edit
                                                         </button>
                                                     </a>
                                                     <a href="">
                                                         
-                                                            <a class="btn btn-outline-primary btn-rounded" type="button"
+                                                            <a class="btn btn-outline-primary btn-rounded" type="button" style="color: black; border-color:rgb(46, 202, 88) ;"
                                                                     onclick="deleteAddress('<%= address._id%>')">Delete</a>
                                                         </button>
                                                     </a>
@@ -82,15 +82,15 @@
                       
                         </div><!-- End .col-lg-9 -->
                         <aside class="col-lg-3">
-                            <div class="summary">
+                            <div class="summary" style="background-color: rgb(34, 209, 86);">
                                 <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
                                 <table class="table table-summary">
                                     <thead>
                                         <tr>
                                             <th>Product</th>
-                                            <th></th>
-                                            <th>Total</th>
+                                            <th>Count</th>
+                                            <th>Product price</th>
                                         </tr>
                                     </thead>
 
@@ -100,14 +100,14 @@
                                         <tr>
                                             <td><a href="#">  <%= value.productId.name %></a></td>
                                             
-                                            <td style="color: rgb(23, 19, 19); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> <%= value.count %></td>
-                                     
-                                            <td>Rs.<%= value.productId.price %></td>
+                                            <td style="color: rgb(23, 19, 19); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" >&nbsp;&nbsp;&nbsp;&nbsp;<span id="Count"><%= value.count %></span></td>
+                                            
+                                            <td>₹Rs.<%= value.productId.price %></td>
                                         </tr>
                                         <% }) %>
-                                        <tr class="summary-total">
-                                            <td >Subtotal:</td>
-                                            <td> Rs. <%=totalamout %></td>
+                                        <tr class="summary-total" >
+                                            <td style="color: aliceblue;">Subtotal:</td>
+                                            <td style="color: aliceblue;">Rs.<span id="total1"><%=totalamout %>/-</span>  </td>
                                         </tr><!-- End .summary-subtotal -->
                                        
                                         <tr>
@@ -115,8 +115,8 @@
                                             <td>Free shipping</td>
                                         </tr>
                                         <tr class="summary-total">
-                                            <td>Total:</td>
-                                            <td> Rs.<%= totalamout %></td>
+                                            <td style="color: aliceblue;">Total:</td>
+                                            <td id="total" style="color: aliceblue;"><%= totalamout %>/-</td>
                                             
                                         </tr><!-- End .summary-total -->
                                        <input type="hidden" value="<%= totalamout %>" name="Total">
@@ -124,21 +124,16 @@
                                 </table><!-- End .table table-summary -->
 
                                 <div class="accordion-summary"> 
-                                    <div class="d-flex align-items-center">
-                                         <div class="mr-2">
-                                           <input required type="radio" id="walletpayement" name="payment" value="walletpayement">
-                                         </div>
-                                         <a href="" class="d-block text-dark">Wallet Payement</a>
-                                     </div>
+                                 
                                      <div class="d-flex align-items-center">
                                          <div class="mr-2">
                                              <input required type="radio" id="COD" name="payment" value="COD">
                                          </div>
-                                         <a href="" class="d-block text-dark" for="pay1">Cash On Delivery</a>
+                                         <a href="hidden" class="d-block text-dark" for="pay1">Cash On Delivery</a>
                                      </div>
                                      <div class="d-flex align-items-center">
                                          <div class="mr-2">
-                                           <input required type="radio" id="onlinPayment" name="payment" value="onlinPayment">
+                                           <input required type="radio" id="payment" name="payment" value="onlinePayment">
                                          </div>
                                          <a href="" class="d-block text-dark">Razer Pay</a>
                                      </div>
@@ -146,7 +141,7 @@
                                    </div><!-- End .accordion -->
                                 <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
                                     <span class="btn-text">Place Order</span>
-                                    <span class="btn-hover-text">Proceed to Checkout</span>
+                                    <span class="btn-hover-text" >Proceed to Checkout</span>
                                 </button>
                             </div><!-- End .summary -->
                         </aside><!-- End .col-lg-3 -->
@@ -157,7 +152,101 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
+ $("#checkout").submit((e)=>{
+  alert('hiii')
+         let address = $("input[name=address]:checked").val();    
+        let total = document.getElementById("total").innerHTML;
+        let payment =  $("input[name=payment]:checked").val();
+        let Count= document.getElementById("Count").innerHTML;
+   
+  $.ajax({
+     url: "/checkOut",
+    method:"post",
+    data:{
+      Total: total,
+      address: address,
+      payment : payment, 
+      count:Count
+
+    },
+
+    success:(response) => {
+      if( response.codsuccess){
+    
+        location.href = "/orderSuccess";
+                
+      } else{
+        razorpayPayment(response.order);
+      }
+    }
+  })
+})
+
+
+function razorpayPayment(order) {
+  
+var options = {
+  "key": "rzp_test_h9X7hpWjwefyd2", // Enter the Key ID generated from the Dashboard
+  "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+  "currency": "INR",
+  "name": "PEP energy", //your business name
+  "description": "Test Transaction",
+  "image": "https://example.com/your_logo",
+  "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+  "handler": function (response) {
+
+    verifyPayment(response, order);
+  },
+  "prefill": {
+    "name": "Gaurav Kumar", //your customer's name
+    "email": "gaurav.kumar@example.com",
+    "contact": "9000090000"
+  },
+  "notes": {
+    "address": "Razorpay Corporate Office"
+  },
+  "theme": {
+    "color": "#3399cc"
+  }
+};
+  
+var rzp1 = new Razorpay(options);
+rzp1.open();
+
+}
+
+
+function verifyPayment(payment, order) {
+const amount2 = document.getElementById("total").innerHTML;
+
+$.ajax({
+  url: "/verifyPayment-online",
+  method: "post",
+  data: {
+    payment,
+    amount,
+    order
+  },
+  success: (response) => {
+    if (response.success) {
+      location.href ="/orderSuccess";
+    } else {
+      alert('payment failed');
+      location.href = '/home';
+
+    }
+  }
+})
+}
+
+
     
 
 
@@ -191,41 +280,7 @@
             }
 
 
-            function verifyPayment(payment,order){
-    const amount2 = document.getElementById("total").innerHTML;
-    $.ajax({
-      url:"/verifyPayment",
-      method:"post",
-      data:{
-        payment: payment,
-        amount2: amount2,
-        order: order
-      },
-      success:(response)=>{
-        if(response.success){
-          swal.fire({
-            positon: 'center',
-            icon: "success",
-            title: 'Order Placed Successfully',
-            showConfirmButton: false,
-            showCancelButton: true,
-            cancelButtonText: "Go to Shop",
-        }).then((result) => {
-            if (result.dismiss === swal.DismissReason.cancel) {
-              window.location.href = "/shop";
-            }
-          });
-        }else{
-          swal.fire({
-            positon: 'center',
-            icon: "error",
-            title: 'payment failed',
-            showConfirmButton: false,
-            timer:1500,
-        })
-        }
-      }
-    })
-  }        
+    
+         
 </script>
 <%- include("../user/layouts/user_footer.ejs") %>

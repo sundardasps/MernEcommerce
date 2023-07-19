@@ -66,12 +66,17 @@ user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
 //========================= USER ACCOUNT ============================
 user_route.get('/userDashboard',adderssController.loadUserDashboard)
 user_route.post('/addUserAddress',adderssController.addUserAddress)
+user_route.get('/showAddress',adderssController.showAddress);
 
 //===========================USER ORDER ===========================
 const orderController = require('../controllers/orderControllers');
 user_route.post('/checkOut',orderController.placeOrder);
 user_route.get("/orderSuccess",orderController.successPage);
-user_route.get('/cancelOrder',orderController.orderCancel)
+user_route.post('/orderCancel',orderController.orderCancel)
+user_route.get("/viewProducts",orderController.viewOrderProducts);
+user_route.get("/orderList",auth.isLogin,orderController.showOrders)
+user_route.post('/verifyPayment-online',orderController.verifyPayment)
+user_route.get("",productController.rating);
 
 module.exports = user_route;
 

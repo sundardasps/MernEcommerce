@@ -5,14 +5,14 @@ const app = express();
 const session = require('express-session');
 const config = require('./configuration/config');
 const nocache = require('nocache');
-const env = require('dotenv');
-env.config();
+let dotenv = require("dotenv");
+dotenv.config();
 mongoose.connect(process.env.mongo);
 
 app.use(session({
-    secret:config.sessionSecreat,
+    secret:process.env.secret,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
 }));
 
 app.use(express.static(path.join(__dirname,'public')))
@@ -33,11 +33,6 @@ app.use('/admin',adminRoute)
 admin_route.get('*',function(req,res){
     res.redirect('/admin')
 })
-
-
-
-
-
 
 
 //================================== GOOGLE AUTHENTICATION ====================================
@@ -76,6 +71,7 @@ passport.use(new GoogleStrategy({
 ));
 
 const response = app.get('/auth/google', 
+
   passport.authenticate('google', { scope : ['profile', 'email'] }))
 
 

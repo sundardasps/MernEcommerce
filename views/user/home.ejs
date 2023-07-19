@@ -13,7 +13,7 @@
             }'>
             <div class="intro-slide" style="background-image: url(/userassets/images/bannerimg1.jpg);">
                 <div class="container intro-content text-left">
-                    <h1 class="intro-title"><br><strong>MENS</strong></h1><!-- End .intro-title -->
+                    <h1 class="intro-title"><br><strong></strong></h1><!-- End .intro-title -->
                     <!-- <h3 class="intro-subtitle">Up to 50% off</h3>End .h3 intro-subtitle -->
 
                     <a href="category.html" class="btn">
@@ -25,7 +25,7 @@
             </div><!-- End .intro-slide -->
             <div class="intro-slide" style="background-image: url(/userassets/banner2/Doodle-2500x1080.jpg);">
                 <div class="container intro-content text-left">
-                    <h1 class="intro-title"><br><strong>WOMEN</strong></h1><!-- End .intro-title -->
+                    <h1 class="intro-title"><br><strong></strong></h1><!-- End .intro-title -->
                     <!-- <h3 class="intro-subtitle">Up to 50% off</h3>End .h3 intro-subtitle -->
 
                     <a href="category.html" class="btn">
@@ -86,8 +86,8 @@
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image">
-                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image-hover">
+                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image-hover">
+                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -102,21 +102,21 @@
                                 </figure><!-- End .product-media -->
 
                                 <div class="product-body">
-                                    <h3 class="product-title"><a href="product.html" style="font-weight: 900; font-size: 25px; color: #000000;"><%= data.name %></a></h3><!-- End .product-title -->
-                                    <div class="fa fa-rupee" style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;">Price:</span>
-                                        <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><%= data.price %></span> /-
+                                    <h3 class="product-title"><a href="product.html" style="font-weight: 600; font-size: 20px; color: #515151;"><%= data.name %></a></h3><!-- End .product-title -->
+                                    <div class="fa fa-rupee" style="font-size:18px ; color: #000;  ">
+                                        <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><span style="font-size: larger;"><%= data.price %>/-</span></span> 
                                     </div><!-- End .product-price -->
+                                    <% if(data.quantity <=0 ){ %>
+                                        <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
+                                        <%}%>
                                 </div><!-- End .product-body -->
-  
-
-                               
-
-                                <div class="product-action">
-                                    <a onclick="addToCart('<%= data._id %>')"  class="btn-product btn-cart"><span>add to cart</span></a>
-                                </div><!-- End .product-action -->
-                        
-
-                                
+                                <div class="product-action">                     
+                                    <% if(data.quantity <=0 ){ %>        
+                                      <button  class="btn-product " style="background-color: rgb(229, 80, 80);"  ><span>Out of stock</span></button>
+                                      <% }else{%>
+                                      <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+                                        <%}%>
+                                  </div><!-- End .product-action -->
                             </div><!-- End .product -->
                     
                             <% }) %>

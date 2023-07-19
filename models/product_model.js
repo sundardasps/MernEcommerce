@@ -36,7 +36,18 @@ const productSchema = new mongoose.Schema({
   is_delete:{
     type:Boolean,
     default:false
+  },
+   ratings:[
+    {
+       star:Number,
+       postedby:{type: mongoose.Schema.Types.ObjectId,ref:"user"},
+    },
+   ],
+  totalRating:{
+    type:String,
+    default:0,
   }
+
 });
 
 module.exports = mongoose.model("product", productSchema);

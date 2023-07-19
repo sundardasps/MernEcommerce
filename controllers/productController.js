@@ -2,7 +2,8 @@ const User = require("../models/userModel");
 const admin = require("../models/admin_model");
 const productdb = require("../models/product_model");
 const catagoryDb = require("../models/category_model");
-const sharp = require("sharp")
+const sharp = require("sharp");
+const { errorMonitor } = require("nodemailer/lib/xoauth2");
 //================================ LOAD PRODUCTS ===================================
 
 const loadProducts = async (req, res) => {
@@ -53,8 +54,8 @@ const addProducts = async (req, res) => {
         images[i] = req.files[i].filename;
         await sharp("./public/adminassets/imgs/" + req.files[i].filename)
           .resize({
-            width: 500,
-            height: 500,
+            width: 3400,
+            height: 2400,
           
           })
           .toFile(
@@ -174,11 +175,66 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-//============================================================
+//========================IMAGE CROPPING PAGE CALLING ===========================
+
+const imageCropper = async (req, res) => {
+  try {
+    res.render("imageCropper");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//=========================  PRODUCT REVIEWS AND RATING ====================
+
+const rating = async (req,res) => {
+
+ try {
+ 
+  const id = req.session.user_id
+  const star = req.body.stars
+  const prodId = req.body.id
+  const productData = await productdb.findById({_id:prodId});
+  let alreadyRated = productData.ratings.find((userId)=>userId.postedby.toString()=== _id.toString())
+  if(alreadyRated){
+
+    const updateRating = await productdb.updateOne(
+      {
+        ratings:{ $elemMatch: alreadyRated},
+      },
+      {
+        $set:{"ratings.$.star":star},
+      },
+      {
+        new:true,
+      }
+    )
+
+  } else {
+ 
+    const rateProduct = await productdb.findByIdAndUpdate(prodId,
+      {
+      $push:{
+        ratings:{
+          star:star,
+          postedby:id,
+        },
+      },
+    },
+      {
+        new:true,
+      }
+    )
+    
+    res.json(rateProduct);
+  }
+  
+ } catch (error) {
+  console.log(error.message);
+ }
 
 
-
-
+}
 
 
 module.exports = {
@@ -189,4 +245,6 @@ module.exports = {
   editProduct,
   addeditProduct,
   deleteProduct,
+  imageCropper,
+  rating
 };

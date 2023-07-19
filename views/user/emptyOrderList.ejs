@@ -1,0 +1,25 @@
+<%- include("../user/layouts/user_header.ejs") %>
+<div class="page-wrapper">
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Empty orders</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="error-content text-center" style="background-image: url(assets/images/backgrounds/error-bg.jpg)">
+        <div class="container">
+            <h1 class="error-title"> <Span style="color:rgb(46, 202, 88) ;">You</Span> orderd anything yet!</h1><!-- End .error-title -->
+            <p>We are sorry,for continue this page make a order first.</p>
+            <a href="/shop" class="btn btn-outline" style="color: rgb(46, 202, 88);;">
+                <span>Keep shopping</span>
+                <i class="">>>></i>
+            </a>
+        </div><!-- End .container -->
+    </div><!-- End .error-content text-center -->
+</main><!-- End .main -->
+</main><!-- End .main -->
+<%- include("../user/layouts/user_footer.ejs") %>
