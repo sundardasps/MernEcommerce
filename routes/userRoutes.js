@@ -2,7 +2,7 @@ const express = require("express");
 const user_route = express();
 const bodyParser = require("body-parser");
 const auth = require("../middleware/user-session");
-
+const orderController = require('../controllers/orderControllers')
 const userController = require("../controllers/userController");
 const { loadWishList } = require("../controllers/wishlistController");
 const productController = require('../controllers/productController')
@@ -25,7 +25,7 @@ user_route.post("/signup", auth.isLogout, userController.insertUser);
 user_route.post("/otp", auth.isLogout, userController.varifyOtp);
 
 //====================== LOGIN ===================
-user_route.get("/", auth.isLogout, userController.userLogin);
+user_route.get("/", userController.loadHome);
 user_route.get("/login", auth.isLogout, userController.userLogin);
 user_route.post("/login", auth.isLogout, userController.varifyLogin);
 user_route.get('/logout',userController.logout);
@@ -36,10 +36,11 @@ user_route.post('/reset_password',auth.isLogout,userController.resetPasswordVeri
 
 
 //======================= HOME ===================================
-user_route.get("/home", auth.isLogin, userController.loadHome);
+user_route.get("/login", auth.isLogin, userController.userLogin);
 user_route.get("/category", auth.isLogin, userController.loadHome);
-user_route.get('/product_details',auth.isLogin,userController.loadProductdetails)
-user_route.get('/shop',auth.isLogin,userController.loadShop)
+user_route.get('/product_details',userController.loadProductdetails)
+user_route.get('/shop',userController.loadShop)
+user_route.get('/filterCategory/:id',userController.filterCategory)
 
 
 //======================  WISHLIST ===============================
@@ -52,7 +53,7 @@ user_route.get('/cart',auth.isLogin,cartController.loadCart);
 user_route.post('/addToCart',auth.isLogin,cartController.addCartItem);
 user_route.post('/removeCartItem',auth.isLogin,cartController.removeFromCart)
 user_route.post('/cartQuantityIncrease',auth.isLogin,cartController.cartQuantityIncrease)
-user_route.get('placeOrder',)
+user_route.post('/placeOrder',auth.isLogin,orderController.placeOrder)
 
 //========================== CHECKOUT ===================================
 user_route.get('/checkOut',auth.isLogin,cartController.loadcheckOut)
@@ -64,19 +65,24 @@ user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
 
 
 //========================= USER ACCOUNT ============================
-user_route.get('/userDashboard',adderssController.loadUserDashboard)
+user_route.get('/userDashboard', auth.isLogin,adderssController.loadUserDashboard)
 user_route.post('/addUserAddress',adderssController.addUserAddress)
 user_route.get('/showAddress',adderssController.showAddress);
 
 //===========================USER ORDER ===========================
-const orderController = require('../controllers/orderControllers');
-user_route.post('/checkOut',orderController.placeOrder);
-user_route.get("/orderSuccess",orderController.successPage);
+
+user_route.post('/checkoutPage',orderController.placeOrder);
+user_route.get("/orderSuccess/:id",orderController.successPage);
 user_route.post('/orderCancel',orderController.orderCancel)
-user_route.get("/viewProducts",orderController.viewOrderProducts);
+user_route.get("/viewProducts",auth.isLogin,orderController.viewOrderProducts);
 user_route.get("/orderList",auth.isLogin,orderController.showOrders)
-user_route.post('/verifyPayment-online',orderController.verifyPayment)
-user_route.get("",productController.rating);
+user_route.post('/verify-payment',orderController.verifyPayment)
+user_route.post("/addFeedback",productController.addFeedback);
+user_route.get("/invoice/:id",orderController.loadInvoice)
+user_route.get('/returnProduct',orderController.returnProduct)
+
+//========================== GOOGLE AUTHENTICATION ======================
+
 
 module.exports = user_route;
 

@@ -5,10 +5,11 @@
         <div class="col-md-6 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <form class="forms-sample" method="post">
+             <div  id="error" style="color: red;"></div>
+             <form class="forms-sample" method="post" id="form">
                 <div class="form-group row">
                   <div class="col-sm-9">
-                    <input type="text" name="name" class="form-control" id="exampleInputUsername2" placeholder="Category Name">
+                    <input type="text" name="name" class="form-control" id="category" placeholder="Category Name"  >
                   </div>
                 </div>
                 <a href="./category">
@@ -28,4 +29,37 @@
       </div>
     </div>
   </div>
+
+
+
+  <script>
+
+
+    const category = document.getElementById('category');
+    const  form  = document.getElementById('form')
+    const errorElement = document.getElementById("error")
+
+    form.addEventListener('submit',(e)=>{
+    let messages = []
+    if(  category.value =="" || category.value == null){
+      messages.push('Please add a input')
+    }
+
+    if( category.value.length > 15 ){
+         messages.push("Category name only allow 10 characters")
+    }
+
+    if( messages.length > 0  ){
+      e.preventDefault()
+      errorElement.innerText = messages.join(' & ')
+      
+    }
+
+    })
+    
+
+
+  </script>
+
+
 <%- include("../admin/layouts/admin_footer.ejs") %>

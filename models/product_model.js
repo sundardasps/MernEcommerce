@@ -9,6 +9,9 @@ const productSchema = new mongoose.Schema({
     type: String,
     required:true
   },
+  uniqId:{
+    type:Number
+  },
   price: {
     type: Number,
     required: true,
@@ -17,7 +20,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
+  productImages: {
     type: Array,
     required: true,
   },
@@ -37,10 +40,29 @@ const productSchema = new mongoose.Schema({
     type:Boolean,
     default:false
   },
-   ratings:[
+   product_review:[
     {
-       star:Number,
-       postedby:{type: mongoose.Schema.Types.ObjectId,ref:"user"},
+      
+        userName:{
+          type:String,
+          required:true
+        },
+        email:{
+          type:String,
+          required:true,
+        },
+        title:{
+          type:String,
+          required:true,
+        },
+        review:{
+          type:String,
+          required:true
+        },
+        stars:{
+          type:Number,
+        }
+      
     },
    ],
   totalRating:{

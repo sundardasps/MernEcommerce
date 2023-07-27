@@ -1,4 +1,40 @@
 <%- include("../user/layouts/user_header.ejs") %>
+
+<style>
+    /* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+.rating-box {
+  position: relative;
+  background: #fff;
+  padding: 25px 50px 35px;
+  border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+.rating-box header {
+  font-size: 22px;
+  color: #dadada;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.rating-box .stars {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.stars i {
+  color: #e6e6e6;
+  font-size: 35px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.stars i.active {
+  color: #ff9c1a;
+}
+</style>
+
+
 <main class="main">
     <div class="page-wrapper">
         <div class="page-content">
@@ -9,11 +45,11 @@
                             <div class="product-gallery product-gallery-vertical">
                                 <div class="row">
                                     <figure class="product-main-image">
-                                        <img id="product-zoom" src="/adminassets/imgs/<%=products.image[1] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[1] %>"
+                                        <img id="product-zoom" src="/adminassets/productImages/<%=products.productImages[0] %>"
+                                            data-zoom-image="/adminassets/productImages/<%=products.productImages[0] %>"
                                             alt="product image">
 
-                                        <a href="/adminassets/imgs/<%=products.image[1] %>" id="btn-product-gallery" class="btn-product-gallery">
+                                        <a href="/adminassets/productImages/<%=products.productImages[0] %>" id="btn-product-gallery" class="btn-product-gallery">
                                             <i class="icon-arrows"></i>
                                         </a>
                                     </figure><!-- End .product-main-image -->
@@ -21,28 +57,28 @@
                                     <div id="product-zoom-gallery" class="product-image-gallery">
 
                                         <a class="product-gallery-item active"
-                                            href="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[0] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[0] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[0] %>" alt="product side">
+                                            href="/adminassets/productImages/<%=products.productImages[1] %>"
+                                            data-image="/adminassets/productImages/<%=products.productImages[1] %>"
+                                            data-zoom-image="/adminassets/productImages/<%=products.productImages[0] %>">
+                                            <img src="/adminassets/productImages/<%=products.productImages[1] %>" alt="product side">
                                         </a>
                                         <a class="product-gallery-item "
-                                            href="/adminassets/imgs/<%=products.image[2] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[2] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[2] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[2] %>" alt="product cross">
+                                            href="/adminassets/productImages/<%=products.productImages[2] %>"
+                                            data-image="/adminassets/productImages/<%=products.productImages[2] %>"
+                                            data-zoom-image="/adminassets/productImages/<%=products.productImages[2] %>">
+                                            <img src="/adminassets/productImages/<%=products.productImages[2] %>" alt="product cross">
                                         </a>
                                         <a class="product-gallery-item "
-                                            href="/adminassets/imgs/<%=products.image[3] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[3] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[3] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[3] %>" alt="product with model">
+                                            href="/adminassets/productImages/<%=products.productImages[3] %>"
+                                            data-image="/adminassets/productImages/<%=products.productImages[3] %>"
+                                            data-zoom-image="/adminassets/productImages/<%=products.productImages[3] %>">
+                                            <img src="/adminassets/productImages/<%=products.productImages[3] %>" alt="product with model">
                                         </a>
                                         <!-- <a class="product-gallery-item "
-                                            href="/adminassets/imgs/<%=products.image[4] %>"
-                                            data-image="/adminassets/imgs/<%=products.image[4] %>"
-                                            data-zoom-image="/adminassets/imgs/<%=products.image[4] %>">
-                                            <img src="/adminassets/imgs/<%=products.image[4] %>"
+                                            href="/adminassets/productImages/<%=products.productImages[4] %>"
+                                            data-image="/adminassets/productImages/<%=products.productImages[4] %>"
+                                            data-zoom-image="/adminassets/productImages/<%=products.productImages[4] %>">
+                                            <img src="/adminassets/productImages/<%=products.productImages[4] %>"
                                                 alt="product back">
                                         </a> -->
 
@@ -61,12 +97,16 @@
                                     <div class="ratings">
                                         <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
                                     </div><!-- End .ratings -->
-                                    <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews
-                                        )</a>
+                                    <a class="ratings-text" href="#product-review-link" id="review-link"> Reviews
+                                        </a>
+ 
+    
+              
+              <!-- rating.js file -->
                                 </div><!-- End .rating-container -->
 
                                 <div class="product-price">
-                                    <div class="fa fa-rupee" style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;">price:</span>
+                                    <div  style="font-size:18px ; color: #000;  "><span style="color: rgb(79, 79, 79); font-family: monospace;">price:</span>
                                         <span style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><%= products.price %></span> /-
                                      </div><!-- End .product-price -->
                                 </div><!-- End .product-price -->
@@ -79,6 +119,10 @@
                                 <% if(products.quantity <=0 ){ %>
                                     <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 500;">Out of stock</p>
                                     <%}%>
+                                    <% if( products.quantity <=5 && products.quantity != 0 ){%>
+                                        <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Only <%= products.quantity %> left !</p>
+
+                                                <% } %>
                                 <div class="product-details-action">
                                     <div class="details-action-col">
                                         
@@ -135,6 +179,57 @@
                 </div><!-- End .product-details-top -->
 
 
+                <div class="product-details-tab">
+                    <ul class="nav nav-pills justify-content-center" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews</a>
+                        </li>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color: rgb(46, 202, 88);" >Add feedback</button>
+                        
+                                             
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                            <div class="reviews">
+                                <h3>Reviews</h3>
+                             
+                                <% products.product_review.forEach((data,i)=>{ %>
+                                
+                                  <div class="review">
+                                    <div class="row no-gutters">
+                                        <div class="col-auto">
+                                            <h4><a href="#"><%= data.userName %></a></h4>
+                                            <div class="ratings-container">
+                                                <%= data.stars %>
+                                                <img src="/adminassets/images/icons8-star-30.png" alt="" style="width: 15px; height: 15px;">
+                                                <p>Rated</p>
+                                            </div>
+                                            
+                                            <!-- <span class="review-date">6 days ago</span> -->
+                                        </div><!-- End .col -->
+                                        <div class="col">
+                                            <h4><%= data.title %></h4>
+                                           
+                                            <div class="review-content">
+                                                <p><%= data.review %></p>
+                                               
+                                            </div><!-- End .review-content -->
+
+                                        </div><!-- End .col-auto -->
+                                    </div><!-- End .row -->
+
+
+                                </div><!-- End .review -->
+                                <%  }) %>
+                              
+
+                            </div><!-- End .reviews -->
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .product-details-tab -->
+
+
+
                 <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
                 <div class="tab-content tab-content-carousel">
                     <div class="tab-pane p-0 fade show active" id="trendy-all-tab" role="tabpanel"
@@ -172,8 +267,8 @@
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image-hover">
-                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image">
+                                        <img src="/adminassets/productImages/<%=data.productImages[1] %>" alt="Product image" class="product-image-hover">
+                                        <img src="/adminassets/productImages/<%=data.productImages[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -199,6 +294,10 @@
                                     <% if(data.quantity <=0 ){ %>
                                         <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
                                         <%}%>
+                                        <% if( data.quantity <=5 && data.quantity != 0 ){%>
+                                            <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Only <%= data.quantity %> left !</p>
+    
+                                                    <% } %>
                                 </div><!-- End .product-body -->
                                 <div class="product-action ">
                                       
@@ -225,9 +324,128 @@
             </div><!-- End .product-details-tab -->
         </div><!-- End .product-details-tab -->
     </div><!-- End .product-details-tab -->
+                    
+                   <!---------Modall-->
+
+              <!-- Button trigger modal -->
+  <!-- Modal -->    
+
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <div class="rating-box" >
+    <div  id="error" style="color: red;"></div>
+          <form action="/addFeedback" method="post" id="form">
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Name:</label>
+             <input  type="text" name="name" class="form-control" id="name">  
+              <label for="recipient-name" class="col-form-label">Email:</label>
+              <input  type="text" name="email" class="form-control" id="email" >
+              <label for="recipient-name" class="col-form-label">Title:</label>
+              <input  type="text" name="title" class="form-control" id="title" >
+              <input type="hidden" name="id" value="<%= products._id %>">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">review:</label>
+              <textarea class="form-control" name="review" id="review"></textarea>
+            </div>
+       
+            <div class="rating-box">
+                <header style="color: #040a04;">How was your experience?</header>
+                <div class="stars">
+                  <i class="fa-solid fa-star star" data-rating="1"></i>
+                  <i class="fa-solid fa-star star" data-rating="2"></i>
+                  <i class="fa-solid fa-star star" data-rating="3"></i>
+                  <i class="fa-solid fa-star star" data-rating="4"></i>
+                  <i class="fa-solid fa-star star" data-rating="5"></i>
+                  <input type="hidden" id="rating-input" name="rating" value="0"  >
+                </div>
+              </div>
+              
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  style="background-color: rgb(46, 202, 88);"  >Close</button>
+        <button type="submit" class="btn btn-primary" style="background-color: rgb(46, 202, 88);"   >Send message</button>
+        </div>
+      </form>
+    </div>
+      </div>
+    </div>
+  </div>
  </main>
 
+ <script>
+  const name = document.getElementById('name')
+  const email = document.getElementById('email')
+  const title = document.getElementById('title')
+  const review = document.getElementById('review')
+  const star = document.getElementById('rating-input')
+  const form = document.getElementById('form')
+  const errorElement = document.getElementById('error')
+
+  form.addEventListener('submit',(e)=>{
+      let messages = []
+
+      if(  name.value =="" || name.value == null){
+      messages.push('Name is required')
+    }
+
+    if(  email.value =="" || email.value == null){
+      messages.push('Email is required')
+    }
+
+    if(  title.value =="" || title.value == null){
+      messages.push('Title is required')
+    }
+
+    if(  review.value =="" || review.value == null){
+      messages.push('Review is required')
+    }
+
+    if( star.value == 0 ){
+        messages.push('Please add stars')
+    }
+
+    if(messages.length >0){
+        e.preventDefault()
+        errorElement.innerText = messages.join(' & ')
+    }
+   
+  })
+
+ </script>
+
+
+
+         <script>
+            // Select all elements with the "i" tag and store them in a NodeList called "stars"
+         const  stars = document.querySelectorAll(".stars i");
+         // Loop through the "stars" NodeList
+         stars.forEach((star, index1) => {
+         // Add an event listener that runs a function when the "click" event is triggered
+          star.addEventListener("click", () => {
+            // Loop through the "stars" NodeList Again
+           stars.forEach((star, index2) => {
+             // Add the "active" class to the clicked star and any stars with a lower index
+             // and remove the "active" class from any stars with a higher index
+               index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
+           });
+           });
+         });
+       
+         </script>
+  
     <script>
+
+        
 
         function show(id){
            $.ajax({
@@ -285,7 +503,9 @@
                 }
             })
         }
-  
+
+
+
       
       </script>
       <script>
@@ -328,11 +548,66 @@
 
         }
       
+
+
+
       </script>
-      <script>
-        // Rating Initialization
-       $(document).ready(function() {
-        $('#rateMe4').mdbRate();
-         });
-      </script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Get all star elements with the "star" class
+    const stars = $(".star");
+
+    // Attach a click event handler to each star
+    stars.on("click", function() {
+      // Get the rating value from the data attribute
+      const rating = $(this).data("rating");
+
+      // Update the input value with the selected rating
+      $("#rating-input").val(rating);
+
+      // Update the appearance of the stars (optional: for visual feedback)
+      stars.removeClass("selected");
+      $(this).prevAll(".star").addBack().addClass("selected");
+    });
+  });
+</script>
+
+
+<style>
+    /* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+.rating-box {
+  position: relative;
+  background: #fff;
+  padding: 25px 50px 35px;
+  border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+.rating-box header {
+  font-size: 22px;
+  color: #dadada;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.rating-box .stars {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.stars i {
+  color: #e6e6e6;
+  font-size: 35px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.stars i.active {
+  color: #1bda1b;
+}
+</style>
+
     <%- include("../user/layouts/user_footer.ejs") %>

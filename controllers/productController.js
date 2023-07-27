@@ -8,7 +8,7 @@ const { errorMonitor } = require("nodemailer/lib/xoauth2");
 
 const loadProducts = async (req, res) => {
   try {
-    const data = await productdb.find({ is_delete:false});
+    const data = await productdb.find({ is_delete: false });
     res.render("products", { data });
   } catch (error) {
     console.log(error.message);
@@ -20,7 +20,7 @@ const loadProducts = async (req, res) => {
 const LoadAddProducts = async (req, res) => {
   try {
     const categoryData = await catagoryDb.find();
-    res.render("add_products",{cartData : categoryData});
+    res.render("add_products", { cartData: categoryData });
   } catch (error) {
     console.log(error.message);
   }
@@ -31,7 +31,9 @@ const productDetails = async (req, res) => {
   try {
     const id = req.query.id;
     const productData = await productdb.findById({ _id: id });
-    res.render("product_details", { product: productData });
+   
+
+    res.render("product_details", { product: productData,});
   } catch (error) {
     console.log(error.message);
   }
@@ -41,39 +43,32 @@ const productDetails = async (req, res) => {
 
 const addProducts = async (req, res) => {
   try {
-     const images = []
-      // for(let i= 0 ;i< req.files.length;i++){
-      //   images[i] = req.files[i].filename;
-      //   await sharp("./public/adminassets/imgs/" + req.files[i].filename)
-      //   .resize(800,800)
-      //   .toFile(
-      //     "./public/adminassets/productImages/"+ req.files[i].filename
-      //   )
-      // }
-      for (let i = 0; i < req.files.length; i++) {
-        images[i] = req.files[i].filename;
-        await sharp("./public/adminassets/imgs/" + req.files[i].filename)
-          .resize({
-            width: 3400,
-            height: 2400,
-          
-          })
-          .toFile(
-            "./public/adminassets/productImages/" + req.files[i].filename
-          );
-      }
-      
+    const images = [];
+
+    for (let i = 0; i < req.files.length; i++) {
+      images[i] = req.files[i].filename;
+      await sharp("./public/adminassets/imgs/" + req.files[i].filename)
+        .resize({
+          width: 3400,
+          height: 2400,
+        })
+        .toFile("./public/adminassets/productImages/" + req.files[i].filename);
+    }
+
+    const uniqueNumber = Math.floor(Math.random() * 900000 + 100000);
+
     const product = new productdb({
       name: req.body.name,
+      uniqId: uniqueNumber,
       brand: req.body.brand,
       price: req.body.price,
       category: req.body.category,
       stock: req.body.stock,
       quantity: req.body.quantity,
       description: req.body.description,
-      image: images,
+      productImages: images,
     });
-  
+
     const savedProduct = await product.save();
     if (savedProduct) {
       res.redirect("/admin/products");
@@ -90,7 +85,9 @@ const editProduct = async (req, res) => {
   try {
     const id = req.query.id;
     const productData = await productdb.findById({ _id: id });
-    res.render("edit_product", { product: productData });
+    const categoryData = await catagoryDb.find();
+
+    res.render("edit_product", { product: productData,cartData: categoryData });
   } catch (error) {
     console.log(error.message);
   }
@@ -100,8 +97,7 @@ const editProduct = async (req, res) => {
 
 const addeditProduct = async (req, res) => {
   try {
-   
-    const id = req.query.id; 
+    const id = req.query.id;
     const name = req.body.name;
     const brand = req.body.brand;
     const price = req.body.price;
@@ -114,9 +110,7 @@ const addeditProduct = async (req, res) => {
       image[i] = req.files[i].filename;
     }
     if (image.length != 0) {
-   
-
-   await productdb.findByIdAndUpdate(
+      await productdb.findByIdAndUpdate(
         { _id: id },
         {
           $set: {
@@ -127,17 +121,16 @@ const addeditProduct = async (req, res) => {
             category: category,
             quantity: quantity,
             description: description,
-            image: image, 
+            image: image,
           },
         }
       );
-      
-      res.redirect("/admin/products");
 
+      res.redirect("/admin/products");
     } else {
-    console.log("3");
+      console.log("3");
 
-   const productData2 =  await productdb.findByIdAndUpdate(
+      const productData2 = await productdb.findByIdAndUpdate(
         { _id: id },
         {
           $set: {
@@ -152,7 +145,6 @@ const addeditProduct = async (req, res) => {
         }
       );
       res.redirect("/admin/products");
-
     }
   } catch (error) {
     console.log(error.message);
@@ -162,17 +154,15 @@ const addeditProduct = async (req, res) => {
 //======================== DELETE PRODUCT ==================
 
 const deleteProduct = async (req, res) => {
-   
-    try {
-    
-      const deleteProduct = await productdb.updateOne(
-        {_id:req.query.id},
-        {$set:{is_delete:true}}
-       )
-       res.redirect('/admin/products')
-    } catch (error) {
-       console.log(error.message);
-    }
+  try {
+    const deleteProduct = await productdb.updateOne(
+      { _id: req.query.id },
+      { $set: { is_delete: true } }
+    );
+    res.redirect("/admin/products");
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 //========================IMAGE CROPPING PAGE CALLING ===========================
@@ -187,55 +177,66 @@ const imageCropper = async (req, res) => {
 
 //=========================  PRODUCT REVIEWS AND RATING ====================
 
-const rating = async (req,res) => {
+const addFeedback = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const star = req.body.rating;
+    const name = req.body.name
+    const prodId = req.body.id;
+    const review = req.body.review;
+    const title = req.body.title;
 
- try {
- 
-  const id = req.session.user_id
-  const star = req.body.stars
-  const prodId = req.body.id
-  const productData = await productdb.findById({_id:prodId});
-  let alreadyRated = productData.ratings.find((userId)=>userId.postedby.toString()=== _id.toString())
-  if(alreadyRated){
 
-    const updateRating = await productdb.updateOne(
-      {
-        ratings:{ $elemMatch: alreadyRated},
-      },
-      {
-        $set:{"ratings.$.star":star},
-      },
-      {
-        new:true,
-      }
-    )
+    const productData = await productdb.findById({ _id: prodId });
 
-  } else {
- 
-    const rateProduct = await productdb.findByIdAndUpdate(prodId,
-      {
-      $push:{
-        ratings:{
-          star:star,
-          postedby:id,
-        },
-      },
-    },
-      {
-        new:true,
-      }
-    )
+    // let alreadyRated = productData.product_review.find({email:email});
     
-    res.json(rateProduct);
+    // console.log(alreadyRated,"already rated ===================");
+
+    // if (alreadyRated) {
+    //   const updateRating = await productdb.updateOne(
+    //     {
+    //       product_review: { $elemMatch: { email: alreadyRated }},
+    //     },
+    //     {
+    //       $set: { 
+    //         star: star,
+    //         email: email,
+    //         review: review,
+    //         title: title,
+    //        },
+    //     },
+    //     {
+    //       new: true,
+    //     }
+    //   );
+    // } else {
+      const rateProduct = await productdb.findByIdAndUpdate(
+        prodId,
+        {
+          $push: {
+            product_review: [
+              {
+                stars: star,
+                userName:name,
+                email: email,
+                review: review,
+                title: title,
+              },
+            ],
+          },
+        },
+        {
+          new: true,
+        }
+      );
+    // }
+
+    res.redirect("/product_details?id="+prodId);
+  } catch (error) {
+    console.log(error.message);
   }
-  
- } catch (error) {
-  console.log(error.message);
- }
-
-
-}
-
+};
 
 module.exports = {
   loadProducts,
@@ -246,5 +247,5 @@ module.exports = {
   addeditProduct,
   deleteProduct,
   imageCropper,
-  rating
+  addFeedback,
 };

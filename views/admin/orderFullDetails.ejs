@@ -33,7 +33,7 @@
 
                                         <tr>
                                             <td>
-                                                <img src="/adminassets/imgs/<%=data.productId.image[0] %>" alt="">
+                                                <img src="/adminassets/productImages/<%=data.productId.productImages[0] %>" alt="">
                                                 
                                             </td>
                                          <td>
@@ -52,13 +52,15 @@
                                           <%= data.status %>
                                         </td>
                                             <td>
-                                                <%  if(data.productId.status == 'cancelled' ){%>
-                                                    <a type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelReasonmodal-<%= data._id %>" > view Reason </a>
+                                                <%  if( data.status == 'cancelled' ){%>
+
+                                                    <a type="button" class="btn  btn-primary btn-outline-danger " data-bs-toggle="modal" data-bs-target="#exampleModal" > cancel reason </a>
                               
                                                     <%  }else if (data.status == 'Product Returned' ){%>
                                                      
-                                                      <a type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#returnReasonmodal-<%= order._id %>" > view Reason </a>
-                                                      <%  }else if (data.status == 'Delivered' ){%>
+                                                <a type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#returnReasonmodal-<%= order._id %>" > view Reason </a>
+
+                                               <%  }else if (data.status == 'Delivered' ){%>
                                                  <p class="text-success">Delivered</p>
                                                       <% }else{ %>
                                                  <div class="dropdown">
@@ -74,17 +76,36 @@
                                             </td>
                                            
                                         </tr>
+                                         <!-- Button trigger modal -->
+                             <!-- Button trigger modal -->
+   <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cancel reason </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= data.cancelreason %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
                                  
                                        <% }) %>
                                        <%}%>
                                     </tbody>
                             </table>
-                             <!-- Button trigger modal -->
-
+                            
 
                             </div>
-           
-                    
                     </div>
                 </div>
             </div>

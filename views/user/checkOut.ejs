@@ -3,7 +3,7 @@
 <main class="main">
     <div class="page-header text-center" style="background-image: url('/adminassets/imgs/1687180326718-desert-eagle.jpg')">
         <div class="container">
-          <h1 class="page" style="font-weight: 1000; color: aliceblue;" > # PEP energy <span style="color: azure;">Checkout</span></h1>
+            <h2 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Green</Span> energy <<< </h2>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -20,7 +20,7 @@
         <div class="checkout">
             <div class="container">
                 <div class="checkout-discount">
-                  <form id="checkout">
+                  <form id="checkout-form">
                     
                         <!-- <input type="text" class="form-control" required id="checkout-discount-input">
                         <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label> -->
@@ -49,9 +49,9 @@
                                                     </li>
                                                     <li>mobile : <%=address.mobile %>
                                                     </li>
-                                                    <li>altrenativeMob : <%=address.alternativenumber %>
+                                                    <li>altrenativeMob : <%=address.altrenativeMob %>
                                                     </li>
-                                                    <li>houseName : <%=address.hoseName %>
+                                                    <li>houseName : <%=address.houseName %>
                                                     </li>
                                                     <li>city : <%=address.city %>
                                                     </li>
@@ -123,7 +123,14 @@
                                     </tbody>
                                 </table><!-- End .table table-summary -->
 
-                                <div class="accordion-summary"> 
+                                <div class="accordion-summary">
+                                    
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2">
+                                            <input required type="radio" id="wallet" name="payment" value="wallet">
+                                        </div>
+                                        <a href="hidden" class="d-block text-dark" for="pay1">Wallet payment</a>
+                                    </div>
                                  
                                      <div class="d-flex align-items-center">
                                          <div class="mr-2">
@@ -133,7 +140,7 @@
                                      </div>
                                      <div class="d-flex align-items-center">
                                          <div class="mr-2">
-                                           <input required type="radio" id="payment" name="payment" value="onlinePayment">
+                                           <input required type="radio" id="payment" name="payment" value="onlinePayment" checked>
                                          </div>
                                          <a href="" class="d-block text-dark">Razer Pay</a>
                                      </div>
@@ -159,95 +166,188 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
- $("#checkout").submit((e)=>{
-  alert('hiii')
-         let address = $("input[name=address]:checked").val();    
-        let total = document.getElementById("total").innerHTML;
-        let payment =  $("input[name=payment]:checked").val();
-        let Count= document.getElementById("Count").innerHTML;
+//  $("#checkout").submit((e)=>{
+//          let address = $("input[name=address]:checked").val();    
+//         let total = document.getElementById("total").innerHTML;
+//         let payment =  $("input[name=payment]:checked").val();
+//         let Count= document.getElementById("Count").innerHTML;
    
-  $.ajax({
-     url: "/checkOut",
-    method:"post",
-    data:{
-      Total: total,
-      address: address,
-      payment : payment, 
-      count:Count
+//   $.ajax({
+//      url: "/checkOut",
+//     method:"post",
+//     data:{
+//       Total: total,
+//       address: address,
+//       payment : payment, 
+//       count:Count
 
-    },
+//     },
 
-    success:(response) => {
-      if( response.codsuccess){
+//     success:(response) => {
+//       if( response.codsuccess){
     
-        location.href = "/orderSuccess";
+//         location.href = "/orderSuccess";
                 
-      } else{
-        razorpayPayment(response.order);
-      }
-    }
-  })
-})
+//       } else{
+//         razorpayPayment(response.order);
+//       }
+//     }
+//   })
+// })
 
 
-function razorpayPayment(order) {
+// function razorpayPayment(order) {
   
+// var options = {
+//   "key":"rzp_test_h9X7hpWjwefyd2", // Enter the Key ID generated from the Dashboard
+//   "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+//   "currency": "INR",
+//   "name": "PEP energy", //your business name
+//   "description": "Test Transaction",
+//   "image":"https://example.com/your_logo",
+//   "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+//   "handler": function (response) {
+
+//     verifyPayment(response, order);
+//   },
+//   "prefill": {
+//     "name": "Gaurav Kumar", //your customer's name
+//     "email": "gaurav.kumar@example.com",
+//     "contact": "9000090000"
+//   },
+//   "notes": {
+//     "address": "Razorpay Corporate Office"
+//   },
+//   "theme": {
+//     "color": "#3399cc"
+//   }
+// };
+  
+// var rzp1 = new Razorpay(options);
+// rzp1.open();
+
+// }
+
+
+// function verifyPayment(payment, order) {
+// const amount2 = document.getElementById("total").innerHTML;
+
+// $.ajax({
+//   url: "/verifyPayment-online",
+//   method: "post",
+//   data: {
+//     payment:payment,
+//     amount:amount2,
+//     order:order,
+//   },
+//   success: (response) => {
+//     if (response.success) {
+//       location.href ="/orderSuccess";
+//     } else {
+      
+//       location.href ='/';
+
+//     }
+//   }
+// })
+// }
+
+
+    
+
+$("#checkout-form").submit((e) => {
+
+    let address = $("input[name=address]:checked").val();
+    let total = document.getElementById("total").innerHTML;// Modified to use jQuery instead of plain JavaScript
+    let payment = $("input[name=payment]:checked").val();
+     alert(payment)
+    e.preventDefault();
+    $.ajax({
+        url: "/checkoutPage",
+        method: "post",
+        data: {
+            Total: total,
+            address,
+            payment: payment
+        },
+
+        success: (response) => {
+            if (response.codsuccess == true) {
+                location.href = `/orderSuccess/${response.orderid}`;
+            } else if (response.walletFailed == true) {
+                swal.fire({
+                    position: 'center',
+                    icon: "error",
+                    title: 'Insufficient Balance In Your Wallet',
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    timer: 1500
+                });
+            } else {
+                razorPayment(response.order);
+            }
+        }
+    });
+});
+
+function razorPayment(order){
 var options = {
-  "key": "rzp_test_h9X7hpWjwefyd2", // Enter the Key ID generated from the Dashboard
-  "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-  "currency": "INR",
-  "name": "PEP energy", //your business name
-  "description": "Test Transaction",
-  "image": "https://example.com/your_logo",
-  "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-  "handler": function (response) {
-
-    verifyPayment(response, order);
-  },
-  "prefill": {
-    "name": "Gaurav Kumar", //your customer's name
-    "email": "gaurav.kumar@example.com",
-    "contact": "9000090000"
-  },
-  "notes": {
-    "address": "Razorpay Corporate Office"
-  },
-  "theme": {
-    "color": "#3399cc"
-  }
+    "key": "rzp_test_h9X7hpWjwefyd2", // Enter the Key ID generated from the Dashboard
+    "amount":order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Green erergy", //your business name
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id":order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response) {
+            verifyPayment(response, order)
+          },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
 };
-  
 var rzp1 = new Razorpay(options);
-rzp1.open();
-
+    rzp1.open();
 }
+
 
 
 function verifyPayment(payment, order) {
-const amount2 = document.getElementById("total").innerHTML;
+        const amount2 = document.getElementById("total").innerHTML;
+        $.ajax({
+          url: "/verify-payment",
+          method: "post",
+          data: {
+            payment: payment,
+            amount2: amount2,
+            order: order
+          },
+          success: (response) => {
+            if (response.codsuccess == true) {
+              location.href = `/orderSuccess/${response.orderid}`;
+            } else {
+              swal.fire({
+                positon: 'center',
+                icon: "error",
+                title: 'payment failed',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }
+          }
+        })
+      }
 
-$.ajax({
-  url: "/verifyPayment-online",
-  method: "post",
-  data: {
-    payment,
-    amount,
-    order
-  },
-  success: (response) => {
-    if (response.success) {
-      location.href ="/orderSuccess";
-    } else {
-      alert('payment failed');
-      location.href = '/home';
 
-    }
-  }
-})
-}
-
-
-    
+  
 
 
     function deleteAddress(id) {

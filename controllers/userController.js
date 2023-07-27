@@ -82,7 +82,7 @@ const register = async (req, res) => {
 //============================= FOR RESET PASSWORD AND SEND EMAIL ==================
 
 const resendVarifyMail = async (userName, email, token) => {
-  console.log();
+ 
   try {
     const transporter = nodemailar.createTransport({
       host: "smtp.gmail.com",
@@ -91,14 +91,14 @@ const resendVarifyMail = async (userName, email, token) => {
       requireTLS: true,
       auth: {
         user: process.env.email,
-        pass: process.env.pass,
+        pass: process.env.password,
       },
     });
     const mailOptions = {
       from: process.env.email,
       to: email,
       subject: "For Reset password",
-      html: `<p>hi ${userName}, please click here to <a href="https://localhost:3000/reset_password?token=${token}">Reset</a> your password</p>`,
+      html: `<p>hi ${userName}, please click here to <a href="http://localhost:3000/reset_password?token=${token}">Reset</a> your password</p>`,
     };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -202,7 +202,7 @@ const varifyLogin = async (req, res) => {
           );
           if (passwordmatch) {
             req.session.user_id = userData._id;
-            res.redirect("/home");
+            res.redirect("/");
           } else {
             res.render("login", { message: "Incorrect Email or Password " });
           }
@@ -228,7 +228,13 @@ const loadHome = async (req, res) => {
   const data = await categoryDb.find();
   const cartData = await cartDb.find();
   const wishData = await wishListDb.find();
+ 
+
+ 
   
+
+
+
   try {
     res.render("home", {
       session: session,
@@ -236,6 +242,7 @@ const loadHome = async (req, res) => {
       products: productdata,
       cartProducts:cartData,
       wishProducts:wishData,
+      
     });
   } catch (error) {
     console.log(error.message);
@@ -247,7 +254,7 @@ const loadHome = async (req, res) => {
 const logout = async (req, res) => {
   try {
     req.session.user_id = false;
-    res.redirect("/login");
+    res.redirect("/");
   } catch (error) {
     console.log(error.message);
   }
@@ -268,10 +275,10 @@ const loadForget = async (req, res) => {
 const forgetSendEmail = async (req, res) => {
   try {
     const email = req.body.email;
-
+    
     const userData = await User.findOne({ email: email });
     if (userData) {
-      if (userData.is_verified == 0) {
+      if (userData.email_varified == false) {
         res.render("forget_password", { message: "Email Not varified" });
       } else {
         const forgetOTP = otpGenerator.generate();
@@ -299,7 +306,7 @@ const forgetSendEmail = async (req, res) => {
 
 const resetPasswordLoad = async (req, res) => {
   try {
-    console.log("dgfsfs");
+  
     const token = req.query.token;
     const userData = await User.findOne({ token: token });
     if (userData) {
@@ -339,11 +346,18 @@ const loadProductdetails = async (req, res) => {
     const productData = await productDb.findById({ _id: id });
     const productsinDb = await productDb.find();
     const data = await categoryDb.find();
+
+ 
+
+
+
+
     res.render("product_details", {
       products: productData,
       category: data,
       all: productsinDb,
       session: session,
+     
     });
   } catch (error) {
     console.log(error.message);
@@ -377,6 +391,7 @@ const loadShop = async (req, res) => {
     .skip((page-1)*limit)
     .exec()
 
+
     const count = await productDb.find({is_delete:false,
      $or:[  
       {name:{$regex:'.*'+search+'.*',$options:'i'}},
@@ -384,9 +399,11 @@ const loadShop = async (req, res) => {
      ]
     }).countDocuments()
 
-    
 
-    const data = await categoryDb.find();
+
+    const data = await categoryDb.find({is_active:true});
+ 
+
    
     res.render("shop", {
       session: session,
@@ -394,12 +411,80 @@ const loadShop = async (req, res) => {
       products: productdata,
       totalPages:Math.ceil(count/limit),
       currentPage: page,
-      previousPage: page -1
+      previousPage: page -1,
+     
     });
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+//========================== FILTER USER CATEGORY ======================
+
+const filterCategory = async (req,res) => {
+
+   try {
+      var search = '';
+      if(req.query.search){
+        search = req.query.search;
+      }
+
+      var page = 1;
+    if(req.query.page){ 
+      page = req.query.page;
+    }
+
+      const id = req.params.id;
+      const limit = 8;
+
+     
+
+      const productdata = await productDb.find({category: id,is_delete:false,
+        $or:[
+          {name:{$regex:'.*'+search+'.*',$options:'i'}},
+          {category:{$regex:'.*'+search+'.*',$options:'i'}},
+        ]
+      })
+      .limit(limit*1)
+      .skip((page-1)*limit)
+      .exec()
+
+     
+
+      const count = await productDb.find({is_delete:false,
+        $or:[
+          {name:{$regex:'.*'+search+'.*',$options:'i'}},
+          {category:{$regex:'.*'+search+'.*',$options:'i'}},
+         
+        ]
+      })
+      .countDocuments();
+      
+      const session = req.session.user_id;
+
+      const data = await categoryDb.find({is_active:true});
+       
+      const produtData = await productDb.find({category:id,is_delete:false})
+     
+
+
+      if(data.length > 0){
+        res.render('shop',{totalPages:Math.ceil(count/limit),products:productdata,session:session,category:data,});
+      }else{
+        res.render('shop',{totalPages:Math.ceil(count/limit),products:[],session:session,category:data,});
+        
+      }
+  
+
+   } catch (error) {
+     console.log(error.message);
+   }
+
+}
+
+
+//======================== GOOGLE AUTHENTICATION MANAGEMENT ===========================
 
 
 
@@ -418,5 +503,6 @@ module.exports = {
   resetPasswordVerify,
   // loadWishList
   loadShop,
+  filterCategory,
 
 };

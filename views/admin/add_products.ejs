@@ -10,25 +10,25 @@
         <h4 class="card-title">Add Products</h4>
         <!-- <p class="card-description"> Basic form elements </p> -->
           <div  id="error" style="color: red;"></div>
- 
+         
         <form   method="post" id="form" enctype="multipart/form-data" >
           <div  class="form-group">
 
             <label  for="exampleInputName1">Name</label>
             <input type="text"  name="name" data-name="Product Name"  max="10" class="form-control" id="exampleInputName1" >
-            <p>Error messsage</p>
+           
 
           </div>
           <div  class="form-group">
             <label  for="exampleInputName1">Brand</label>
             <input type="text"  name="brand" data-name="Brand" class="form-control" id="exampleInputBrand1"  >
-            <p>Error messsage</p>
+          
 
           </div>
           <div class="form-group ">
             <label for="exampleInputprice3">Price</label>
             <input type="number" name="price" min="0" data-name="Price" class="form-control"  id="exampleInputprice3"  >
-            <p>Error messsage</p>
+           
 
           </div>
           <div class="form-group">
@@ -41,7 +41,7 @@
  
 
             
-             <a type="button" href="./imageCropper"><samp style="font-size: larger; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: rgb(46, 202, 88);">Crop and upload</samp> <span style="color: aliceblue;">(Size 3400*2400)</span></a>
+             <a type="button" href="./imageCropper"><samp style="font-size: larger; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: rgb(46, 202, 88);">Crop and upload</samp> <span style="color: aliceblue;">(Size 3400*2400) 3315*2216</span></a>
               
             </div>
             
@@ -62,20 +62,20 @@
           <div class="form-group">
             <label for="exampleInputPassword4">Stock</label>
             <input type="text" name="stock" class="form-control" data-name="Stock status" id="exampleInputstock4"  >
-            <p>Error messsage</p>
+         
 
           </div>
           <div class="form-group">
             <label for="exampleInputquantity4">Quantity</label>
-            <input type="text" name="quantity" class="form-control" data-name="Quantity" id="exampleInputquantity4" >
-            <p>Error messsage</p>
+            <input type="number" name="quantity" min="0" class="form-control" data-name="Quantity" id="exampleInputquantity4" >
+           
 
           </div>
      
           <div class="form-group">
             <label for="exampleTextarea1">Description</label>
             <input type="text" name="description" class="form-control" data-name="Description" id="exampleTextarea1" rows="4"></input>
-            <p>Error messsage</p>
+            
 
           </div>
 
@@ -92,6 +92,9 @@
   </div>
 </div>
 </div>
+
+
+
 
 
 </div>
@@ -114,11 +117,11 @@
   form.addEventListener('submit',(e)=>{
     let messages =[]
 
-    if( name.value == "" || name.value ==null  ){
+    if( name.value.trim() == "" || name.value.trim() ==null  ){
       messages.push("Product name required!")
     }
-     if( name.value.trim().length > 10){
-      messages.push("Product name must less 10 words!")
+     if( name.value.trim().length > 15){
+      messages.push("Product name only containe 15 words!")
     }
     
     if( brand.value == "" || brand.value ==null ){
@@ -150,8 +153,8 @@
       messages.push("Description required!")
     }
 
-    if( description.value.length > 50 ){
-      messages.push("Description only contain less than 50 words")
+    if( description.value.length > 200 ){
+      messages.push("Description only contain less than 100 words")
     }
 
      if( messages.length > 0){

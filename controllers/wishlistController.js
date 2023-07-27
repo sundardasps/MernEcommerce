@@ -10,6 +10,9 @@ const wishListDb = require("../models/wishlistModel");
 const loadWishList = async (req, res) => {
   try {
     const session = req.session.user_id;
+
+   
+
     const wishlistData = await wishListDb
       .find({ user: session })
       .populate("products.productId");
@@ -20,9 +23,9 @@ const loadWishList = async (req, res) => {
       const wishlist = wishlistData[0].products;
       const products = wishlist.map((wish) => wish.productId);
       
-      res.render("wishList", { user: session, session, wishlist, products });
+      res.render("wishList", { user: session, session, wishlist, products ,});
     } else {
-      res.render("wishList", { user: session, wishlist: [], products: [] });
+      res.render("wishList", { user: session, wishlist: [], products: [] ,});
     }
   } catch (error) {
     console.log(error.message);
@@ -81,6 +84,8 @@ const removeFromWishlist = async (req, res) => {
   try {
     const id = req.query.id;
     const user_id = req.session.user_id;
+
+    
     const productData = await wishListDb.findOneAndUpdate(
       { user: user_id },
       { $pull: { products: { productId: id } } }

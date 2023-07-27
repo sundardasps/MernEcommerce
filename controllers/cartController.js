@@ -9,6 +9,9 @@ const loadCart = async (req, res) => {
     
     let id = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
+
+   
+
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
@@ -45,6 +48,7 @@ const loadCart = async (req, res) => {
             session,
             totalamout,
             user: userName,
+            
           });
 
        
@@ -53,6 +57,7 @@ const loadCart = async (req, res) => {
             user: userName,
             session,
             massage: "Your cart is empty !",
+            
           });
         }
       } else {
@@ -60,6 +65,7 @@ const loadCart = async (req, res) => {
           user: userName,
           session,
           massage: "No products Added to cart",
+          
         });
       }
    
@@ -73,6 +79,7 @@ const loadCart = async (req, res) => {
 
 const emptyCartLoad = async (req, res) => {
   try {
+
     res.render("emptyCart");
   } catch (error) {
     console.log(error.massage);
@@ -190,7 +197,7 @@ const cartQuantityIncrease = async (req, res, next) => {
       if (updatedQuantity + count > productQuantity) {
         res.json({ success: false, message: "Quantity limit reached!" });
         return;
-      }
+      } 
     } else if (count < 0) {
       // Quantity is being decreased
       if (updatedQuantity <= 1 || Math.abs(count) > updatedQuantity) {
@@ -233,8 +240,6 @@ const cartQuantityIncrease = async (req, res, next) => {
 
 
 //==================================== LOAD CHECKOUT ======================================
-
-
 
 const loadcheckOut = async (req, res) => {
   try {
@@ -297,6 +302,7 @@ const loadcheckOut = async (req, res) => {
 };
 
 
+//==============================================================================
 
 module.exports = {
   loadCart,

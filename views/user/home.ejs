@@ -78,16 +78,16 @@
                                     }
                                 }
                             }'>
-                            <% if(  products.length > 0 ){
+                            <% if(  products.length > 0  ){
                                 products.forEach((data)=>{ %>
                            
                                     
-                            <div class="product product-11 text-center" >
+                               <div class="product product-11 text-center" >
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image-hover">
-                                        <img src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image">
+                                        <img src="/adminassets/productImages/<%=data.productImages[1] %>" alt="Product image" class="product-image-hover">
+                                        <img src="/adminassets/productImages/<%=data.productImages[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -128,21 +128,23 @@
                 </div><!-- End .tab-content -->
             </div><!-- End .container -->
             <div class="mb-3 mb-xl-2"></div><!-- End .mb-3 -->
-            <div class="trending">
+            <!-- <div class="trending">
                       <a href="#">
                           <img src="userassets/images/demos/demo-8/banners/banner-4.jpg" alt="Banner">
                       </a>
                       <div class="banner banner-big d-md-block">
                           <div class="banner-content text-center">
-                              <h4 class="banner-subtitle text-white">Trending</h4><!-- End .banner-subtitle -->
-                              <h3 class="banner-title text-white">New League</h3><!-- End .banner-title -->
+                              <h4 class="banner-subtitle text-white">Trending</h4>
+                              <h3 class="banner-title text-white">New League</h3>
                               <p class="d-none d-lg-block text-white">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>Donec odio. Quisque volutpat mattis eros. </p> 
       
                               <a href="category.html" class="btn btn-primary-white"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
-                          </div><!-- End .banner-content -->
-                      </div><!-- End .banner -->
-                  </div>
-</div>
+                          </div>
+                      </div>
+                  </div> -->
+        </div>
+</main>
+       
 <script>
 
   function show(id){

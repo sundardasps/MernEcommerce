@@ -52,4 +52,5 @@ admin_route.post('/updateStatus',orderController.updateStatus);
 //================== ADMIN SALES MANAGEMENT ======================
 admin_route.get('/salesReport',adminController.loadSalesReport)
 admin_route.post('/salesReportSort',adminController.sortsalesReport)
+admin_route.post('/saleSortPage',adminController.salesReportFilter)
 module.exports = admin_route;

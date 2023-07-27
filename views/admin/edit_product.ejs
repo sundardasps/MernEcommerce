@@ -23,11 +23,20 @@
                                     <input type="number" name="price" min="0" class="form-control" id="exampleInputprice3"
                                     value="<%= product.price %>" required >
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail3">Update Category</label>
-                                    <input type="text" name="category" class="form-control" id="exampleInputcategoryl3"
-                                    value="<%= product.category %>">
-                                </div>
+                           
+
+                                 <div class="form-group">
+            <label for="exampleInputUsername1">category</label>
+          
+
+            <select name="category" class="form-control" id="exampleInputUsername1">
+                <% for(let i=0;i< cartData.length;i++){ %>
+                    <option>
+                        <%= cartData[i].name %>
+                    </option>
+                    <% } %>
+            </select>
+          </div>
                                 <div class="form-group">
                                     <label>Update File</label>
                                     <input type="file" name="image" class="file-upload-default" id="image">
@@ -39,19 +48,26 @@
                                     </div>
                                     
                                 </div>
-                                <div class="col-4 col-sm-3 col-xl-2">
+                                <div class="col-4 col-sm-3 col-xl-2 ">
                                     <p>Product Image</p>
-                                    <img src="/adminassets/imgs/<%=product.image[0] %>" class="gradient-corona-img img-fluid" alt="">
-                                    <br>
-                                    <br>
-                                    <img src="/adminassets/imgs/<%=product.image[1] %>" class="gradient-corona-img img-fluid" alt="">
-                                    <br>
-                                    <br>
-                                    <img src="/adminassets/imgs/<%=product.image[2] %>" class="gradient-corona-img img-fluid" alt="">
-                                    <br>
-                                    <br>
-                                    <img src="/adminassets/imgs/<%=product.image[3] %>" class="gradient-corona-img img-fluid" alt="">
 
+                                         
+                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm" data-target=""><img src="/adminassets/productImages/<%=product.productImages[0] %>" class="gradient-corona-img img-fluid" alt=""></button>
+                                         <br>
+                                         <br>
+                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"><img src="/adminassets/productImages/<%=product.productImages[1] %>" class="gradient-corona-img img-fluid" alt=""></button>
+                                         
+                                         <br>
+                                         <br>
+                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"><img src="/adminassets/productImages/<%=product.productImages[2] %>" class="gradient-corona-img img-fluid" alt=""></button>
+                                         
+                                         <br>
+                                         <br>
+                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"><img src="/adminassets/productImages/<%=product.productImages[3] %>" class="gradient-corona-img img-fluid" alt=""></button>
+                                         
+                                        
+           
+     
 
                                  </div>
                                  <br>
@@ -62,7 +78,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputquantity4">Update Quantity</label>
-                                    <input type="text" name="quantity" class="form-control" id="exampleInputquantity4"
+                                    <input type="number" name="quantity" min="0" class="form-control" id="exampleInputquantity4"
                                     value="<%= product.quantity %>">
                                 </div>
                                 <div class="form-group">
@@ -84,4 +100,15 @@
             </div>
         </div>
     </div>
+
+<div class="modal fade bd-example-modal-sm " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+   <img src="/adminassets/productImages/<%=product.productImages[0] %>" class="gradient-corona-img img-fluid" alt="">
+    </div>
+  </div>
+</div>
+
+
+
 <%- include("../admin/layouts/admin_footer.ejs") %>

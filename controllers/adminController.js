@@ -3,6 +3,7 @@ const UserDb = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const catagoryDb = require("../models/category_model");
 const orderDb = require("../models/order_model");
+const productDb = require('../models/product_model')
 const { name } = require("ejs");
 const session = require("express-session");
 
@@ -62,7 +63,117 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-    res.render("home");
+
+
+    
+    const productData = await productDb.find({ is_delete: false });
+    const userData = await UserDb.find({});
+    const orderData = await orderDb.find({});
+
+    const totalSales = await orderDb.aggregate([
+      {
+        $match: { "products.status": "Delivered" },
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$totalAmount" },
+        },
+      },
+    ]);
+    let totalAmount = 0;
+
+    if (totalSales.length > 0) {
+      totalAmount += totalSales[0].totalAmount;
+      console.log("Total amount of delivered orders:", totalAmount);
+    } else {
+      console.log("No delivered orders found.");
+    }
+
+    const totalCodResult = await orderDb.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: { "products.status":"Delivered", paymentMethod:"COD" },
+      },
+      {
+        $group: {
+          _id: null,
+          totalCodAmount: { $sum: "$products.totalPrice" },
+        },
+      },
+    ]);
+     
+     console.log(totalCodResult,"fjdbkfdsbfkdbfdjbkidnkfdn=======================");
+
+    let totalCod = 0;
+    if (totalCodResult.length > 0) {
+      totalCod = totalCodResult[0].totalCodAmount;
+    } else {
+      console.log("No COD orders found.");
+    }
+
+    const totalOnlinePaymentResult = await orderDb.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: {
+          "products.status": "Delivered",
+          paymentMethod: "onlinePayment",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalCodAmount: { $sum: "$products.totalPrice" },
+        },
+      },
+    ]);
+
+    let totalOnline = 0;
+    if (totalOnlinePaymentResult.length > 0) {
+      totalOnline = totalOnlinePaymentResult[0].totalCodAmount;
+    } else {
+      console.log("No online orders found.");
+    }
+
+    const totalWalletResult = await orderDb.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: {
+          "products.status": "Delivered",
+          paymentMethod: "wallet",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalCodAmount: { $sum: "$products.totalPrice" },
+        },
+      },
+    ]);
+
+    let totalWallet = 0;
+    if (totalWalletResult.length > 0) {
+      totalWallet = totalWalletResult[0].totalCodAmount;
+    } else {
+      console.log("No wallet orders found.");
+    }
+
+    res.render("home", {
+      product: productData,
+      user: userData,
+      order: orderData,
+      total: totalAmount,
+      totalCod,
+      totalWallet,
+      totalOnline
+    });
+
   } catch (error) {
     console.log(error.message);
   }
@@ -225,17 +336,12 @@ const updateCate = async (req, res) => {
     if (name.trim().length == 0) {
       res.redirect("/admin/category");
     } else {
-      const already = await catagoryDb.findOne({
-        name: { $regex: name, $options: "i" },
-      });
-      if (already) {
-        res.render("add_category", { message: "This Category already Exist " });
-      } else {
+    
         await catagoryDb.findByIdAndUpdate(
           { _id: req.query.id },
           { $set: { name: req.body.name } }
         );
-      }
+      
     }
     res.redirect("/admin/category");
   } catch (error) {
@@ -301,6 +407,8 @@ const loadSalesReport = async (req, res) => {
     const orderCount = order.length;
     const totalPages = Math.ceil(orderCount / limit);
     const paginatedOrder = order.slice(startIndex, endIndex);
+   
+    
 
     res.render("salesReport", {
       order: paginatedOrder,
@@ -308,6 +416,7 @@ const loadSalesReport = async (req, res) => {
       currentPage: page,
       totalPages,
     });
+    
   } catch (error) {
     console.log(error.message);
   }
@@ -316,53 +425,67 @@ const loadSalesReport = async (req, res) => {
 //===================== SALES REPORT SORTING ======================
 
 const sortsalesReport = async (req, res) => {
-  try {
-    const fromDate = req.body.fromDate;
-    const toDate = req.body.toDate;
+  try {    
 
-    const order = await orderDb.aggregate([
-      { $unwind: "$products" },
-      {
-        $match: {
-          "products.status": "Delivered",
-          $and: [
-            { "products.deliveryDate": { $gt: new Date(fromDate) } },
-            { "products.deliveryDate": { $lt: new Date(toDate) } },
-          ],
-        },
-      },
-      { $sort: { deliveryDate: -1 } },
-      {
-        $lookup: {
-          from: "products",
-          let: { productId: { $toObjectId: "$products.productId" } },
-          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$productId"] } } }],
-          as: "products.productDetails",
-        },
-      },
-      {
-        $addFields: {
-          "products.productDetails": {
-            $arrayElemAt: ["$products.productDetails", 0],
-          },
-        },
-      },
-    ]);
+  const from =req.body.fromDate
+  const to =req.body.toDate
+ 
+  
+  const order = await orderDb.aggregate([
+    { $unwind: "$products" },
+    {$match: {
+      'products.status': 'Delivered',
+      $and: [
+        { 'products.deliveryDate': { $gt:new Date(from) }},
+        { 'products.deliveryDate': { $lt: new Date(to)} }
+      ] 
+    }},
+    { $sort: { date: -1 } },
+    {
+      $lookup: {
+        from: 'products',
+        let: { productId: { $toObjectId: '$products.productId' } },
+        pipeline: [
+          { $match: { $expr: { $eq: ['$_id', '$productId'] } } }
+        ],
+        as: 'products.productDetails'
+      }
+    },  
+    {
+      $addFields: {
+        'products.productDetails': { $arrayElemAt: ['$products.productDetails', 0] }
+      }
+    }
+  ]);
 
-    console.log(order);
-    const page = parseInt(req.query.page) || 1;
-    const limit = 4;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const orderCount = order.length;
-    const totalPages = Math.ceil(orderCount / limit);
-    const paginatedOrder = order.slice(startIndex, endIndex);
-
-    res.render("salesReport", { order });
+  console.log(order,"sorted data from admin controller ");
+    res.render("salesReport", {order});
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+//======================== DAILY WEEKLY YEARLY SELES REPORT SORT ========================
+
+const salesReportFilter  = async (req,res)=>{
+
+  try {
+    
+    const id  = req.query.id
+    console.log(id,"idddddddddddddddddddddddddd");
+    res.redirect("/salesReport")
+   
+
+  
+    
+  } catch (error) {
+     console.log(error.message);
+  }
+
+}
+
+
 
 module.exports = {
   loadAdminSignUp,
@@ -382,4 +505,5 @@ module.exports = {
   activeOrNot,
   loadSalesReport,
   sortsalesReport,
+  salesReportFilter,
 };

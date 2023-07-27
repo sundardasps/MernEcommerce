@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
             </ol>
         </div><!-- End .container -->
@@ -34,7 +34,7 @@
                             </select>
                         </div>
                     </div>
-                </div> -->
+                </div> --> 
             </div><!-- End .toolbox -->
 
             <div class="products">
@@ -45,12 +45,12 @@
 
                     <div class="col-6 col-md-4 col-lg-4 col-xl-3">
                        
-                            <div class="product product-11 text-center" >
+                            <div class="product product-11 text-center shadow-lg p-3 mb-5 bg-white rounded" >
                         
                                 <figure class="product-media">
                                     <a href="/product_details?id=<%= data._id%>">
-                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[1] %>" alt="Product image" class="product-image-hover">
-                                        <img style="max-height: 400px;" src="/adminassets/imgs/<%=data.image[0]%>" alt="Product image" class="product-image">
+                                        <img style="max-height: 400px;"   src="/adminassets/productImages/<%=data.productImages[1] %>" alt="Product image" class="product-image-hover"  >
+                                        <img style="max-height: 400px;" src="/adminassets/productImages/<%=data.productImages[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
@@ -74,14 +74,21 @@
                                     <% if(data.quantity <=0 ){ %>
                                         <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
                                         <%}%>
+                                        <% if( data.quantity <=5 && data.quantity != 0 ){%>
+                                            <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Only <%= data.quantity %> left !</p>
+    
+                                                    <% } %>
                                     <div class="product-action ">
                                       
                                       <% if(data.quantity <=0 ){ %>
     
-                                        <button  class="btn-product " style="background-color: rgb(229, 80, 80);"  ><span>Out of stock</span></button>
-    
+                                        <button  class="btn-product " style="background-color: rgb(229, 80, 80);" data-toggle="modal" data-target=".bd-example-modal-sm" ><span>Out of stock</span></button>
+                                       
+                                                
+                                        
                                           
                                         <% }else{%>
+                             
                                         <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
                                           <%}%>
                                   
@@ -94,7 +101,7 @@
                       
                     <% }) %>
                     <% } else {%>
-
+                        
                         <% } %>
                     
                    
@@ -128,28 +135,24 @@
                                 Category
                             </a>
                         </h3><!-- End .widget-title -->
-                         <% if( category.length > 0 ){
-                            category.forEach((data) => { %>
                         <div class="collapse show" id="widget-1">
+                            
+                             <% if( category.length > 0 ){
+                                category.forEach((data,i) => { %>
                             <div class="widget-body">
                                 <div class="filter-items filter-items-count">
-                                    <div class="filter-item">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="cat-1">
-                                            <label class="custom-control-label" for="cat-1"><%= data.name %></label>
-                                        </div><!-- End .custom-checkbox -->
-                                        <span class="item-count"></span>
-                                    </div><!-- End .filter-item -->
-
-                                   <% }) %>
-                                   
-                                   <% } %>
-                                   
-                                   
-                                 
-                                </div><!-- End .filter-items -->
-                            </div><!-- End .widget-body -->
-                        </div><!-- End .collapse -->
+                                    <div class="custom-control custom-checkbox">
+                                        <a class="text-dark" href="/filterCategory/<%= data.name %>" for="cat-1" >
+                                            <%= data.name %>
+                                        </a>
+                                    
+                                        
+                                        
+                                    </div><!-- End .filter-items -->
+                                </div><!-- End .widget-body -->
+                            </div><!-- End .collapse -->
+                            <% }) %>
+                            <% } %>
                     </div><!-- End .widget -->
 <!-- 
                     <div class="widget widget-collapsible">
@@ -232,12 +235,12 @@
                     </div> -->
 
                    
-                    <div class="widget widget-collapsible">
+                    <!-- <div class="widget widget-collapsible">
                         <h3 class="widget-title">
                             <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
                                 Price
                             </a>
-                        </h3><!-- End .widget-title -->
+                        </h3>
                          
                         <div class="collapse show" id="widget-5">
                             <div class="widget-body">
@@ -245,22 +248,37 @@
                                     <div class="filter-price-text">
                                         Price Range:
                                         <span id="filter-price-range"></span>
-                                    </div><!-- End .filter-price-text -->
+                                    </div>
 
-                                    <div id="price-slider"></div><!-- End #price-slider -->
-                                </div><!-- End .filter-price -->
-                            </div><!-- End .widget-body -->
-                        </div><!-- End .collapse -->
-                    </div><!-- End .widget -->
+                                    <div id="price-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
                 </div><!-- End .sidebar-filter-wrapper -->
             </aside><!-- End .sidebar-filter -->
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content" style="text-align: center;  background-color: rgb(255, 47, 47);height: 50%;">
+        
+        <span style="color: aliceblue;font-weight: 800;">Sorry, product in now out of stock</span> 
+         
+    </div>
+  </div>
+</div>
+
+
+
+
 <script>
 
     function show(id){
-       $.ajax({
+       $.ajax({ 
          url:"/wishList",
          method:"post",
          data:{
@@ -309,11 +327,13 @@
                         timer: 1500,     
                         });
                     }else{
-                        swal.fire({ 
-                        icon: 'error',
-                        title: 'Limit Reached',
-                        text: response.message,
-                        });
+                        location.href ='/login';
+                        // swal.fire({ 
+                        // icon: 'error',
+                        // title: 'Please login!',
+                        // text: response.message,
+                        
+                        // });
                     }
                 }
             })
