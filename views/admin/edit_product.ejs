@@ -48,28 +48,27 @@
                                     </div>
                                     
                                 </div>
-                                <div class="col-4 col-sm-3 col-xl-2 ">
+                                <div class="col-4 col-sm-3 col-xl-2 image-container">
                                     <p>Product Image</p>
+                                    <div class="image-list">
+                                        <% productImages.forEach((data, i) => { %>
+                                            <button type="button" class="btn btn-primary image-button" data-toggle="modal" data-target=".bd-example-modal-sm">
+                                                <img src="/adminassets/productImages/<%= product.productImages[i] %>" class="gradient-corona-img img-fluid" alt="">
+                                             </button>
 
-                                         
-                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm" data-target=""><img src="/adminassets/productImages/<%=product.productImages[0] %>" class="gradient-corona-img img-fluid" alt=""></button>
-                                         <br>
-                                         <br>
-                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"><img src="/adminassets/productImages/<%=product.productImages[1] %>" class="gradient-corona-img img-fluid" alt=""></button>
-                                         
-                                         <br>
-                                         <br>
-                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"><img src="/adminassets/productImages/<%=product.productImages[2] %>" class="gradient-corona-img img-fluid" alt=""></button>
-                                         
-                                         <br>
-                                         <br>
-                                         <button type="button" style="padding: 0%;" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm"><img src="/adminassets/productImages/<%=product.productImages[3] %>" class="gradient-corona-img img-fluid" alt=""></button>
-                                         
-                                        
-           
-     
-
-                                 </div>
+                                            <div class="modal fade bd-example-modal-sm " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+                                                <div class="modal-dialog modal-sm">
+                                                  <div class="modal-content">
+                                                  <p>Do you want to delete this image?</p>
+                                                  <button onclick="deletephoto('<%=i %>','<%= product._id %>')">Yes</button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                                
+                                
                                  <br>
                                 <div class="form-group">
                                     <label for="exampleInputPassword4">Update Stock</label>
@@ -101,14 +100,56 @@
         </div>
     </div>
 
-<div class="modal fade bd-example-modal-sm " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-   <img src="/adminassets/productImages/<%=product.productImages[0] %>" class="gradient-corona-img img-fluid" alt="">
-    </div>
-  </div>
-</div>
 
+
+<style>
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* Center images horizontally */
+}
+
+.image-button {
+    padding: 0;
+    display: flex;
+}
+
+.image-button img {
+    width: 100%;
+    height: auto;
+}
+
+</style>
+
+<script>
+ function deletephoto(position,id){
+    $.ajax({
+        url:"/admin/delete_image",
+        method:"post",
+        encoded:true,
+        data:{
+
+          position:position,
+          id:id,
+        },
+    })
+    .done((data)=>{
+      if(data.success){
+        location.reload()
+      }
+    })
+  }
+
+
+
+</script>
 
 
 <%- include("../admin/layouts/admin_footer.ejs") %>

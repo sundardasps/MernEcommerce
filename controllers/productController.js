@@ -4,7 +4,7 @@ const productdb = require("../models/product_model");
 const catagoryDb = require("../models/category_model");
 const sharp = require("sharp");
 const { errorMonitor } = require("nodemailer/lib/xoauth2");
-//================================ LOAD PRODUCTS ===================================
+//================================ LOAD PRODUCTS ===================================//
 
 const loadProducts = async (req, res) => {
   try {
@@ -15,7 +15,7 @@ const loadProducts = async (req, res) => {
   }
 };
 
-//=============================== LOAD ADDPRODUCTS ======================================
+//=============================== LOAD ADDPRODUCTS ======================================//
 
 const LoadAddProducts = async (req, res) => {
   try {
@@ -26,20 +26,18 @@ const LoadAddProducts = async (req, res) => {
   }
 };
 
-//=============================== LOAD PRODUCT DETAILS =================================
+//=============================== LOAD PRODUCT DETAILS ==================================//
 const productDetails = async (req, res) => {
   try {
     const id = req.query.id;
     const productData = await productdb.findById({ _id: id });
-   
-
-    res.render("product_details", { product: productData,});
+    res.render("product_details", { product: productData });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-//=============================== ADD PRODUCT ====================================
+//=============================== ADD PRODUCT =============================================//
 
 const addProducts = async (req, res) => {
   try {
@@ -86,8 +84,34 @@ const editProduct = async (req, res) => {
     const id = req.query.id;
     const productData = await productdb.findById({ _id: id });
     const categoryData = await catagoryDb.find();
+    const productImages = productData.productImages;
+    res.render("edit_product", {
+      product: productData,
+      cartData: categoryData,
+      productImages,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-    res.render("edit_product", { product: productData,cartData: categoryData });
+//============================== DELETE IMAGE WHILE EDIT IN ADMIN ===================//
+
+const deleteImageFromEdit = async (req, res) => {
+  try {
+    const position = req.body.position;
+    const prodId = req.body.id;
+    const productImage = await productdb.findOne({ _id: prodId });
+    const image = productImage.productImages[position];
+    const data = await productdb.updateOne(
+      { _id: prodId },
+      { $pullAll: { productImages: [image] } }
+    );
+    if (data) {
+      res.json({ success: true });
+    } else {
+      res.redirect("/admin/products");
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -181,16 +205,15 @@ const addFeedback = async (req, res) => {
   try {
     const email = req.body.email;
     const star = req.body.rating;
-    const name = req.body.name
+    const name = req.body.name;
     const prodId = req.body.id;
     const review = req.body.review;
     const title = req.body.title;
 
-
     const productData = await productdb.findById({ _id: prodId });
 
     // let alreadyRated = productData.product_review.find({email:email});
-    
+
     // console.log(alreadyRated,"already rated ===================");
 
     // if (alreadyRated) {
@@ -199,7 +222,7 @@ const addFeedback = async (req, res) => {
     //       product_review: { $elemMatch: { email: alreadyRated }},
     //     },
     //     {
-    //       $set: { 
+    //       $set: {
     //         star: star,
     //         email: email,
     //         review: review,
@@ -211,28 +234,28 @@ const addFeedback = async (req, res) => {
     //     }
     //   );
     // } else {
-      const rateProduct = await productdb.findByIdAndUpdate(
-        prodId,
-        {
-          $push: {
-            product_review: [
-              {
-                stars: star,
-                userName:name,
-                email: email,
-                review: review,
-                title: title,
-              },
-            ],
-          },
+    const rateProduct = await productdb.findByIdAndUpdate(
+      prodId,
+      {
+        $push: {
+          product_review: [
+            {
+              stars: star,
+              userName: name,
+              email: email,
+              review: review,
+              title: title,
+            },
+          ],
         },
-        {
-          new: true,
-        }
-      );
+      },
+      {
+        new: true,
+      }
+    );
     // }
 
-    res.redirect("/product_details?id="+prodId);
+    res.redirect("/product_details?id=" + prodId);
   } catch (error) {
     console.log(error.message);
   }
@@ -248,4 +271,5 @@ module.exports = {
   deleteProduct,
   imageCropper,
   addFeedback,
+  deleteImageFromEdit,
 };

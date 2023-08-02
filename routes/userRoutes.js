@@ -9,6 +9,7 @@ const productController = require('../controllers/productController')
 const wishlistController = require('../controllers/wishlistController');
 const cartController = require('../controllers/cartController');
 const adderssController = require('../controllers/addressController');
+const couponController = require('../controllers/couponController')
 
 
 
@@ -34,7 +35,6 @@ user_route.post('/forgetPassword',userController.forgetSendEmail)
 user_route.get('/reset_password',auth.isLogout,userController.resetPasswordLoad)
 user_route.post('/reset_password',auth.isLogout,userController.resetPasswordVerify)
 
-
 //======================= HOME ===================================
 user_route.get("/login", auth.isLogin, userController.userLogin);
 user_route.get("/category", auth.isLogin, userController.loadHome);
@@ -59,18 +59,23 @@ user_route.post('/placeOrder',auth.isLogin,orderController.placeOrder)
 user_route.get('/checkOut',auth.isLogin,cartController.loadcheckOut)
 user_route.get('/editAddress',auth.isLogin,adderssController.loadEditAddress);
 user_route.get('/addAddress',auth.isLogin,adderssController.loadAddAddress);
+user_route.post('/addAddress',auth.isLogin,adderssController.addUserAddress);
 user_route.post('/updateAddress',adderssController.updateAddress)
 user_route.post("/deleteAddress",auth.isLogin,adderssController.deleteAddress)
 user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
 
-
 //========================= USER ACCOUNT ============================
 user_route.get('/userDashboard', auth.isLogin,adderssController.loadUserDashboard)
+user_route.get('/loadUserAddressFromDash',adderssController.loadAddressFromDash)
+user_route.get('/editAddressFromDash',adderssController.loadEditAddressfromDash)
+user_route.post('/updateAddressFromDash',adderssController.updateAddressFromDash)
+user_route.get('/loadaddAddressFromDash',adderssController.loadAddAddress)
+user_route.post('/loadaddAddressFromDash',adderssController.addUserAddressFromDash)
 user_route.post('/addUserAddress',adderssController.addUserAddress)
 user_route.get('/showAddress',adderssController.showAddress);
+user_route.post('/editUser/:id',userController.updateUser)
 
 //===========================USER ORDER ===========================
-
 user_route.post('/checkoutPage',orderController.placeOrder);
 user_route.get("/orderSuccess/:id",orderController.successPage);
 user_route.post('/orderCancel',orderController.orderCancel)
@@ -79,9 +84,13 @@ user_route.get("/orderList",auth.isLogin,orderController.showOrders)
 user_route.post('/verify-payment',orderController.verifyPayment)
 user_route.post("/addFeedback",productController.addFeedback);
 user_route.get("/invoice/:id",orderController.loadInvoice)
-user_route.get('/returnProduct',orderController.returnProduct)
+user_route.post('/returnProduct',orderController.returnProduct)
 
-//========================== GOOGLE AUTHENTICATION ======================
+//========================== COUPON MANAGEMENT ======================
+user_route.post('/applyCoupon',couponController.varifyCoupon)
+
+//======================= OTHER USER INTERACTIONS ================//
+user_route.get('/about',userController.loadAbout)
 
 
 module.exports = user_route;

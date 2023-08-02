@@ -16,25 +16,26 @@
                    Sorting
                  </button>
                  <div class="dropdown-menu mx-3" aria-labelledby="dropdownMenuButton">
-                   <a class="dropdown-item" href="/admin/saleSortPage?id=<%= 1 %>">Daily</a>
-                   <a class="dropdown-item" href="/admin/saleSortPage?id=<%= 7 %>">Weekly</a>
-                   <a class="dropdown-item" href="/admin/saleSortPage?id=<%= 30 %>">Monthly</a>
-                   <a class="dropdown-item" href="/admin/saleReportPage/">All Reports</a>
+                   <a class="dropdown-item" href="/admin/saleSortPage/<%= 1 %>">Daily</a>
+                   <a class="dropdown-item" href="/admin/saleSortPage/<%= 7 %>">Weekly</a>
+                   <a class="dropdown-item" href="/admin/saleSortPage/<%= 30 %>">Monthly</a>
+                   <a class="dropdown-item" href="/admin/saleSortPage/<%= 365 %>">Yearly</a>
                  </div>
                </div> 
          
           
-
-              <form action="/admin/salesReportSort" method="post">
+               <div  id="error" style="color: red;"></div>
+              <form action="/admin/salesReportSort" method="post" id="dateform">
+              
               <div class=" d-flex mx">
              
               <div class="mx-3" >
                 <h4>From</h4>
-                <input type="date" name="fromDate">
+                <input id="fromDate" type="date" name="fromDate">
               </div>
               <div>
                 <h4>To</h4>
-                <input type="date" name="toDate">
+                <input id="toDate" type="date" name="toDate">
               </div>
              
               
@@ -72,14 +73,14 @@
              
                   <tr>
                       <td><%= i+1 %></td>
-                      <td><%= item.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
+                      <td><%= item.products.deliveryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
                       <td><%= item.products.productId %></td>
                       <td><%= item.products.count %></td>
                       <td><%= item.products.productPrice %>/-</td>
                       <td><%= item.paymentMethod %></td>
                       <td><%= item.products.totalPrice %>/-</td>
                       <td style="color: chartreuse;"><%= item.products.status %></td>
-                      
+
                   </tr>                        
          <% }) %>                                         
                   </tbody>
@@ -130,6 +131,29 @@ $('#salesReport').DataTable({
   ]
 });
 });
+</script>
+
+<script>
+const fromDate = document.getElementById('fromDate')
+const toDate = document.getElementById('toDate')
+const form = document.getElementById('dateform')
+const errorElement = document.getElementById("error")
+
+form.addEventListener("submit",(e)=>{
+  let messages =[]
+ 
+
+  if( fromDate.value >= toDate.value){
+    messages.push("Should be add valid date")
+  }
+
+  if(messages.length>0){
+    e.preventDefault()
+    errorElement.innerText = messages.join(',')
+  }
+
+})
+
 </script>
 
 

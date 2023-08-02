@@ -16,89 +16,6 @@ const { productDetails } = require("./productController");
 const { log } = require("console");
 
 //========================FOR PLACE USER ORDER ========================
-
-// var instance = new Razorpay({
-//   key_id: process.env.Razorid,
-//   key_secret:process.env.RazorKey,
-// });
-
-// const placeOrder = async (req, res) => {
-//   try {
-//    const id = req.session.user_id;
-//     const Total = req.body.Total;
-//     const totalAmount = parseInt(Total);
-//     const address = req.body.address;
-//     const paymentMethod = req.body.payment;
-//     const productCount = req.body.count;
-
-//     const userName = await userDb.findOne({ _id: id });
-//     const cartData = await cartDb.findOne({ userId: id });
-
-//     const productsData = cartData.products;
-
-//     const status = paymentMethod === "COD" ? "placed" : "pending";
-
-//     const uniqueNumber = Math.floor(Math.random() * 900000) + 100000;
-//     console.log(uniqueNumber);
-
-//     const order = new orderDb({
-//      deliveryDetails: address,
-//       uniqId:uniqueNumber,
-//       userId: id,
-//       userName: userName.user_name,
-//       paymentMethod: paymentMethod,
-//       products: productsData,
-//       totalAmount: totalAmount,
-//       date: new Date(),
-//       status: status,
-//     });
-
-//     const saveOrder = await order.save();
-
-// for (let i = 0; i < productsData.length; i++) {
-//   const count = productsData[i].count;
-//   const proId = productsData[i].productId;
-
-//   // Fetch the current quantity from the database
-//   const product = await productDb.findById(proId);
-//   const currentQuantity = product.quantity;
-
-//   // Ensure the quantity won't become less than 0
-//   const newQuantity = currentQuantity - count;
-//   const updatedQuantity = Math.max(newQuantity, 0);
-
-//   // Update the quantity in the database
-//   await productDb.findByIdAndUpdate(
-//     { _id: proId },
-//     { $set: { quantity: updatedQuantity } }
-//   );
-// }
-
-//     if (status == "placed") {
-//       await cartDb.deleteOne({ userId: id });
-//       res.json({ codsuccess: true });
-//     } else {
-//       // await cartDb.deleteOne({ userId: id });
-//       const orderid = saveOrder._id;
-//       const totalamount = saveOrder.totalAmount;
-//       var options = {
-//         amount: totalamount * 100,
-//         currency: "INR",
-//         receipt: "" + orderid,
-//       };
-
-//       instance.orders.create(options, function (err, order) {
-
-//           console.log("Success");
-//           res.json({ order });
-
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
-
 var instance = new Razorpay({
   key_id: process.env.Razorid,
   key_secret: process.env.RazorKey,
@@ -109,13 +26,13 @@ const placeOrder = async (req, res) => {
   try {
     const id = req.session.user_id;
     const address = req.body.address;
+    const discount = req.body.disamount
     const cartData = await cartDb.findOne({ userId: req.session.user_id });
     const products = cartData.products;
     const total = parseInt(req.body.Total);
     const paymentMethods = req.body.payment;
     const userName = await userDb.findOne({ _id: id });
     const name = userName.user_name;
-
     const uniqueNumber = Math.floor(Math.random() * 900000) + 100000;
 
     const status = paymentMethods === "COD" ? "placed" : "pending";
@@ -130,6 +47,7 @@ const placeOrder = async (req, res) => {
       totalAmount: total,
       date: new Date(),
       status: status,
+      discount:discount
     });
 
     const orderData = await order.save();
@@ -252,7 +170,7 @@ const verifyPayment = async (req, res) => {
     console.log(error.message);
   }
 };
-//=====================PLLACED ORDERS SUCCESS PAGE==================
+//=====================PLACED ORDERS SUCCESS PAGE==================
 const successPage = async (req, res) => {
   try {
     const id = req.params.id;
@@ -306,7 +224,6 @@ const orderCancel = async (req, res) => {
     const cancelReason = req.body.reason;
     const cancelAmount = req.body.totalPrice;
     const amount = parseInt(cancelAmount);
-   
     const updatedData = await orderDb.findOneAndUpdate(
       { userId: Id, "products._id": id },
       {
@@ -317,7 +234,6 @@ const orderCancel = async (req, res) => {
       },
       { new: true }
     );
-
     const productsData = updatedData;
 
     if (productsData.paymentMethod == "onlinePayment" || productsData.paymentMethod == "wallet" ) {
@@ -328,7 +244,10 @@ const orderCancel = async (req, res) => {
 
       res.redirect("/orderList");
 
-    } else [res.render("404")];
+    } else {
+      res.redirect("/orderList");
+
+    }
 
   } catch (error) {
     console.log(error.message);
@@ -451,7 +370,6 @@ const loadInvoice = async (req, res) => {
     const filepathName = path.resolve(__dirname, "../views/user/invoice.ejs");
 
     const html = fs.readFileSync(filepathName).toString();
-    console.log(html, "//////////////////////////////////////////////");
     const ejsData = ejs.render(html, data);
 
     const browser = await puppeteer.launch({ headless: "new" });
@@ -476,12 +394,34 @@ const loadInvoice = async (req, res) => {
 const returnProduct = async (req,res) => {
  
   try {
-    
-    const id = req.params.id
-    const returnReason = req.body.reason
-   res.render('addFeedBack')
-    
-
+    try {
+      const id = req.body.orderid;
+      const Id = req.session.user_id;
+      const cancelReason = req.body.reason;
+      const cancelAmount = req.body.totalPrice;
+      const amount = parseInt(cancelAmount);
+     
+      const updatedData = await orderDb.findOneAndUpdate(
+        { userId: Id, "products._id": id },
+        {
+          $set: {
+            "products.$.status": "returned",
+            "products.$.returnReason": cancelReason,
+          },
+        },
+        { new: true }
+      );
+  
+        const refunded = await userDb.updateOne(
+          { _id: req.session.user_id },
+          { $inc: { wallet: amount } }
+        );
+  
+        res.redirect("/orderList");
+  
+    } catch (error) {
+      console.log(error.message);
+    }
     
   } catch (error) { 
     console.log(error.message);

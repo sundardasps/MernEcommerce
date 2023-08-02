@@ -3,7 +3,7 @@ const UserDb = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const catagoryDb = require("../models/category_model");
 const orderDb = require("../models/order_model");
-const productDb = require('../models/product_model')
+const productDb = require("../models/product_model");
 const { name } = require("ejs");
 const session = require("express-session");
 
@@ -63,9 +63,6 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-
-
-    
     const productData = await productDb.find({ is_delete: false });
     const userData = await UserDb.find({});
     const orderData = await orderDb.find({});
@@ -95,7 +92,7 @@ const loadHome = async (req, res) => {
         $unwind: "$products",
       },
       {
-        $match: { "products.status":"Delivered", paymentMethod:"COD" },
+        $match: { "products.status": "Delivered", paymentMethod: "COD" },
       },
       {
         $group: {
@@ -104,8 +101,6 @@ const loadHome = async (req, res) => {
         },
       },
     ]);
-     
-     console.log(totalCodResult,"fjdbkfdsbfkdbfdjbkidnkfdn=======================");
 
     let totalCod = 0;
     if (totalCodResult.length > 0) {
@@ -163,6 +158,36 @@ const loadHome = async (req, res) => {
     } else {
       console.log("No wallet orders found.");
     }
+    
+
+    const totalNormalCatResult = await orderDb.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: {
+          "products.status": "Delivered",
+          "products.productId.category":"Normal",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalNormalAmount: { $sum: "$products.totalPrice" },
+        },
+      },
+    ]);
+
+    let totalNormalCate = 0;
+    if (totalNormalCatResult.length > 0) {
+      totalNormalCate = totalNormalCatResult[0].totalNormalAmount;
+    } else {
+      console.log("No wallet orders found.");
+    }
+    
+  console.log(totalNormalCatResult,"normal emount");
+  
+
 
     res.render("home", {
       product: productData,
@@ -171,9 +196,9 @@ const loadHome = async (req, res) => {
       total: totalAmount,
       totalCod,
       totalWallet,
-      totalOnline
+      totalOnline,
+      
     });
-
   } catch (error) {
     console.log(error.message);
   }
@@ -336,12 +361,10 @@ const updateCate = async (req, res) => {
     if (name.trim().length == 0) {
       res.redirect("/admin/category");
     } else {
-    
-        await catagoryDb.findByIdAndUpdate(
-          { _id: req.query.id },
-          { $set: { name: req.body.name } }
-        );
-      
+      await catagoryDb.findByIdAndUpdate(
+        { _id: req.query.id },
+        { $set: { name: req.body.name } }
+      );
     }
     res.redirect("/admin/category");
   } catch (error) {
@@ -379,7 +402,7 @@ const activeOrNot = async (req, res) => {
 const loadSalesReport = async (req, res) => {
   try {
     // const adminData = await user.findById(req.session.auser_id);
-    const order = await orderDb.aggregate([
+    const orderData = await orderDb.aggregate([
       { $unwind: "$products" },
       { $match: { "products.status": "Delivered" } },
       { $sort: { date: -1 } },
@@ -400,23 +423,9 @@ const loadSalesReport = async (req, res) => {
       },
     ]);
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = 4;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const orderCount = order.length;
-    const totalPages = Math.ceil(orderCount / limit);
-    const paginatedOrder = order.slice(startIndex, endIndex);
-   
-    
-
     res.render("salesReport", {
-      order: paginatedOrder,
-      activePage: "salesReport",
-      currentPage: page,
-      totalPages,
+      order: orderData,
     });
-    
   } catch (error) {
     console.log(error.message);
   }
@@ -425,67 +434,86 @@ const loadSalesReport = async (req, res) => {
 //===================== SALES REPORT SORTING ======================
 
 const sortsalesReport = async (req, res) => {
-  try {    
+  try {
+    const from = req.body.fromDate;
+    const to = req.body.toDate;
 
-  const from =req.body.fromDate
-  const to =req.body.toDate
- 
-  
-  const order = await orderDb.aggregate([
-    { $unwind: "$products" },
-    {$match: {
-      'products.status': 'Delivered',
-      $and: [
-        { 'products.deliveryDate': { $gt:new Date(from) }},
-        { 'products.deliveryDate': { $lt: new Date(to)} }
-      ] 
-    }},
-    { $sort: { date: -1 } },
-    {
-      $lookup: {
-        from: 'products',
-        let: { productId: { $toObjectId: '$products.productId' } },
-        pipeline: [
-          { $match: { $expr: { $eq: ['$_id', '$productId'] } } }
-        ],
-        as: 'products.productDetails'
-      }
-    },  
-    {
-      $addFields: {
-        'products.productDetails': { $arrayElemAt: ['$products.productDetails', 0] }
-      }
-    }
-  ]);
+    const order = await orderDb.aggregate([
+      { $unwind: "$products" },
+      {
+        $match: {
+          "products.status": "Delivered",
+          $and: [
+            { "products.deliveryDate": { $gt: new Date(from) } },
+            { "products.deliveryDate": { $lt: new Date(to) } },
+          ],
+        },
+      },
+      { $sort: { date: -1 } },
+      {
+        $lookup: {
+          from: "products",
+          let: { productId: { $toObjectId: "$products.productId" } },
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$productId"] } } }],
+          as: "products.productDetails",
+        },
+      },
+      {
+        $addFields: {
+          "products.productDetails": {
+            $arrayElemAt: ["$products.productDetails", 0],
+          },
+        },
+      },
+    ]);
 
-  console.log(order,"sorted data from admin controller ");
-    res.render("salesReport", {order});
+    res.render("salesReport", { order });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 //======================== DAILY WEEKLY YEARLY SELES REPORT SORT ========================
 
-const salesReportFilter  = async (req,res)=>{
-
+const salesReportFilter = async (req, res) => {
   try {
-    
-    const id  = req.query.id
-    console.log(id,"idddddddddddddddddddddddddd");
-    res.redirect("/salesReport")
-   
+    const id = req.params.id;
+    const startDate = 86400000 * id;
+    const currentDate = new Date();
+    const order = await orderDb.aggregate([
+      { $unwind: "$products" },
+      {
+        $match: {
+          "products.status": "Delivered",
+          $and: [
+            { "products.deliveryDate": { $gt: new Date(startDate) } },
+            { "products.deliveryDate": { $lt: new Date(currentDate) } },
+          ],
+        },
+      },
+      { $sort: { "products.deliveryDate": -1 } },
+      {
+        $lookup: {
+          from: "products",
+          let: { productId: { $toObjectId: "$products.productId" } },
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$productId"] } } }],
+          as: "products.productDetails",
+        },
+      },
+      {
+        $addFields: {
+          "products.productDetails": {
+            $arrayElemAt: ["$products.productDetails", 0],
+          },
+        },
+      },
+    ]);
 
-  
-    
+    res.render("salesReport",{ order});
   } catch (error) {
-     console.log(error.message);
+    console.log(error.message);
   }
-
-}
-
-
+};
 
 module.exports = {
   loadAdminSignUp,

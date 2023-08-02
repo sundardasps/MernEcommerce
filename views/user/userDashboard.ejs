@@ -14,9 +14,9 @@
 </style>
 
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('/adminassets/imgs/1687180326718-desert-eagle.jpg')">
+    <div class="page-header text-center" style="background-color: rgb(178, 215, 166);">
         <div class="container">
-            <h2 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Green</Span> energy <<< </h2>
+            <h3 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Eco</Span> <span style="color: rgb(0, 0, 0);">Bikes</span> </h3>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
@@ -41,16 +41,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link"  href="./orderList" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
                             </li>
- 
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
+                                <a class="nav-link" id="tab-address-link" href="./loadaddAddressFromDash">Add New Adresses</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="tab-address-link" href="./addAddress">Add New Adresses</a>
-                            </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Add Account Details</a>
-                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link" href="./logout">Sign Out</a>
                             </li>
@@ -65,7 +58,11 @@
                                 <!-- <p>email <span class="font-weight-normal text-dark"></span> </p> -->
                                 <p>Email id: <span class="font-weight-normal text-dark"><%= user.email %></span></p>
                                 <p>Wallet Balence: <span  style="color: rgb(61, 59, 59);"><%= user.wallet %>/-</span></p>
-                                <a href="../showAddress"><button  class="btn btn-outline-primary btn-rounded" type="button" style="color: black; border-color:rgb(46, 202, 88) ;"> My addresss</button></a>
+                                
+                          <a href="" data-toggle="modal" data-target="#modalContactForm"><button  class="btn btn-outline-primary btn-rounded" type="button" style="color: black; border-color:rgb(46, 202, 88) ;"> Edit user details</button></a>
+                            
+                                <a href="/loadUserAddressFromDash"><button  class="btn btn-outline-primary btn-rounded" type="button" style="color: black; border-color:rgb(46, 202, 88) ;"> My addresss</button></a>
+                              
                             </div><!-- .End .tab-pane -->
                    
 
@@ -113,12 +110,91 @@
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
      
-   
 
+ <div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <div  id="error" style="color: red;"></div>
+        <form action="/editUser/<%= user._id %>" method="post"  id="form">
+        <h4 class="modal-title w-100 font-weight-bold"> <span style="color: rgb(46, 202, 88);">Edit</span> user details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+            <label data-error="wrong" data-success="right" for="form34">Your name</label>
+          <input type="text" id="name" name="name" class="form-control validate" value="<%= user.user_name %>" required>
+        </div>
 
-  
+        <div class="md-form mb-5">
+         
+            <label data-error="wrong" data-success="right" for="form29">Your email</label>
+          <input type="email" name="email" id="email" class="form-control validate" value="<%= user.email %>" required>
+        </div>
+
+        <div class="md-form mb-5">
+        
+            <label data-error="wrong" data-success="right" for="form32">Mobile number</label>
+          <input type="text" name="mobile" id="mobile" max="10" min="10" class="form-control validate" value="<%= user.mobile_number %>" required>
+        </div>
+       
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" class="btn btn-unique">Submit <i class="fas fa-paper-plane-o ml-1"></i></button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 
 </main><!-- End .main -->
+
+<script>
+
+
+    const name = document.getElementById('name');
+    const mob = document.getElementById('mobile');
+    const  email  = document.getElementById('email')
+    const  form  = document.getElementById('form')
+    const errorElement = document.getElementById("error")
+
+    form.addEventListener('submit',(e)=>{
+    let messages = []
+    if(  name.value.trim() =="" || name.value.trim() == null){
+      messages.push('name is required')
+    }
+
+    if( mob.value.trim() =="" || mob.value.trim() == null){
+         messages.push("number is required!")
+    }
+
+    if( email.value.trim() =="" || email.value.trim() == null){
+         messages.push("Email is required!")
+    }
+
+    if( mob.value.trim().length < 10 || mob2.value.trim().length < 10){
+         messages.push("Please add valid numbrs")
+    }
+     
+    if( mob.value.trim().length > 10 || mob2.value.trim().length > 10){
+         messages.push("Please add valid numbrs")
+    }
+
+    if( messages.length > 0  ){
+      e.preventDefault()
+      errorElement.innerText = messages.join(' & ')
+      
+    }
+
+    })
+    
+
+
+  </script>
 
 
 <script>

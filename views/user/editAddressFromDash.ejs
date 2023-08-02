@@ -19,31 +19,31 @@
         <div class="checkout">
             <div class="container">
                 <div  id="error" style="color: red;"></div>
-                <form action="/updateAddress?id=<%= addresses._id %>" method="post" id="form">
+                <form action="/updateAddressFromDash?id=<%= addresses._id %>" method="post" id="form">
                     <div class="row">
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>User Name</label>
-                                        <input type="text" id="userName" class="form-control" name="userName"  value="<%=addresses.userName %>">
+                                        <input type="text" id="userName" class="form-control" name="userName"  value="<%=addresses.userName%>">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
                                  
                                  <div class="row">
                                     <div class="col-sm-6">
                                         <label>Mobile Number*</label>
-                                        <input type="number" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile %>">
+                                        <input type="number" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile%>">
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Alternative number </label>
-                                        <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob %>">
+                                        <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob%>">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <label>Housename*</label>
-                                <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName %>">
+                                <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName%>">
 
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -60,7 +60,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode</label>
-                                        <input type="number" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode %>">
+                                        <input type="number" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode%>">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
@@ -79,53 +79,55 @@
 </main><!-- End .main -->
     <script>
         // JavaScript code for form validation
-        const form = document.getElementById('form');
-        const name = document.getElementById('userName');
-        const mob = document.getElementById('mobile');
-        const mob2 = document.getElementById('alternativenumber');
-        const home = document.getElementById('hoseName');
-        const city = document.getElementById('city');
-        const state = document.getElementById('state');
-        const pin = document.getElementById('pincode');
-        const errorElement = document.getElementById('error');
+        const form = document.getElementById('form')
+        const name = document.getElementById('userName')
+        const mob = document.getElementById('mobile')
+        const mob2 = document.getElementById('alternativenumber')
+        const home = document.getElementById('hoseName')
+        const city = document.getElementById('city')
+        const state = document.getElementById('state')
+        const pin = document.getElementById('pincode')
+        const errorElement = document.getElementById('error')
     
-        form.addEventListener('submit', (e) => {
-            let messages = [];
+        form.addEventListener('submit',(e)=> {
+         alert(name)
+            let messages =[];
     
-            if (name.value.trim() === '') {
+            if(name.value.trim() === ''|| name.value.trim() === null ) {
+                alert(name)
                 messages.push('User Name is required');
             }
     
-            if (mob.value.trim() === '') {
+            if(mob.value.trim() === ''|| mob.value.trim() === null) {
                 messages.push('Mobile Number is required');
             } else if (mob.value.length < 10) {
                 messages.push('Please enter a valid Mobile Number');
             }
     
-            if (mob2.value.trim() === '') {
+            if(mob2.value.trim() === ''|| mob2.value.trim() === null) {
                 messages.push('Alternative number is required');
             } else if (mob2.value.length < 10) {
                 messages.push('Please enter a valid Alternative Number');
             }
     
-            if (home.value.trim() === '') {
+            if(home.value.trim() === ''|| home.value.trim() === null) {
                 messages.push('House Name is required');
             }
     
-            if (city.value.trim() === '') {
+            if(city.value.trim() === ''|| city.value.trim() === null) {
                 messages.push('Town / City is required');
             }
     
-            if (state.value.trim() === '') {
+            if(state.value.trim() === ''|| state.value.trim() === null) {
                 messages.push('State / County is required');
             }
     
-            if (pin.value.trim() === '') {
+            if (pin.value.trim() === ''|| pin.value.trim() === null) {
                 messages.push('Pincode is required');
             }
     
-            if (messages.length > 0) {
-                e.preventDefault();
+            if(messages.length > 0){
+                e.preventDefault()
                 errorElement.innerText = messages.join(', ');
             }
         });

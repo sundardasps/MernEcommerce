@@ -2,6 +2,7 @@ const UserDb = require("../models/userModel");
 const CartDb = require("../models/cart_model");
 const ProductDb = require("../models/product_model");
 const addressDb = require("../models/userAddress_model")
+const couponsDb = require("../models/coupon_model")
 //=================== LOAD CART ======================
 
 const loadCart = async (req, res) => {
@@ -9,7 +10,7 @@ const loadCart = async (req, res) => {
     
     let id = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
-
+ 
    
 
     const cartData = await CartDb.findOne({
@@ -41,6 +42,7 @@ const loadCart = async (req, res) => {
           const totalamout = Total
           const userId = userName._id;
           const userData = await UserDb.find();
+   
           res.render("cart", {
             products: products,
             Total: Total,
@@ -48,6 +50,8 @@ const loadCart = async (req, res) => {
             session,
             totalamout,
             user: userName,
+            
+      
             
           });
 
@@ -220,13 +224,7 @@ const cartQuantityIncrease = async (req, res, next) => {
     );
     const updateQuantity = updateProduct.count;
     const productPrice = productData.price;
-    // const discount =  productData.discountPercentage;
-    // const price =  productData.price
-    // const discountAmount = Math.round((price*discount)/100)
-    // const total = price - discountAmount
-    // const prices = updateQuantity * total;
- 
-
+  
     const productTotal = productPrice * updateQuantity;
     await CartDb.updateOne(
       { userId: userData, "products.productId": proId },
@@ -247,6 +245,8 @@ const loadcheckOut = async (req, res) => {
     const  session = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
     const addressdata = await addressDb.findOne({userId:req.session.user_id});
+    const couponsData = await couponsDb.find()
+    const todayDate = new Date()
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
@@ -273,8 +273,10 @@ const loadcheckOut = async (req, res) => {
                 const address = addressdata.addresses
           const Total = total.length > 0 ? total[0].total : 0;
           const totalamout = Total
+          const userWallet = userName.wallet
           const userId = userName._id;
-         
+          const couponCode = undefined
+
           res.render("checkOut",{
             products: products,
             Total: Total,
@@ -282,7 +284,12 @@ const loadcheckOut = async (req, res) => {
             session,
             totalamout,
             user: userName,
-            address
+            address,
+            couponCode,
+            userWallet,
+            coupons:couponsData,
+            todayDate,
+           
           });
 
           } else {

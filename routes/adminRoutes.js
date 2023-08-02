@@ -9,6 +9,7 @@ const admin_route = express();
 const adminController = require('../controllers/adminController');
 const orderController = require('../controllers/orderControllers')
 const productController = require('../controllers/productController');
+const couponController = require('../controllers/couponController')
 admin_route.use(bodyparser.json());
 admin_route.use(bodyparser.urlencoded({extended:true}));
 
@@ -42,6 +43,7 @@ admin_route.get('/product_details',auth.isLogin,productController.productDetails
 admin_route.get('/edit_product',auth.isLogin,productController.editProduct)
 admin_route.post('/edit_product',auth.isLogin,upload.array("image", 4),productController.addeditProduct)
 admin_route.get('/product_delete',auth.isLogin,productController.deleteProduct)
+admin_route.post('/delete_image',auth.isLogin,productController.deleteImageFromEdit)
 admin_route.get('/imageCropper',productController.imageCropper)
 
 //================== ORDER MANAGEEMENT ===============================
@@ -50,7 +52,13 @@ admin_route.get('/orderFullDetails',orderController.loadProductdetails)
 admin_route.post('/updateStatus',orderController.updateStatus);
 
 //================== ADMIN SALES MANAGEMENT ======================
-admin_route.get('/salesReport',adminController.loadSalesReport)
+admin_route.get('/salesReport',auth.isLogin,adminController.loadSalesReport)
 admin_route.post('/salesReportSort',adminController.sortsalesReport)
-admin_route.post('/saleSortPage',adminController.salesReportFilter)
+admin_route.get('/saleSortPage/:id',auth.isLogin,adminController.salesReportFilter)
+
+//================== ADMIN COUPON MANEGEMENT =====================
+admin_route.get('/couponList',couponController.loadCoupon)
+admin_route.post('/couponList',couponController.addCoupon)
+admin_route.post('/editCoupon/:id',couponController.editCoupon)
+admin_route.get('/deleteCoupon',auth.isLogin,couponController.adminDeleteCoupon)
 module.exports = admin_route;

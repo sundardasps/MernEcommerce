@@ -121,7 +121,7 @@ margin-top:20px;
 						   </div>
 						   <div class="col-xs-6 col-sm-6 col-md-6 text-right">
 							   <div class="receipt-right">
-                  <h5 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Green</Span> energy</h5>
+                  <h5 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Eco</Span>Bikes</h5>
 								   <p>+91 1234567890<i class="fa fa-phone"></i></p>
 								   <p>Electric cycles<i class="fa fa-envelope-o"></i></p>
 							   </div>
@@ -152,7 +152,9 @@ margin-top:20px;
 								   <th>Product Name</th>
 								   <th>Quantity</th>
 								   <th>price/unit</th>
+								   <th>Discount</th>
 								   <th>Total</th>
+
 							   </tr>
 						   </thead>
 						   <tbody>
@@ -163,7 +165,9 @@ margin-top:20px;
 								   <td class="col-md-9"><%=orders.productId.name %></td>
 								   <td class="col-md-9"><%= orders.count%></td>
 								   <td class="col-md-9"><%= orders.productPrice%></td>
+								   <td class="col-md-9">₹ <%= order.discount%></td>
 								   <td class="col-md-9">₹ <%= orders.totalPrice%>.00</td>
+
 								   <% });
                                  } %>
 								   
@@ -171,8 +175,8 @@ margin-top:20px;
 								   <td></td>
 								   <td></td>
 								   <td></td>
-								   <td class="text-right col-md-9"><h2><strong>Total: </strong></h2></td>
-								   <td class="text-left text-danger"><h2><strong><i class="fa fa-inr"></i>₹ <%= order.totalAmount %>.00/-</strong></h2></td>
+				                    <td></td>
+								   <td class="text-left text-danger"><h2><strong><i class="fa fa-inr"></i>Total:<%= order.totalAmount %>.00/-</strong></h2></td>
 							   </tr>
 						   </tbody>
 					   </table>

@@ -1,71 +1,61 @@
 <%- include("../user/layouts/user_header.ejs") %>
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('/adminassets/imgs/1687180326718-desert-eagle.jpg')">
+    <div class="page-header text-center" style="background-color: rgb(178, 215, 166);">
         <div class="container">
-            <h1 class="page" style="font-weight: 1000; color: aliceblue;" > # PEP energy</h1>
+            <h3 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Eco</Span> <span style="color: rgb(0, 0, 0);">Bikes</span> </h3>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
-    <nav aria-label="breadcrumb" class="breadcrumb-nav">
-        <div class="container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
-            </ol>
-        </div><!-- End .container -->
-    </nav><!-- End .breadcrumb-nav -->
+
 
     <div class="page-content">
         <div class="checkout">
             <div class="container">
                 <div class="checkout-discount">
-                    <form action="#">
-                        <input type="text" class="form-control" required id="checkout-discount-input">
-                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
-                    </form>
+        
                 </div><!-- End .checkout-discount -->
-                <form action="/addUserAddress" method="post">
+                <div  id="error" style="color: red;"></div>
+                <form action="" method="post" id="form">
                     <div class="row">
                         <div class="col-lg-9">
-                            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                            <h2 class="checkout-title">Add address</h2><!-- End .checkout-title -->
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>User Name</label>
-                                        <input type="text" class="form-control" name="userName"  required>
+                                        <input type="text" id="userName" class="form-control" name="userName">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
                                  
                                  <div class="row">
                                     <div class="col-sm-6">
                                         <label>Mobile Number*</label>
-                                        <input type="number" name="mobile" class="form-control" required>
+                                        <input type="number" id="mobile" name="mobile" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Alternative number </label>
-                                        <input type="number" name="alternativenumber" class="form-control" required>
+                                        <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <label>Housename*</label>
-                                <input type="text" class="form-control" name="hoseName"  required>
+                                <input type="text" id="hoseName" class="form-control" name="hoseName"  >
 
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Town / City *</label>
-                                        <input type="text" name="city" class="form-control" required>
+                                        <input type="text" id="city" name="city" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>State / County *</label>
-                                        <input type="text" name="state" class="form-control" required>
+                                        <input type="text" id="state" name="state" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode</label>
-                                        <input type="number" name="pincode" class="form-control" required>
+                                        <input type="number"  id="pincode" name="pincode" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
@@ -82,4 +72,66 @@
         </div><!-- End .checkout -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+
+
+    const name = document.getElementById('userName');
+    const mob = document.getElementById('mobile');
+    const  mob2  = document.getElementById('alternativenumber')
+    const  home  = document.getElementById('hoseName')
+    const  city  = document.getElementById('city')
+    const  state  = document.getElementById('state')
+    const  pin  = document.getElementById('pincode')
+    const  form  = document.getElementById('form')
+
+    const errorElement = document.getElementById("error")
+
+    form.addEventListener('submit',(e)=>{
+    let messages = []
+    if(  name.value =="" || name.value == null){
+      messages.push('name is required')
+    }
+
+    if( mob.value =="" || mob.value == null){
+         messages.push("number is required!")
+    }
+
+    if( mob2.value =="" || mob2.value == null){
+         messages.push("alternativenumber is required!")
+    }
+      
+    
+    if( home.value =="" || home.value == null){
+         messages.push("Housing address is required!")
+    }
+    
+    if( city.value =="" || city.value == null){
+         messages.push("city address is required!")
+    }
+   
+    if( state.value =="" || state.value == null){
+         messages.push("state address is required!")
+    }
+
+    if( pin.value =="" || pin.value == null){
+         messages.push("pincode is required!")
+    }
+
+    if( mob.value.length < 10 || mob2.value.length < 10){
+         messages.push("Please add valid numbrs")
+    }
+
+
+    if( messages.length > 0  ){
+      e.preventDefault()
+      errorElement.innerText = messages.join(' & ')
+      
+    }
+
+    })
+    
+
+
+  </script>
+
 <%- include("../user/layouts/user_footer.ejs") %>

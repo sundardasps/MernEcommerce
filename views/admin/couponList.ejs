@@ -1,0 +1,306 @@
+<%- include("../admin/layouts/admin_header.ejs") %>
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+   
+            <h4 class="card-title">CouponList</h4>
+            <!-- <p class="card-description"> Add class <code>.table-dark</code> -->
+            </p>
+            <div class="table-responsive">
+              <div class="card-body">
+              <a href="" class="btn btn-success btn-md" data-toggle="modal" data-target="#modalRegisterForm">
+                Add coupon</a>
+
+            </div>
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+               
+                      <th style="font-size: large;"> Number </th>
+                      <th style="font-size: large;"> Coupon name </th>
+                      <th style="font-size: large;"> Copon code </th>
+                      <th style="font-size: large;"> Discount %</th>
+                      <th style="font-size: large;"> activationDate </th>
+                      <th style="font-size: large;"> expiryDate </th>
+                      <th style="font-size: large;"> Coupon limit </th>
+                      <th style="font-size: large;"> Status</th>
+
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <%if(coupons.length>0){%>
+                  <% coupons.forEach((data,i)=>{ %>
+                    <tr>
+                      <td style="color: aliceblue;">
+                        <%= i + 1 %>
+                      </td>
+                      <td style="color: aliceblue;">
+                        <%= data.couponName %>
+                      </td>    
+                      <td style="color: aliceblue;">
+                        <%= data.couponCode %>
+                      </td> 
+                      <td style="color: aliceblue;">
+                        <%= data.discountPercentage %>%
+                      </td> 
+                      <td style="color: aliceblue;">
+                        <%= data.activationDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>
+                      </td>  
+                      <td style="color: aliceblue;">
+                        <%= data.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>
+                      </td>
+                      
+                      <td style="color: aliceblue;">
+                        <%= data.usersLimit %>
+                      </td>
+
+                      <td style="color: aliceblue;">
+
+                        <% if(data.status != true){%>
+                          <p>Expired</p>
+                          <%}else{%>
+                             <% if(data.activationDate > todaydate ){%>
+                            <p style="color: rgb(255, 234, 0);">Coming soon!</p>
+                              <%}else{%>
+                            <p style="color: chartreuse;">Valid</p>
+                            <%}%>
+                          <%}%>
+
+                      </td>
+                      
+                     <td><button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);" data-toggle="modal" data-target="#modalEditForm-<%= data._id %>">Edit</button></td>
+                     <td>
+                      <a href="/admin/deleteCoupon?id=<%= data._id %>"><button type="button"
+                      class="btn btn-outline-danger btn-icon-text">
+                      Delete </button></a>
+                      <!-- <% if( data.is_active === true){ %>
+                        <a href="/admin/is_active?id=<%= data._id %>">
+                      <button type="button" class="btn btn-success btn-md">Active</button></a>
+                        <% }else{ %>
+                          <a href="/admin/is_active?id=<%= data._id %>">
+                            <button type="button" class="btn btn-outline-secondary btn-md">Inactive</button></a>
+                          <%}%> -->
+                     </td>
+                    </tr>
+
+                    <div class="modal fade" id="modalEditForm-<%= data._id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.682);">
+                      <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                   <div id="error1" style="color: chocolate;"></div>
+                   <form action="/admin/editCoupon/<%= data._id %>" method="post" id="form"  >
+                    <div class="modal-header text-center">
+                      <h4 class="modal-title w-100 font-weight-bold">Code</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                     <div class="modal-body mx-3">
+                      <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon Name</label>
+                      <input type="text" id="orangeForm-name" name="couponName" class="form-control validate" value="<%= data.couponName %>" required>
+                     </div>
+                      <div class="md-form mb-5">
+                          <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon code</label>
+                        <input type="text" id="orangeForm-name" name="couponCode" class="form-control validate" value="<%= data.couponCode %>" required>
+                      </div>
+                      <div class="md-form mb-5">
+                          <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
+                        <input type="number" id="orangeForm-email" name="discountPercentage" class="form-control validate" value="<%= data.discountPercentage %>" required>
+                      </div>
+
+                      <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
+                      <input type="number" id="orangeForm-email" name="criteriaAmount" class="form-control validate" value="<%= data.criteriaAmount %>" required>
+                    </div>
+              
+                      <div class="md-form mb-4">
+                          <label data-error="wrong" data-success="right" for="orangeForm-pass">Activation date</label>    
+                        <input type="text" id="activationDate1"  name="activationDate" class="form-control validate" value="<%= data.activationDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" required>
+                      </div>
+              
+                      <div class="md-form mb-4">
+                          <label data-error="wrong" data-success="right" for="orangeForm-pass">Expiry date</label>       
+                          <input type="text" id="expiryDate1" name="expiryDate" class="form-control validate" value="<%= data.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" required>
+                        </div>
+                       
+                        <div class="md-form mb-4">
+                          <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
+                          <input type="number" id="orangeForm-pass" name="usersLimit" class="form-control validate" value="<%= data.usersLimit %>" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                      <button type="submit" class="btn btn-deep-orange">submit</button>
+                    </div>
+                     </form>
+                  </div>
+                     </div>
+                      </div>
+                    <% })%>
+                      <%}else{%>
+                        <h2 style="text-align: center;">Empty coupon list</h2>
+                        <%}%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Button trigger modal -->
+  <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.682);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <% if(typeof message !=='undefined' ){%>
+        <p style="color: red; font-size: large; font-weight: 300;">
+          <%= message %>
+        </p>
+        <% } %>
+        <div id="error" style="color: chocolate;"></div>
+        <form action="" method="post" id="formAdd"  >
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Code</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon Name</label>
+        <input type="text" id="couponName" name="couponName" class="form-control validate" required>
+       </div>
+        <div class="md-form mb-5">
+            <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon code</label>
+          <input type="text" id="couponCode" name="couponCode" class="form-control validate" required>
+        </div>
+        <div class="md-form mb-5">
+            <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
+          <input type="number" id="discountPercentage" name="discountPercentage" class="form-control validate" required>
+        </div>
+
+        <div class="md-form mb-5">
+          <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
+        <input type="number" id="criteriaAmount" name="criteriaAmount" class="form-control validate" required>
+       </div>
+
+        <div class="md-form mb-4">
+            <label data-error="wrong" data-success="right" for="orangeForm-pass">Activation date</label>    
+          <input type="date" id="activationDate" name="activationDate" class="form-control validate" required>
+        </div>
+
+        <div class="md-form mb-4">
+            <label data-error="wrong" data-success="right" for="orangeForm-pass">Expiry date</label>       
+            <input type="date" id="expiryDate" name="expiryDate" class="form-control validate" required>
+          </div>
+
+          <div class="md-form mb-4">
+            <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
+            <input type="number" min="0" id="usersLimit" name="usersLimit" class="form-control validate" required>
+          </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button onclick="checkCoupon()" type="submit" class="btn btn-deep-orange">submit</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+function checkCoupon(){
+const couponName = document.getElementById('couponCode')
+const couponCode = document.getElementById('discountPercentage')
+const discountPercentage = document.getElementById('criteriaAmount')
+const activationDate = document.getElementById('activationDate')
+const criteriaAmount = document.getElementById('expiryDate')
+const expiryDate = document.getElementById('expiryDate')
+const usersLimit = document.getElementById('usersLimit')
+
+  $.ajax({
+    url:"/couponList",
+    data:{
+      couponName,
+      couponCode,
+      discountPercentage,
+      activationDate,
+      criteriaAmount,
+      expiryDate,
+      usersLimit
+    },
+    method:"post",
+    success: (response) => {
+  if (response.already) {
+    swal.fire({
+      title: 'Error',
+      text: 'Coupon already exists!',
+      icon: 'error',
+      timer: 2500,
+      showConfirmButton: false
+    });
+  }
+}
+
+  })
+}
+
+const formAdd = document.getElementById('formAdd')
+const actdate = document.getElementById('activationDate')
+const expdate = document.getElementById('expiryDate')
+const errorElement = document.getElementById('error')
+
+formAdd.addEventListener("submit",(e)=>{
+  let messages = []
+
+  if( actdate.value > expdate.value){
+    messages.push("Please add valid dates")
+  }
+
+  if( messages.length >0){
+    e.preventDefault()
+    errorElement.innerText = messages.join(',')
+  }
+
+})
+
+const form = document.getElementById('form')
+const actidate = document.getElementById('activationDate1')
+const expydate = document.getElementById('expiryDate1')
+const errorElements = document.getElementById('error1')
+
+form.addEventListener("submit",(e)=>{
+  let messages = []
+
+  if( actidate.value > expydate.value){
+    messages.push("Please add valid dates")
+  }
+
+  if( messages.length >0){
+    e.preventDefault()
+    errorElement.innerText = messages.join(',')
+  }
+
+})
+
+
+
+
+</script>
+   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>      
+
+
+  
+
+
+<%- include("../admin/layouts/admin_footer.ejs") %>

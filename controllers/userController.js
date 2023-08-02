@@ -230,11 +230,6 @@ const loadHome = async (req, res) => {
   const wishData = await wishListDb.find();
  
 
- 
-  
-
-
-
   try {
     res.render("home", {
       session: session,
@@ -484,8 +479,42 @@ const filterCategory = async (req,res) => {
 }
 
 
-//======================== GOOGLE AUTHENTICATION MANAGEMENT ===========================
+//======================== EDIT USER  ===========================
 
+const updateUser = async (req,res) =>{
+
+   try {
+    const id = req.params.id
+    const name = req.body.name
+    const email = req.body.email
+    const mobile = req.body.mobile
+    const updatedData = await User.findOneAndUpdate({_id:id},{
+       $set:{
+        user_name:name,
+        email:email,
+        mobile_number:mobile,
+       }
+    })
+
+    res.redirect('/userDashboard')
+    
+   } catch (error) {
+     console.log(error.message);
+   }
+
+}
+
+//=========================================================
+
+const loadAbout  = async  (req,res) =>{
+
+   try {
+    res.render('about')
+    
+   } catch (error) {
+    console.log(error.message);
+   }
+}
 
 
 module.exports = {
@@ -504,5 +533,7 @@ module.exports = {
   // loadWishList
   loadShop,
   filterCategory,
+  updateUser,
+  loadAbout
 
 };

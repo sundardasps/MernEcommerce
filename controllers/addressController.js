@@ -1,7 +1,7 @@
 const { session } = require("passport");
 const addressDb = require("../models/userAddress_model");
 const UserDb = require("../models/userModel");
-const orderDb = require('..//models/order_model')
+const orderDb = require("..//models/order_model");
 const { query } = require("express");
 
 //==================== LOAD USER DASHBOARD ==========================
@@ -10,14 +10,16 @@ const loadUserDashboard = async (req, res) => {
     const id = req.session.user_id;
     const userData = await UserDb.findOne({ _id: id });
     const userAddress = await addressDb.findOne({ userId: id });
-    const orderData = await orderDb.find()
+    const allAddress = await addressDb.find();
+    const orderData = await orderDb.find();
     const session = req.session.user_id;
-    
-    res.render("userDashboard",{
+
+    res.render("userDashboard", {
       user: userData,
       session,
       addresses: userAddress,
-      orders:orderData,
+      orders: orderData,
+      address: allAddress,
     });
   } catch (error) {
     console.log(error.message);
@@ -115,14 +117,14 @@ const loadEditAddress = async (req, res) => {
 
 const updateAddress = async (req, res) => {
   try {
- 
     const id = req.query.id;
-    const session = req.session.user_id
+    const session = req.session.user_id;
+    console.log(req.body.alternativenumber);
     const address = await addressDb.updateOne(
       { userId: req.session.user_id },
       { $pull: { addresses: { _id: id } } }
     );
-    
+
     const pushAddress = await addressDb.updateOne(
       { userId: session },
       {
@@ -160,40 +162,159 @@ const deleteAddress = async (req, res) => {
   }
 };
 
-
 //======================LOAD EMPTY CART ==========================
 
-const emptyCheckOut = async (req,res) => {
-   
-    try {
-       res.render('emptyCheckOut');
-    } catch (error) {
-      console.log(error.message);
-    }
-
-}
+const emptyCheckOut = async (req, res) => {
+  try {
+    res.render("emptyCheckOut");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 //======================USER SHOW ADDRESSS ========================
 
-const showAddress = async (req,res) => {
-
-
-   try {
-    const addressData = await addressDb.findOne({userId:req.session.user_id})
-    if(addressData.addresses.length > 0 ){
-      const address = addressData.addresses
-      res.render('showAddress',{address})
+const showAddress = async (req, res) => {
+  try {
+    const addressData = await addressDb.findOne({
+      userId: req.session.user_id,
+    });
+    if (addressData.addresses.length > 0) {
+      const address = addressData.addresses;
+      res.render("showAddress", { address });
+    } else {
+      res.render("emptyCheckOut");
     }
-    
-   } catch (error) {
-    
-   }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
+//====================LOAD ADDRESS FROM DASHBOARD==================
 
+const loadAddressFromDash = async (req, res) => {
+  try {
+    const addressData = await addressDb.findOne({
+      userId: req.session.user_id,
+    });
+    if (addressData.addresses.length > 0) {
+      const address = addressData.addresses;
+      res.render("showAddressFromDash", { address });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-  
-}
+//====================ADD ADDRESS FROM DASHBOARD====================
 
+const addUserAddressFromDash = async (req, res) => {
+  try {
+    const alredyAdress = await addressDb.findOne({
+      userId: req.session.user_id,
+    });
+    if (alredyAdress) {
+      const updatedAddress = await addressDb.updateOne(
+        { userId: req.session.user_id },
+        {
+          $push: {
+            addresses: [
+              {
+                userName: req.body.userName,
+                mobile: req.body.mobile,
+                altrenativeMob: req.body.alternativenumber,
+                houseName: req.body.hoseName,
+                city: req.body.city,
+                state: req.body.state,
+                pincode: req.body.pincode,
+              },
+            ],
+          },
+        }
+      );
+      if (updatedAddress) {
+        res.redirect("/userDashboard");
+      }
+    } else {
+      const newAddress = new addressDb({
+        userId: req.session.user_id,
+        addresses: [
+          {
+            userName: req.body.userName,
+            mobile: req.body.mobile,
+            altrenativeMob: req.body.alternativenumber,
+            houseName: req.body.hoseName,
+            city: req.body.city,
+            state: req.body.state,
+            pincode: req.body.pincode,
+          },
+        ],
+      });
+      const savedAddress = await newAddress.save();
+
+      if (savedAddress) {
+        res.redirect("/userDashboard");
+      } else {
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//===================LOAD EDIT ADDRESS FROM DASHBOARD ===================
+
+const loadEditAddressfromDash = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const session = req.session.user_id;
+    const user = await UserDb.find();
+    const addressData = await addressDb.findOne(
+      { userId: req.session.user_id },
+      { addresses: { $elemMatch: { _id: id } } }
+    );
+    const address = addressData.addresses;
+
+    res.render("editAddressFromDash", {
+      addresses: address[0],
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//===================ADD EDIT ADDRESS FROM DASHBOARD ===================
+
+const updateAddressFromDash = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const session = req.session.user_id;
+    const address = await addressDb.updateOne(
+      { userId: req.session.user_id },
+      { $pull: { addresses: { _id: id } } }
+    );
+
+    const pushAddress = await addressDb.updateOne(
+      { userId: session },
+      {
+        $push: {
+          addresses: {
+            userName: req.body.userName,
+            mobile: req.body.mobile,
+            altrenativeMob: req.body.alternativenumber,
+            houseName: req.body.hoseName,
+            city: req.body.city,
+            state: req.body.state,
+            pincode: req.body.pincode,
+          },
+        },
+      }
+    );
+    res.redirect("/userDashboard");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 module.exports = {
   loadUserDashboard,
@@ -203,5 +324,10 @@ module.exports = {
   deleteAddress,
   updateAddress,
   emptyCheckOut,
-  showAddress
+  showAddress,
+
+  loadAddressFromDash,
+  loadEditAddressfromDash,
+  addUserAddressFromDash,
+  updateAddressFromDash,
 };

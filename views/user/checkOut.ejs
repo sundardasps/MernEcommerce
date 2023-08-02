@@ -1,11 +1,7 @@
 <%- include("../user/layouts/user_header.ejs") %>
 <div id="reloadDiv">
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('/adminassets/imgs/1687180326718-desert-eagle.jpg')">
-        <div class="container">
-            <h2 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Green</Span> energy <<< </h2>
-        </div><!-- End .container -->
-    </div><!-- End .page-header -->
+
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
@@ -20,15 +16,28 @@
         <div class="checkout">
             <div class="container">
                 <div class="checkout-discount">
+                       
+                            <div class="checkout-discount">
+                       
+                            <div class="input-group mb-3">
+                                <input type="text"  class="form-control" required id="checkout-discount-input" data-toggle="modal" data-target="#exampleModalLong" value="<%= couponCode %>" style="font-weight: 600; font-size: small;" placeholder="Click here to Get code">
+                                <button onclick="applycoupon('<%= totalamout %>')"  class="btn btn-outline-secondary"  id="button" >Apply</button>
+                              </div>
+                        
+                             </div>
+
                   <form id="checkout-form">
+
                     
-                        <!-- <input type="text" class="form-control" required id="checkout-discount-input">
-                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label> -->
-                    
+                        
+
                        </div><!-- End .checkout-discount -->
                         <div class="row">
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                          
+                       
+
                             <div class="row">
                                 <div class="col-lg-12">
                                   <div class="d-flex justify-content-end pb-2">
@@ -79,6 +88,7 @@
                             </div><!-- End .col-lg-12 -->
                         </div><!-- End .row -->
                             
+                        
                       
                         </div><!-- End .col-lg-9 -->
                         <aside class="col-lg-3">
@@ -114,12 +124,16 @@
                                             <td>Shipping:</td>
                                             <td>Free shipping</td>
                                         </tr>
+                                        <tr>
+                                            <td>Discount:</td>
+                                            <td>₹<span id="discount">.00</td>
+                                        </tr>
                                         <tr class="summary-total">
                                             <td style="color: aliceblue;">Total:</td>
-                                            <td id="total" style="color: aliceblue;"><%= totalamout %>/-</td>
+                                            <td id="total" style="color: aliceblue;"><%= totalamout %></td>
                                             
                                         </tr><!-- End .summary-total -->
-                                       <input type="hidden" value="<%= totalamout %>" name="Total">
+                                       <input type="hidden" value="<%= totalamout %>" name="Total"  >
                                     </tbody>
                                 </table><!-- End .table table-summary -->
 
@@ -130,7 +144,8 @@
                                             <input required type="radio" id="wallet" name="payment" value="wallet">
                                         </div>
                                         <a href="hidden" class="d-block text-dark" for="pay1">Wallet payment</a>
-                                    </div>
+                                      </div>
+                                        <p>Availabel wallet balence:<%= userWallet %>/-</p>
                                  
                                      <div class="d-flex align-items-center">
                                          <div class="mr-2">
@@ -159,6 +174,115 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 </div>
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom:none;">
+        <% if(coupons.length > 0){%>
+          <h5 class="modal-title" id="exampleModalLongTitle">Available coupons</h5>
+          <%}else{%>
+            <h5 class="modal-title" id="exampleModalLongTitle">No coupons available</h5>  
+            <%}%>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body;" style="padding: 5%;" >
+
+        
+            <% coupons.forEach((coupons)=>{ %>
+               <div class="card text-white bg-warning mb-3" style="max-width: 100%; align-items: center; border-color: black; border:1%;">
+                <div class="card-header" style="font-size: 400%;"><%= coupons.couponName %></div>
+                <div class="card-body">
+                  <h5 class="card-title" style="font-size:10vb;"><%= coupons.discountPercentage %>% <span style="color: rgb(119, 218, 19);">Dis</span>count</h5>
+                  <p class="card-text" style="color: black;">Coupon applicable for purchase above <%= coupons.criteriaAmount %>/- rupees</p>
+                  <% if( coupons.activationDate > todayDate ){%>
+                         <h6 style="font-weight: 800;color: rgb(0, 0, 0);">Coming Soon!</h6>
+                    <%}else{%>
+                  <button  onclick="getcouppn('<%= coupons.couponCode  %>')" type="submit"  class="btn btn-outline-primary btn-rounded" ><span style="color: aliceblue;">Get coupon</span></button>
+                    <%}%>
+                </div>
+              </div>
+               <% }) %>
+          
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<style>
+ 
+  /* Styles for the checkout-discount container */
+  .checkout-discount {
+    margin: 20px 0;
+  }
+
+  /* Styles for the input field */
+  #checkout-discount-input {
+    font-weight: 600;
+    font-size: small;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 180px; /* You can adjust the width as needed */
+  }
+
+  /* Styles for the Apply button */
+  #button {
+    font-size: small;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #000000;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Apply button hover effect */
+  #button:hover {
+    background-color: #00bc19;
+  }
+
+  /* Apply button disabled style */
+  #button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+/* Style the input container */
+.input-container {
+    position: relative;
+}
+
+/* Create the pseudo-element for the clear button */
+.input-container::after {
+    content: '\00d7'; /* Unicode 'times' symbol (×) */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Adjust the pseudo-element appearance */
+.input-container::after {
+    font-size: 14px;
+    color: #999;
+}
+
+/* Hide the pseudo-element when the input is empty */
+.input-container input[value=""] + .btn {
+    display: none;
+}
+
+
+</style>
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -166,92 +290,6 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
-//  $("#checkout").submit((e)=>{
-//          let address = $("input[name=address]:checked").val();    
-//         let total = document.getElementById("total").innerHTML;
-//         let payment =  $("input[name=payment]:checked").val();
-//         let Count= document.getElementById("Count").innerHTML;
-   
-//   $.ajax({
-//      url: "/checkOut",
-//     method:"post",
-//     data:{
-//       Total: total,
-//       address: address,
-//       payment : payment, 
-//       count:Count
-
-//     },
-
-//     success:(response) => {
-//       if( response.codsuccess){
-    
-//         location.href = "/orderSuccess";
-                
-//       } else{
-//         razorpayPayment(response.order);
-//       }
-//     }
-//   })
-// })
-
-
-// function razorpayPayment(order) {
-  
-// var options = {
-//   "key":"rzp_test_h9X7hpWjwefyd2", // Enter the Key ID generated from the Dashboard
-//   "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-//   "currency": "INR",
-//   "name": "PEP energy", //your business name
-//   "description": "Test Transaction",
-//   "image":"https://example.com/your_logo",
-//   "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-//   "handler": function (response) {
-
-//     verifyPayment(response, order);
-//   },
-//   "prefill": {
-//     "name": "Gaurav Kumar", //your customer's name
-//     "email": "gaurav.kumar@example.com",
-//     "contact": "9000090000"
-//   },
-//   "notes": {
-//     "address": "Razorpay Corporate Office"
-//   },
-//   "theme": {
-//     "color": "#3399cc"
-//   }
-// };
-  
-// var rzp1 = new Razorpay(options);
-// rzp1.open();
-
-// }
-
-
-// function verifyPayment(payment, order) {
-// const amount2 = document.getElementById("total").innerHTML;
-
-// $.ajax({
-//   url: "/verifyPayment-online",
-//   method: "post",
-//   data: {
-//     payment:payment,
-//     amount:amount2,
-//     order:order,
-//   },
-//   success: (response) => {
-//     if (response.success) {
-//       location.href ="/orderSuccess";
-//     } else {
-      
-//       location.href ='/';
-
-//     }
-//   }
-// })
-// }
-
 
     
 
@@ -260,7 +298,7 @@ $("#checkout-form").submit((e) => {
     let address = $("input[name=address]:checked").val();
     let total = document.getElementById("total").innerHTML;// Modified to use jQuery instead of plain JavaScript
     let payment = $("input[name=payment]:checked").val();
-     alert(payment)
+    let discount = document.getElementById('discount').innerHTML
     e.preventDefault();
     $.ajax({
         url: "/checkoutPage",
@@ -268,7 +306,9 @@ $("#checkout-form").submit((e) => {
         data: {
             Total: total,
             address,
-            payment: payment
+            payment: payment,
+            disamount:discount,
+
         },
 
         success: (response) => {
@@ -295,7 +335,7 @@ var options = {
     "key": "rzp_test_h9X7hpWjwefyd2", // Enter the Key ID generated from the Dashboard
     "amount":order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
-    "name": "Green erergy", //your business name
+    "name": "EcoBikes", //your business name
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
     "order_id":order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
@@ -379,7 +419,79 @@ function verifyPayment(payment, order) {
               });
             }
 
+            function getcouppn(code) {
+        couponcode = document.getElementById('checkout-discount-input');
+        couponcode.value = code;
+    }
 
+ function applycoupon(amount){
+    const code = document.getElementById('checkout-discount-input').value
+   $.ajax({
+       url:'/applyCoupon',
+       data:{
+        couponCode : code,
+        amount
+       },
+       method: 'post',
+       success:(response)=>{
+          if((response.verifiedsuccess)){
+            document.getElementById('total').innerHTML = response.lastTotal
+            document.getElementById('discount').innerHTML = response.percentage
+
+            swal.fire({
+            title: 'Success',
+            text: 'Coupon redeemed successfully',
+            icon: 'success',
+            timer: 2500,
+            showConfirmButton: false
+            })
+          } else if((response.usedSuccess)){
+            swal.fire({
+            title: 'Success',
+            text: 'Coupon already used!',
+            icon: 'error',
+            timer: 2500,
+            showConfirmButton: false
+            }) 
+          } else if((response.notdate)){
+            swal.fire({
+            title: 'error',
+            text: 'coupon expired!',
+            icon: 'error',
+            timer: 2500,
+            showConfirmButton: false
+            })
+          } else if((response.critirianot)){
+            swal.fire({
+            title: 'error',
+            text: 'You need to purchase more!',
+            icon: 'error',
+            timer: 2500,
+            showConfirmButton: false
+            })
+          } else if((response.limitsuccess)){
+            swal.fire({
+            title: 'error',
+            text: 'Sorry coupon not valid',
+            icon: 'error',
+            timer: 2500,
+            showConfirmButton: false
+            })
+          } else{
+            swal.fire({
+            title: 'error',
+            text: 'Invalid coupon',
+            icon: 'error',
+            timer: 2500,
+            showConfirmButton: false
+            })
+
+          }
+       }
+   })
+   
+
+ }
     
          
 </script>

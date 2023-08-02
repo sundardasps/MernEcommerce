@@ -36,42 +36,56 @@ admin_route.get('*',function(req,res){
 })
 
 
+
+
 //================================== GOOGLE AUTHENTICATION ====================================
-const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-passport.use(new GoogleStrategy({
-  clientID: process.env.googleClaintId,
-  clientSecret: process.env.googleClaintSecret,
-  callbackURL: "http://localhost:3000/auth/google/callback"
-},
-function(accessToken, refreshToken, profile, done) {
-    userProfile=profile;
-    return done(null, userProfile);
-}
-));
-
-passport.serializeUser(function(user,done){
-  done(null,user);
-})
-
-passport.deserializeUser(function(user,done){
-  done(null,user)
-})
+const passport = require('passport');
+var userProfile;
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.set('view engine', 'ejs');
 
 
-app.get('/auth/google', 
-  passport.authenticate('google', { scope : ['https://www.googleapis.com/auth/plus.login'] }));
+app.get('/success', (req, res) => res.send(userProfile));
+app.get('/error', (req, res) => res.send("error logging in"));
 
-  app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GOOGLE_CLIENT_ID = process.env.googleClaintId;
+const GOOGLE_CLIENT_SECRET = process.env.googleClaintSecret;
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.googleCallback,
+  },
+  function(accessToken, refreshToken, profile, done) {
+      userProfile=profile;
+      return done(null, userProfile);
+  }
+));
+
+const response = app.get('/auth/google', 
+  passport.authenticate('google', { scope : ['profile', 'email'] }))
+
+
+  
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/error' }),
+
   function(req, res) {
+
+  console.log();
     // Successful authentication, redirect success.
-    res.redirect('/');
+    res.redirect('/success');
   });
 
 

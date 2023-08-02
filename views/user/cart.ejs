@@ -1,14 +1,10 @@
 <%- include("../user/layouts/user_header.ejs") %>
-
 <div id="reloadDiv">
         <main class="main">
-            <div class="page-header text-center" style="background-image: url('/adminassets/imgs/1687180326718-desert-eagle.jpg')" >
-                <div class="container">
-                    <h2 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Green</Span> energy <<< </h2>
-                </div><!-- End .container -->
-            </div><!-- End .page-header -->
-        
+          
             <div class="page-content">
+
+                
                 <div class="cart">
                     <div class="container">
                         <div class="row">
@@ -82,24 +78,11 @@
                                             </div>
                                         </div>
                                         <%}%>
-                                            <div class="cart-bottom">
-                                                <div class="cart-discount">
-                                                    <form action="#">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" required
-                                                                placeholder="coupon code">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-outline-primary-2"
-                                                                    type="submit"><i
-                                                                        class="icon-long-arrow-right"></i></button>
-                                                            </div><!-- .End .input-group-append -->
-                                                        </div><!-- End .input-group -->
-                                                    </form>
-                                                </div><!-- End .cart-discount -->
 
-                                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
-                                                        class="icon-refresh"></i></a>
-                                            </div><!-- End .cart-bottom -->
+                                         
+                                           
+
+                                          
                             </div><!-- End .col-lg-9 -->
                           
                             <aside class="col-lg-3" >
@@ -117,49 +100,13 @@
                                                 <td>&nbsp;</td>
                                             </tr>
 
-                                            <!-- <tr class="summary-shipping-row">
-                                                <td>
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="free-shipping" name="shipping"
-                                                            class="custom-control-input">
-                                                        <label class="custom-control-label" for="free-shipping">Free
-                                                            Shipping</label>
-                                                    </div>
-                                                </td>
-                                                <td>$0.00</td>
-                                            </tr> -->
-
-                                            <!-- <tr class="summary-shipping-row">
-                                                <td>
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="standart-shipping" name="shipping"
-                                                            class="custom-control-input">
-                                                        <label class="custom-control-label"
-                                                            for="standart-shipping">Standart:</label>
-                                                    </div>
-                                                </td>
-                                                <td>$10.00</td>
-                                            </tr> -->
-
-                                            <!-- <tr class="summary-shipping-row">
-                                                <td>
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="express-shipping" name="shipping"
-                                                            class="custom-control-input">
-                                                        <label class="custom-control-label"
-                                                            for="express-shipping">Express:</label>
-                                                    </div>
-                                                </td>
-                                                <td>$20.00</td>
-                                            </tr> -->
-
                                             <tr class="summary-shipping-estimate">
                                                
                                             </tr><!-- End .summary-shipping-estimate -->
-
+                                        
                                             <tr class="summary-total">
                                                 <td style="color: black;">Total:</td>
-                                                <td style="color: aliceblue;">Rs:<%= totalamout %>/-</td>
+                                                <td style="color: aliceblue;" id="lastTotal">Rs:<%= totalamout %>/-</td>
                                             </tr><!-- End .summary-total -->
                                         </tbody>
                                     </table><!-- End .table table-summary -->
@@ -177,7 +124,12 @@
             </div><!-- End .page-content -->
         </main>
     </div>
-    <script>
+
+<!-- Button trigger modal -->
+
+  
+    
+<script>
 
 function changeQuantity(userId, proId, count) {
 $.ajax({
@@ -212,8 +164,6 @@ $.ajax({
     }
 });
 }
-    </script>
-    <script>
 
         function deleteCartItem(proId) {
          
@@ -253,7 +203,14 @@ $.ajax({
 
 
         }
-    </script>
+
+    
+
+</script>
+
+   
+
+
 
 
 

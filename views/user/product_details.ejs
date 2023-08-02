@@ -200,8 +200,13 @@
                                         <div class="col-auto">
                                             <h4><a href="#"><%= data.userName %></a></h4>
                                             <div class="ratings-container">
-                                                <%= data.stars %>
+                                                <% if( data.stars > 2 ){ %>
+                                                    <%= data.stars %>
                                                 <img src="/adminassets/images/icons8-star-30.png" alt="" style="width: 15px; height: 15px;">
+                                                 <% }else{ %>
+                                                    <%= data.stars %>
+                                                <img src="/adminassets/images/icons8-star-24.png" alt="" style="width: 15px; height: 15px;">
+                                                    <%}%>
                                                 <p>Rated</p>
                                             </div>
                                             

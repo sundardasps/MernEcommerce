@@ -4,8 +4,8 @@
             <div class="row">
                 <div class="col-sm-12 col-lg-6">
                     <div class="widget widget-about">
-                        <h3 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Green</Span> <span style="color: aliceblue;">energy <<<</span> </h3>
-                        <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus. </p>
+                        <h3 style="font-weight: 1000 "><Span style="color: rgb(46, 202, 88);">Eco</Span> <span style="color: aliceblue;">Bikes</span> </h3>
+                        <p>"Welcome to our electrifying world of cutting-edge electric cycles, where innovation and eco-friendly travel unite for a thrilling ride into the future of sustainable mobility."</p>
                         
                         <div class="widget-about-info">
                             <div class="row">
@@ -16,7 +16,7 @@
                                 <div class="col-sm-6 col-md-8">
                                     <span class="widget-about-title">Payment Method</span>
                                     <figure class="footer-payments">
-                                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                                        <img src="/userassets/images/payments.png" alt="Payment methods" width="272" height="20">
                                     </figure><!-- End .footer-payments -->
                                 </div><!-- End .col-sm-6 -->
                             </div><!-- End .row -->
@@ -29,41 +29,22 @@
                         <h4 class="widget-title">Information</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="about.html">About Molla</a></li>
-                            <li><a href="#">How to shop on Molla</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact.html">Contact us</a></li>
-                            <li><a href="login.html">Log in</a></li>
+                            <li><a href="/about">About Green energy</a></li>
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
                 </div><!-- End .col-sm-4 col-lg-3 -->
 
-                <div class="col-sm-4 col-lg-2">
-                    <div class="widget">
-                        <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-
-                        <ul class="widget-list">
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Money-back guarantee!</a></li>
-                            <li><a href="#">Returns</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Terms and conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                        </ul><!-- End .widget-list -->
-                    </div><!-- End .widget -->
-                </div><!-- End .col-sm-4 col-lg-3 -->
+                
 
                 <div class="col-sm-4 col-lg-2">
                     <div class="widget">
                         <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="/userAccount">My account</a></li>
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="cart.html">View Cart</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
+                            <li><a href="/userDashboard">My account</a></li>
+                            <li><a href="/signup">Sign In</a></li>
+                            <li><a href="/cart">View Cart</a></li>
+                            <li><a href="/wishList">My Wishlist</a></li>
                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
                 </div><!-- End .col-sm-64 col-lg-3 -->
@@ -73,24 +54,55 @@
 
     <div class="footer-bottom">
         <div class="container">
-            <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+            <p class="footer-copyright">Copyright © 2019 EcoBikes. All Rights Reserved.</p><!-- End .footer-copyright -->
             <ul class="footer-menu">
                 <li><a href="#">Terms Of Use</a></li>
                 <li><a href="#">Privacy Policy</a></li>
             </ul><!-- End .footer-menu -->
-
-            <div class="social-icons social-icons-color">
-                <span class="social-label">Social Media</span>
-                <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-            </div><!-- End .soial-icons -->
         </div><!-- End .container -->
     </div><!-- End .footer-bottom -->
  </footer><!-- End .footer -->
 </div><!-- End .page-wrapper -->
+
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+            
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="/home">Home</a>
+                    </li>
+                    <li class="active">
+                        <a href="/shop">Shop</a>
+                    </li>
+                    <li class="active">
+                        <a href="/cart">Cart</a>
+                    </li>
+                    <li class="active">
+                        <a href="/wishList">Wishlist</a>
+                    </li>
+                    <li class="active">
+                        <a href="/userDashboard">Profile</a>
+                    </li>
+                  
+                 
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
 
 <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
  <!-- Plugins JS File -->
@@ -109,7 +121,10 @@
  <script src="js/addons/rating.js"></script>
  <!-- Main JS File -->
  <script src="/userassets/js/main.js"></script>
- <script src="/public/userassets/js/demos/demo-8.js"></script>
+ <script src="/userassets/js/demos/demo-8.js"></script>
+
+ 
+ 
  
 </body>
 

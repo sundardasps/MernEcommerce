@@ -75,6 +75,9 @@ const orderSchema = new mongoose.Schema({
       orderId:{
         type:String,
       },
+      discount:{
+        type:String
+      }
 })
 
  module.exports = mongoose.model("order",orderSchema);
