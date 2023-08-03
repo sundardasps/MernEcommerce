@@ -1,6 +1,6 @@
 <%- include("../user/layouts/user_header.ejs") %>
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="page-header text-center" style="background-color: rgb(46, 202, 88);;">
         <div class="container">
             <h1 class="page-title">Update<span>Address</span></h1>
         </div><!-- End .container -->
@@ -65,7 +65,7 @@
                                 </div><!-- End .row -->
 
                                 
-                                <button type="submit" class="btn btn-outline-primary-2">
+                                <button type="submit"class="btn btn-outline-primary btn-rounded"  style="color: black; border-color: rgb(46, 202, 88);">
                                     <span>SAVE CHANGES</span>
                                     <i class="icon-long-arrow-right"></i>
                                 </button>
@@ -78,58 +78,102 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
     <script>
-        // JavaScript code for form validation
-        const form = document.getElementById('form')
-        const name = document.getElementById('userName')
-        const mob = document.getElementById('mobile')
-        const mob2 = document.getElementById('alternativenumber')
-        const home = document.getElementById('hoseName')
-        const city = document.getElementById('city')
-        const state = document.getElementById('state')
-        const pin = document.getElementById('pincode')
-        const errorElement = document.getElementById('error')
+       const formEdit = document.getElementById('formEdit');
+  const usernameEditInput = document.getElementById('userName');
+  const mobileEditInput = document.getElementById('mobile');
+  const altMobileEditInput = document.getElementById('altrenativeMobileedit');
+  const houseNameEditInput = document.getElementById('housenameedit');
+  const cityEditInput = document.getElementById('cityedit');
+  const stateEditInput = document.getElementById('stateedit');
+  const pincodeEditInput = document.getElementById('pincodeedit');
+  const landmarkEditInput = document.getElementById('landmarkedit');
+
+  const usernameEditError = document.getElementById('usernameedit-error');
+  const mobileEditError = document.getElementById('mobileedit-error');
+  const altMobileEditError = document.getElementById('altrenativeMobileedit-error');
+  const houseNameEditError = document.getElementById('housenameedit-error');
+  const cityEditError = document.getElementById('cityedit-error');
+  const stateEditError = document.getElementById('stateedit-error');
+  const pincodeEditError = document.getElementById('pincodeedit-error');
+  const landmarkEditError = document.getElementById('landmarkedit-error');
+
+  formEdit.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const usernameEditValue = usernameEditInput.value.trim();
+    const mobileEditValue = mobileEditInput.value.trim();
+    const altMobileEditValue = altMobileEditInput.value.trim();
+    const houseNameEditValue = houseNameEditInput.value.trim();
+    const cityEditValue = cityEditInput.value.trim();
+    const stateEditValue = stateEditInput.value.trim();
+    const pincodeEditValue = pincodeEditInput.value.trim();
+    const landmarkEditValue = landmarkEditInput.value.trim();
+
+
+    if (!/^[A-Za-z]+$/.test(usernameEditValue)) {
+        usernameEditError.textContent = 'Please enter a username';
+        return false;
+    } else {
+        usernameEditError.textContent = '';
+    }
+
+    if (!mobileEditValue || isNaN(mobileEditValue) || mobileEditValue.length !== 10) {
+        mobileEditError.textContent = 'Please enter a valid 10-digit mobile number';
+        return false;
+    } else {
+        mobileEditError.textContent = '';
+    }
+
     
-        form.addEventListener('submit',(e)=> {
-         alert(name)
-            let messages =[];
+    if (altMobileEditValue && (isNaN(altMobileEditValue) || altMobileEditValue.length !== 10)) {
+        altMobileEditError.textContent = 'Please enter a valid 10-digit alternative mobile number';
+        return false;
+    } else {
+        altMobileEditError.textContent = '';
+    }
+
     
-            if(name.value.trim() === ''|| name.value.trim() === null ) {
-                alert(name)
-                messages.push('User Name is required');
-            }
+    if (!houseNameEditValue) {
+        houseNameEditError.textContent = 'Please enter a house name';
+        return false;
+    } else {
+        houseNameEditError.textContent = '';
+    }
+
     
-            if(mob.value.trim() === ''|| mob.value.trim() === null) {
-                messages.push('Mobile Number is required');
-            } else if (mob.value.length < 10) {
-                messages.push('Please enter a valid Mobile Number');
-            }
+    if (!cityEditValue) {
+        cityEditError.textContent = 'Please enter a city';
+        return false;
+    } else {
+        cityEditError.textContent = '';
+    }
+
     
-            if(mob2.value.trim() === ''|| mob2.value.trim() === null) {
-                messages.push('Alternative number is required');
-            } else if (mob2.value.length < 10) {
-                messages.push('Please enter a valid Alternative Number');
-            }
+    if (!stateEditValue) {
+        stateEditError.textContent = 'Please enter a state';
+        return false;
+    } else {
+        stateEditError.textContent = '';
+    }
+
     
-            if(home.value.trim() === ''|| home.value.trim() === null) {
-                messages.push('House Name is required');
-            }
+    if (!pincodeEditValue || isNaN(pincodeEditValue) || pincodeEditValue.length !== 6) {
+        pincodeEditError.textContent = 'Please enter a valid 6-digit pincode';
+        return false;
+    } else {
+        pincodeEditError.textContent = '';
+    }
+
     
-            if(city.value.trim() === ''|| city.value.trim() === null) {
-                messages.push('Town / City is required');
-            }
-    
-            if(state.value.trim() === ''|| state.value.trim() === null) {
-                messages.push('State / County is required');
-            }
-    
-            if (pin.value.trim() === ''|| pin.value.trim() === null) {
-                messages.push('Pincode is required');
-            }
-    
-            if(messages.length > 0){
-                e.preventDefault()
-                errorElement.innerText = messages.join(', ');
-            }
-        });
+    if (!landmarkEditValue) {
+        landmarkEditError.textContent = 'Please enter a landmark';
+        return false;
+    } else {
+        landmarkEditError.textContent = '';
+    }
+
+    formEdit.submit();
+  });
+</script>  
     </script>
 <%- include("../user/layouts/user_footer.ejs") %>

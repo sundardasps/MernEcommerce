@@ -186,8 +186,12 @@
                                 </div>
                             </div><!-- End .dropdown-menu -->
                             
-                       
+                       <% if(session != null){%>
                         <a href="/userDashboard" class="wishlist-link">
+                            <%}else{%>
+                        <a href="/login" class="wishlist-link">
+                            <%}%>
+
                             <i  class="icon-user"></i>
                           
                          

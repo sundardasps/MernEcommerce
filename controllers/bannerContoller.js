@@ -5,7 +5,6 @@ const bannerDb = require('../models/bannerModel');
 
 const addBanner = async (req,res) => {
   
-
      try {
       
         const image = req.files.filename

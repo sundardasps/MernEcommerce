@@ -29,7 +29,7 @@ user_route.post("/otp", auth.isLogout, userController.varifyOtp);
 user_route.get("/", userController.loadHome);
 user_route.get("/login", auth.isLogout, userController.userLogin);
 user_route.post("/login", auth.isLogout, userController.varifyLogin);
-user_route.get('/logout',userController.logout);
+user_route.get('/logout',auth.isLogin,userController.logout);
 user_route.get('/forgetPassword',userController.loadForget);
 user_route.post('/forgetPassword',userController.forgetSendEmail)
 user_route.get('/reset_password',auth.isLogout,userController.resetPasswordLoad)
@@ -66,24 +66,24 @@ user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
 
 //========================= USER ACCOUNT ============================
 user_route.get('/userDashboard', auth.isLogin,adderssController.loadUserDashboard)
-user_route.get('/loadUserAddressFromDash',adderssController.loadAddressFromDash)
-user_route.get('/editAddressFromDash',adderssController.loadEditAddressfromDash)
+user_route.get('/loadUserAddressFromDash',auth.isLogin,adderssController.loadAddressFromDash)
+user_route.get('/editAddressFromDash',auth.isLogin,adderssController.loadEditAddressfromDash)
 user_route.post('/updateAddressFromDash',adderssController.updateAddressFromDash)
-user_route.get('/loadaddAddressFromDash',adderssController.loadAddAddress)
+user_route.get('/loadaddAddressFromDash',auth.isLogin,adderssController.loadAddAddress)
 user_route.post('/loadaddAddressFromDash',adderssController.addUserAddressFromDash)
 user_route.post('/addUserAddress',adderssController.addUserAddress)
-user_route.get('/showAddress',adderssController.showAddress);
+user_route.get('/showAddress',auth.isLogin,adderssController.showAddress);
 user_route.post('/editUser/:id',userController.updateUser)
 
 //===========================USER ORDER ===========================
 user_route.post('/checkoutPage',orderController.placeOrder);
-user_route.get("/orderSuccess/:id",orderController.successPage);
+user_route.get("/orderSuccess/:id",auth.isLogin,orderController.successPage);
 user_route.post('/orderCancel',orderController.orderCancel)
 user_route.get("/viewProducts",auth.isLogin,orderController.viewOrderProducts);
 user_route.get("/orderList",auth.isLogin,orderController.showOrders)
 user_route.post('/verify-payment',orderController.verifyPayment)
 user_route.post("/addFeedback",productController.addFeedback);
-user_route.get("/invoice/:id",orderController.loadInvoice)
+user_route.get("/invoice/:id",auth.isLogin,orderController.loadInvoice)
 user_route.post('/returnProduct',orderController.returnProduct)
 
 //========================== COUPON MANAGEMENT ======================

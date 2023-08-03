@@ -1,6 +1,6 @@
 <%- include("../user/layouts/user_header.ejs") %>
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="page-header text-center" style="background-color: rgb(46, 202, 88);;">
         <div class="container">
             <h1 class="page-title">Update<span>Address</span></h1>
         </div><!-- End .container -->
@@ -18,8 +18,8 @@
     <div class="page-content">
         <div class="checkout">
             <div class="container">
-                <div  id="error" style="color: red;"></div>
-                <form action="/updateAddress?id=<%= addresses._id %>" method="post" id="form">
+             
+                <form action="/updateAddress?id=<%= addresses._id %>" method="post" id="formEdit">
                     <div class="row">
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
@@ -27,6 +27,7 @@
                                     <div class="col-sm-6">
                                         <label>User Name</label>
                                         <input type="text" id="userName" class="form-control" name="userName"  value="<%=addresses.userName %>">
+                                         <span class="text-danger" id="usernameedit-error"></span>
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
                                  
@@ -34,26 +35,38 @@
                                     <div class="col-sm-6">
                                         <label>Mobile Number*</label>
                                         <input type="number" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile %>">
+                                       <span class="text-danger" id="mobileedit-error"></span>
+                                         
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Alternative number </label>
                                         <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob %>">
+                                        <span class="text-danger" id="altrenativeMobileedit-error"></span>
+
+                                             
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <label>Housename*</label>
-                                <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName %>">
+                                  <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName %>">
+                                  <span class="text-danger" id="housenameedit-error"></span>
 
+                                      
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Town / City *</label>
                                         <input type="text" name="city" id="city" class="form-control" value="<%=addresses.city%>">
+                                        <span class="text-danger" id="cityedit-error"></span>
+
+
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>State / County *</label>
                                         <input type="text" name="state" id="state" class="form-control" value="<%=addresses.state%>">
+                                        <span class="text-danger" id="stateedit-error"></span>
+
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
@@ -61,11 +74,13 @@
                                     <div class="col-sm-6">
                                         <label>Postcode</label>
                                         <input type="number" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode %>">
+                                        <span class="text-danger" id="pincodeedit-error"></span>
+
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 
-                                <button type="submit" class="btn btn-outline-primary-2">
+                                <button type="submit" class="btn btn-outline-primary btn-rounded"  style="color: black; border-color: rgb(46, 202, 88);">
                                     <span>SAVE CHANGES</span>
                                     <i class="icon-long-arrow-right"></i>
                                 </button>
@@ -77,57 +92,106 @@
         </div><!-- End .checkout -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+
+
     <script>
-        // JavaScript code for form validation
-        const form = document.getElementById('form');
-        const name = document.getElementById('userName');
-        const mob = document.getElementById('mobile');
-        const mob2 = document.getElementById('alternativenumber');
-        const home = document.getElementById('hoseName');
-        const city = document.getElementById('city');
-        const state = document.getElementById('state');
-        const pin = document.getElementById('pincode');
-        const errorElement = document.getElementById('error');
+
+ const formEdit = document.getElementById('formEdit');
+  const usernameEditInput = document.getElementById('userName');
+  const mobileEditInput = document.getElementById('mobile');
+  const altMobileEditInput = document.getElementById('altrenativeMobileedit');
+  const houseNameEditInput = document.getElementById('housenameedit');
+  const cityEditInput = document.getElementById('cityedit');
+  const stateEditInput = document.getElementById('stateedit');
+  const pincodeEditInput = document.getElementById('pincodeedit');
+  const landmarkEditInput = document.getElementById('landmarkedit');
+
+  const usernameEditError = document.getElementById('usernameedit-error');
+  const mobileEditError = document.getElementById('mobileedit-error');
+  const altMobileEditError = document.getElementById('altrenativeMobileedit-error');
+  const houseNameEditError = document.getElementById('housenameedit-error');
+  const cityEditError = document.getElementById('cityedit-error');
+  const stateEditError = document.getElementById('stateedit-error');
+  const pincodeEditError = document.getElementById('pincodeedit-error');
+  const landmarkEditError = document.getElementById('landmarkedit-error');
+
+  formEdit.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const usernameEditValue = usernameEditInput.value.trim();
+    const mobileEditValue = mobileEditInput.value.trim();
+    const altMobileEditValue = altMobileEditInput.value.trim();
+    const houseNameEditValue = houseNameEditInput.value.trim();
+    const cityEditValue = cityEditInput.value.trim();
+    const stateEditValue = stateEditInput.value.trim();
+    const pincodeEditValue = pincodeEditInput.value.trim();
+    const landmarkEditValue = landmarkEditInput.value.trim();
+
+
+    if (!/^[A-Za-z]+$/.test(usernameEditValue)) {
+        usernameEditError.textContent = 'Please enter a username';
+        return false;
+    } else {
+        usernameEditError.textContent = '';
+    }
+
+    if (!mobileEditValue || isNaN(mobileEditValue) || mobileEditValue.length !== 10) {
+        mobileEditError.textContent = 'Please enter a valid 10-digit mobile number';
+        return false;
+    } else {
+        mobileEditError.textContent = '';
+    }
+
     
-        form.addEventListener('submit', (e) => {
-            let messages = [];
+    if (altMobileEditValue && (isNaN(altMobileEditValue) || altMobileEditValue.length !== 10)) {
+        altMobileEditError.textContent = 'Please enter a valid 10-digit alternative mobile number';
+        return false;
+    } else {
+        altMobileEditError.textContent = '';
+    }
+
     
-            if (name.value.trim() === '') {
-                messages.push('User Name is required');
-            }
+    if (!houseNameEditValue) {
+        houseNameEditError.textContent = 'Please enter a house name';
+        return false;
+    } else {
+        houseNameEditError.textContent = '';
+    }
+
     
-            if (mob.value.trim() === '') {
-                messages.push('Mobile Number is required');
-            } else if (mob.value.length < 10) {
-                messages.push('Please enter a valid Mobile Number');
-            }
+    if (!cityEditValue) {
+        cityEditError.textContent = 'Please enter a city';
+        return false;
+    } else {
+        cityEditError.textContent = '';
+    }
+
     
-            if (mob2.value.trim() === '') {
-                messages.push('Alternative number is required');
-            } else if (mob2.value.length < 10) {
-                messages.push('Please enter a valid Alternative Number');
-            }
+    if (!stateEditValue) {
+        stateEditError.textContent = 'Please enter a state';
+        return false;
+    } else {
+        stateEditError.textContent = '';
+    }
+
     
-            if (home.value.trim() === '') {
-                messages.push('House Name is required');
-            }
+    if (!pincodeEditValue || isNaN(pincodeEditValue) || pincodeEditValue.length !== 6) {
+        pincodeEditError.textContent = 'Please enter a valid 6-digit pincode';
+        return false;
+    } else {
+        pincodeEditError.textContent = '';
+    }
+
     
-            if (city.value.trim() === '') {
-                messages.push('Town / City is required');
-            }
-    
-            if (state.value.trim() === '') {
-                messages.push('State / County is required');
-            }
-    
-            if (pin.value.trim() === '') {
-                messages.push('Pincode is required');
-            }
-    
-            if (messages.length > 0) {
-                e.preventDefault();
-                errorElement.innerText = messages.join(', ');
-            }
-        });
-    </script>
+    if (!landmarkEditValue) {
+        landmarkEditError.textContent = 'Please enter a landmark';
+        return false;
+    } else {
+        landmarkEditError.textContent = '';
+    }
+
+    formEdit.submit();
+  });
+
+</script> 
 <%- include("../user/layouts/user_footer.ejs") %>
