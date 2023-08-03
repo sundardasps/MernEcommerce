@@ -6,7 +6,7 @@ const session = require('express-session');
 const config = require('./configuration/config');
 const nocache = require('nocache');
 let dotenv = require("dotenv");
-const easyInvoice = require('easyinvoice')
+
 dotenv.config();
 mongoose.connect(process.env.mongo);
 
