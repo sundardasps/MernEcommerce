@@ -102,7 +102,7 @@
                     method: "post",
                     success: (response) => {
                       if ((response.remove = true)) {
-                        location.reload();
+                        location.href = "/userDashboard";
                       }
                     },
                   });

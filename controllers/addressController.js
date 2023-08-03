@@ -9,17 +9,16 @@ const loadUserDashboard = async (req, res) => {
   try {
     const id = req.session.user_id;
     const userData = await UserDb.findOne({ _id: id });
-    const userAddress = await addressDb.findOne({ userId: id });
-    const allAddress = await addressDb.find();
-    const orderData = await orderDb.find();
-    const session = req.session.user_id;
+    const addresses = await addressDb.find({ userId: id });
+    const orderData = await orderDb.find({_id:id});
 
+    
     res.render("userDashboard", {
       user: userData,
-      session,
-      addresses: userAddress,
+      session:id,
+      addresses,
       orders: orderData,
-      address: allAddress,
+     
     });
   } catch (error) {
     console.log(error.message);
@@ -30,7 +29,8 @@ const loadUserDashboard = async (req, res) => {
 
 const loadAddAddress = async (req, res) => {
   try {
-    res.render("addAddress");
+    const session = req.session.user_id;
+    res.render("addAddress",{session});
   } catch (error) {
     console.log(error.message);
   }
@@ -80,6 +80,7 @@ const addUserAddress = async (req, res) => {
           },
         ],
       });
+      console.log(address);
       const savedAddress = await newAddress.save();
 
       if (savedAddress) {
@@ -106,7 +107,7 @@ const loadEditAddress = async (req, res) => {
     const address = addressData.addresses;
 
     res.render("editAddress", {
-      addresses: address[0],
+      addresses: address[0],session
     });
   } catch (error) {
     console.log(error.message);
@@ -151,6 +152,7 @@ const updateAddress = async (req, res) => {
 
 const deleteAddress = async (req, res) => {
   try {
+    
     const id = req.body.id;
     await addressDb.updateOne(
       { userId: req.session.user_id },
@@ -176,12 +178,14 @@ const emptyCheckOut = async (req, res) => {
 
 const showAddress = async (req, res) => {
   try {
+  
+    const session = req.session.user_id
     const addressData = await addressDb.findOne({
-      userId: req.session.user_id,
+      userId: session,
     });
     if (addressData.addresses.length > 0) {
       const address = addressData.addresses;
-      res.render("showAddress", { address });
+      res.render("showAddress", { address ,session});
     } else {
       res.render("emptyCheckOut");
     }
@@ -194,12 +198,17 @@ const showAddress = async (req, res) => {
 
 const loadAddressFromDash = async (req, res) => {
   try {
+    
+    const session = req.session.user_id
     const addressData = await addressDb.findOne({
-      userId: req.session.user_id,
+      userId:session,
     });
+  
     if (addressData.addresses.length > 0) {
       const address = addressData.addresses;
-      res.render("showAddressFromDash", { address });
+      res.render("showAddressFromDash", { address,session });
+    } else{
+       res.render('emptyAddress',{session})
     }
   } catch (error) {
     console.log(error.message);
@@ -250,6 +259,7 @@ const addUserAddressFromDash = async (req, res) => {
           },
         ],
       });
+      
       const savedAddress = await newAddress.save();
 
       if (savedAddress) {
@@ -276,7 +286,7 @@ const loadEditAddressfromDash = async (req, res) => {
     const address = addressData.addresses;
 
     res.render("editAddressFromDash", {
-      addresses: address[0],
+      addresses: address[0],session
     });
   } catch (error) {
     console.log(error.message);

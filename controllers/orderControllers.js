@@ -15,6 +15,7 @@ const { parse } = require("path");
 const { productDetails } = require("./productController");
 const { log } = require("console");
 
+
 //========================FOR PLACE USER ORDER ========================
 var instance = new Razorpay({
   key_id: process.env.Razorid,
@@ -187,7 +188,7 @@ const successPage = async (req, res) => {
       product: products,
       userData,
       id,
-   
+      session:userData,
     });
   } catch (error) {
     console.log(error);
@@ -199,6 +200,7 @@ const successPage = async (req, res) => {
 const viewOrderProducts = async (req, res) => {
   try {
     const id =  req.query.id
+    const session = req.session.user_id
     const orderData = await orderDb
       .findOne({
         _id: req.query.id,
@@ -209,7 +211,7 @@ const viewOrderProducts = async (req, res) => {
    const order = await orderDb.findOne({_id:id})
    
 
-    res.render("viewOrderProducts", { products: productsData,order,});
+    res.render("viewOrderProducts", { products: productsData,order,session});
   } catch (error) {
     console.log(error.message);
   }
@@ -259,13 +261,13 @@ const orderCancel = async (req, res) => {
 const showOrders = async (req, res) => {
   try {
     const orderData = await orderDb.find();
-
+    const session = req.session.user_id
  
 
     if (orderData.length > 0) {
-      res.render("orderList", { orders: orderData });
+      res.render("orderList", { orders: orderData,session });
     } else {
-      res.render("emptyOrderList");
+      res.render("emptyOrderList",{session});
     }
   } catch (error) {
     console.log(error.message);
@@ -291,7 +293,7 @@ const showordersAdmin = async (req, res) => {
 const loadProductdetails = async (req, res) => {
   try {
     const id = req.query.id;
-   
+
     const orderdProduct = await orderDb
       .findOne({ _id: id })
       .populate("products.productId");

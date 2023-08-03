@@ -509,7 +509,8 @@ const updateUser = async (req,res) =>{
 const loadAbout  = async  (req,res) =>{
 
    try {
-    res.render('about')
+    const session = req.session.user_id
+    res.render('about',{session})
     
    } catch (error) {
     console.log(error.message);

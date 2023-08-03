@@ -37,10 +37,10 @@ user_route.post('/reset_password',auth.isLogout,userController.resetPasswordVeri
 
 //======================= HOME ===================================
 user_route.get("/login", auth.isLogin, userController.userLogin);
-user_route.get("/category", auth.isLogin, userController.loadHome);
+user_route.get("/category", userController.loadHome);
 user_route.get('/product_details',userController.loadProductdetails)
 user_route.get('/shop',userController.loadShop)
-user_route.get('/filterCategory/:id',userController.filterCategory)
+user_route.get('/filterCategory/:id',auth.isLogin,userController.filterCategory)
 
 
 //======================  WISHLIST ===============================
@@ -50,19 +50,19 @@ user_route.get('/removeItem',auth.isLogin,wishlistController.removeFromWishlist)
 
 //========================== CART =============================
 user_route.get('/cart',auth.isLogin,cartController.loadCart);
-user_route.post('/addToCart',auth.isLogin,cartController.addCartItem);
-user_route.post('/removeCartItem',auth.isLogin,cartController.removeFromCart)
-user_route.post('/cartQuantityIncrease',auth.isLogin,cartController.cartQuantityIncrease)
-user_route.post('/placeOrder',auth.isLogin,orderController.placeOrder)
+user_route.post('/addToCart',cartController.addCartItem);
+user_route.post('/removeCartItem',cartController.removeFromCart)
+user_route.post('/cartQuantityIncrease',cartController.cartQuantityIncrease)
+user_route.post('/placeOrder',orderController.placeOrder)
 
 //========================== CHECKOUT ===================================
 user_route.get('/checkOut',auth.isLogin,cartController.loadcheckOut)
 user_route.get('/editAddress',auth.isLogin,adderssController.loadEditAddress);
 user_route.get('/addAddress',auth.isLogin,adderssController.loadAddAddress);
-user_route.post('/addAddress',auth.isLogin,adderssController.addUserAddress);
+user_route.post('/addAddress',adderssController.addUserAddress);
 user_route.post('/updateAddress',adderssController.updateAddress)
-user_route.post("/deleteAddress",auth.isLogin,adderssController.deleteAddress)
-user_route.get('/emptyCheckOut',adderssController.emptyCheckOut);
+user_route.post("/deleteAddress",adderssController.deleteAddress)
+user_route.get('/emptyCheckOut',auth.isLogin,adderssController.emptyCheckOut);
 
 //========================= USER ACCOUNT ============================
 user_route.get('/userDashboard', auth.isLogin,adderssController.loadUserDashboard)
