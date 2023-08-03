@@ -33,17 +33,17 @@
                                  <div class="row">
                                     <div class="col-sm-6">
                                         <label>Mobile Number*</label>
-                                        <input type="number" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile%>">
+                                        <input type="text" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile%>">
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Alternative number </label>
-                                        <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob%>">
+                                        <input type="text" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob%>">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <label>Housename*</label>
-                                <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName%>">
+                                <input type="text" class="form-control" name="hoseName" id="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName%>">
 
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -60,7 +60,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode</label>
-                                        <input type="number" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode%>">
+                                        <input type="text" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode%>">
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
@@ -77,103 +77,86 @@
         </div><!-- End .checkout -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
-    <script>
-       const formEdit = document.getElementById('formEdit');
-  const usernameEditInput = document.getElementById('userName');
-  const mobileEditInput = document.getElementById('mobile');
-  const altMobileEditInput = document.getElementById('altrenativeMobileedit');
-  const houseNameEditInput = document.getElementById('housenameedit');
-  const cityEditInput = document.getElementById('cityedit');
-  const stateEditInput = document.getElementById('stateedit');
-  const pincodeEditInput = document.getElementById('pincodeedit');
-  const landmarkEditInput = document.getElementById('landmarkedit');
-
-  const usernameEditError = document.getElementById('usernameedit-error');
-  const mobileEditError = document.getElementById('mobileedit-error');
-  const altMobileEditError = document.getElementById('altrenativeMobileedit-error');
-  const houseNameEditError = document.getElementById('housenameedit-error');
-  const cityEditError = document.getElementById('cityedit-error');
-  const stateEditError = document.getElementById('stateedit-error');
-  const pincodeEditError = document.getElementById('pincodeedit-error');
-  const landmarkEditError = document.getElementById('landmarkedit-error');
-
-  formEdit.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const usernameEditValue = usernameEditInput.value.trim();
-    const mobileEditValue = mobileEditInput.value.trim();
-    const altMobileEditValue = altMobileEditInput.value.trim();
-    const houseNameEditValue = houseNameEditInput.value.trim();
-    const cityEditValue = cityEditInput.value.trim();
-    const stateEditValue = stateEditInput.value.trim();
-    const pincodeEditValue = pincodeEditInput.value.trim();
-    const landmarkEditValue = landmarkEditInput.value.trim();
-
-
-    if (!/^[A-Za-z]+$/.test(usernameEditValue)) {
-        usernameEditError.textContent = 'Please enter a username';
-        return false;
-    } else {
-        usernameEditError.textContent = '';
-    }
-
-    if (!mobileEditValue || isNaN(mobileEditValue) || mobileEditValue.length !== 10) {
-        mobileEditError.textContent = 'Please enter a valid 10-digit mobile number';
-        return false;
-    } else {
-        mobileEditError.textContent = '';
-    }
-
     
-    if (altMobileEditValue && (isNaN(altMobileEditValue) || altMobileEditValue.length !== 10)) {
-        altMobileEditError.textContent = 'Please enter a valid 10-digit alternative mobile number';
-        return false;
-    } else {
-        altMobileEditError.textContent = '';
-    }
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-    
-    if (!houseNameEditValue) {
-        houseNameEditError.textContent = 'Please enter a house name';
-        return false;
-    } else {
-        houseNameEditError.textContent = '';
-    }
+            // Get input field values
+            const userName = document.getElementById('userName').value;
+            const mobile = document.getElementById('mobile').value;
+            const mobile2 = document.getElementById('alternativenumber').value;
+            const house = document.getElementById('hoseName').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const pincode = document.getElementById('pincode').value;
 
-    
-    if (!cityEditValue) {
-        cityEditError.textContent = 'Please enter a city';
-        return false;
-    } else {
-        cityEditError.textContent = '';
-    }
 
-    
-    if (!stateEditValue) {
-        stateEditError.textContent = 'Please enter a state';
-        return false;
-    } else {
-        stateEditError.textContent = '';
-    }
 
-    
-    if (!pincodeEditValue || isNaN(pincodeEditValue) || pincodeEditValue.length !== 6) {
-        pincodeEditError.textContent = 'Please enter a valid 6-digit pincode';
-        return false;
-    } else {
-        pincodeEditError.textContent = '';
-    }
 
-    
-    if (!landmarkEditValue) {
-        landmarkEditError.textContent = 'Please enter a landmark';
-        return false;
-    } else {
-        landmarkEditError.textContent = '';
-    }
+            
 
-    formEdit.submit();
-  });
-</script>  
-    </script>
+            
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerHTML = ''; // Clear previous error messages
+
+            // Perform validation checks
+            let isValid = true;
+            
+            if (userName.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'User Name is required.<br>';
+            }
+           
+            if (mobile.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Mobile number is required.<br>';
+            }
+
+                
+            if (mobile2.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Alternative number is required.<br>';
+            }
+
+            if (house.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'House name and Street name is required.<br>';
+            }
+
+            if (city.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'City name is required.<br>';
+            }
+
+            if (state.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'State name is required.<br>';
+            }
+
+            
+            if (isNaN(pincode) || pincode.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Pincode is required and must be a number.<br>';
+            }
+
+            if (pincode.trim().length < 6 || pincode.trim().length > 6) {
+                isValid = false;
+                errorDiv.innerHTML += 'Please enter a valid pincode.<br>';
+            }
+
+            if (mobile.trim().length != 10 || mobile2.trim().length != 10 || isNaN(mobile) || isNaN(mobile2)) {
+                isValid = false;
+                errorDiv.innerHTML += 'Please enter valid mobile numbers.<br>';
+            }
+
+            if (isValid) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
 <%- include("../user/layouts/user_footer.ejs") %>

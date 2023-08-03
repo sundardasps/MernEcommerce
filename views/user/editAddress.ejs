@@ -18,8 +18,8 @@
     <div class="page-content">
         <div class="checkout">
             <div class="container">
-             
-                <form action="/updateAddress?id=<%= addresses._id %>" method="post" >
+                <div  id="error" style="color: red;"></div>
+                <form action="/updateAddress?id=<%= addresses._id %>" method="post" id="form">
                     <div class="row">
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
@@ -27,37 +27,37 @@
                                     <div class="col-sm-6">
                                         <label>User Name</label>
                                         <input type="text" id="userName" class="form-control" name="userName"  value="<%=addresses.userName %>">
-                                         <span class="text-danger" id="usernameedit-error"></span>
+                                         
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
                                  
                                  <div class="row">
                                     <div class="col-sm-6">
                                         <label>Mobile Number*</label>
-                                        <input type="number" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile %>">
-                                       <span class="text-danger" id="mobileedit-error"></span>
+                                        <input type="text" id="mobile" name="mobile" class="form-control"value="<%=addresses.mobile %>">
+                                      
                                          
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Alternative number </label>
-                                        <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob %>">
-                                        <span class="text-danger" id="altrenativeMobileedit-error"></span>
+                                        <input type="text" id="alternativenumber" name="alternativenumber" class="form-control" value="<%=addresses.altrenativeMob %>">
+                                  
 
                                              
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <label>Housename*</label>
-                                  <input type="text" class="form-control" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName %>">
-                                  <span class="text-danger" id="housenameedit-error"></span>
+                                  <input type="text" class="form-control" id="hoseName" name="hoseName"  placeholder="House number and Street name" value="<%=addresses.houseName %>">
+                                  
 
                                       
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Town / City *</label>
                                         <input type="text" name="city" id="city" class="form-control" value="<%=addresses.city%>">
-                                        <span class="text-danger" id="cityedit-error"></span>
+                                       
 
 
                                     </div><!-- End .col-sm-6 -->
@@ -65,7 +65,7 @@
                                     <div class="col-sm-6">
                                         <label>State / County *</label>
                                         <input type="text" name="state" id="state" class="form-control" value="<%=addresses.state%>">
-                                        <span class="text-danger" id="stateedit-error"></span>
+                                       
 
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
@@ -73,8 +73,8 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode</label>
-                                        <input type="number" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode %>">
-                                        <span class="text-danger" id="pincodeedit-error"></span>
+                                        <input type="text" name="pincode" id="pincode" class="form-control" value="<%=addresses.pincode %>">
+                                        
 
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
@@ -96,102 +96,84 @@
 
     <script>
 
- const formEdit = document.getElementById('formEdit');
-  const usernameEditInput = document.getElementById('userName');
-  const mobileEditInput = document.getElementById('mobile');
-  const altMobileEditInput = document.getElementById('altrenativeMobileedit');
-  const houseNameEditInput = document.getElementById('housenameedit');
-  const cityEditInput = document.getElementById('cityedit');
-  const stateEditInput = document.getElementById('stateedit');
-  const pincodeEditInput = document.getElementById('pincodeedit');
-  const landmarkEditInput = document.getElementById('landmarkedit');
+document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-  const usernameEditError = document.getElementById('usernameedit-error');
-  const mobileEditError = document.getElementById('mobileedit-error');
-  const altMobileEditError = document.getElementById('altrenativeMobileedit-error');
-  const houseNameEditError = document.getElementById('housenameedit-error');
-  const cityEditError = document.getElementById('cityedit-error');
-  const stateEditError = document.getElementById('stateedit-error');
-  const pincodeEditError = document.getElementById('pincodeedit-error');
-  const landmarkEditError = document.getElementById('landmarkedit-error');
-
-  formEdit.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const usernameEditValue = usernameEditInput.value.trim();
-    const mobileEditValue = mobileEditInput.value.trim();
-    const altMobileEditValue = altMobileEditInput.value.trim();
-    const houseNameEditValue = houseNameEditInput.value.trim();
-    const cityEditValue = cityEditInput.value.trim();
-    const stateEditValue = stateEditInput.value.trim();
-    const pincodeEditValue = pincodeEditInput.value.trim();
-    const landmarkEditValue = landmarkEditInput.value.trim();
+            // Get input field values
+            const userName = document.getElementById('userName').value;
+            const mobile = document.getElementById('mobile').value;
+            const mobile2 = document.getElementById('alternativenumber').value;
+            const house = document.getElementById('hoseName').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const pincode = document.getElementById('pincode').value;
 
 
-    if (!/^[A-Za-z]+$/.test(usernameEditValue)) {
-        usernameEditError.textContent = 'Please enter a username';
-        return false;
-    } else {
-        usernameEditError.textContent = '';
-    }
 
-    if (!mobileEditValue || isNaN(mobileEditValue) || mobileEditValue.length !== 10) {
-        mobileEditError.textContent = 'Please enter a valid 10-digit mobile number';
-        return false;
-    } else {
-        mobileEditError.textContent = '';
-    }
 
-    
-    if (altMobileEditValue && (isNaN(altMobileEditValue) || altMobileEditValue.length !== 10)) {
-        altMobileEditError.textContent = 'Please enter a valid 10-digit alternative mobile number';
-        return false;
-    } else {
-        altMobileEditError.textContent = '';
-    }
+            
 
-    
-    if (!houseNameEditValue) {
-        houseNameEditError.textContent = 'Please enter a house name';
-        return false;
-    } else {
-        houseNameEditError.textContent = '';
-    }
+            
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerHTML = ''; // Clear previous error messages
 
-    
-    if (!cityEditValue) {
-        cityEditError.textContent = 'Please enter a city';
-        return false;
-    } else {
-        cityEditError.textContent = '';
-    }
+            // Perform validation checks
+            let isValid = true;
+            
+            if (userName.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'User Name is required.<br>';
+            }
+           
+            if (mobile.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Mobile number is required.<br>';
+            }
 
-    
-    if (!stateEditValue) {
-        stateEditError.textContent = 'Please enter a state';
-        return false;
-    } else {
-        stateEditError.textContent = '';
-    }
+                
+            if (mobile2.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Alternative number is required.<br>';
+            }
 
-    
-    if (!pincodeEditValue || isNaN(pincodeEditValue) || pincodeEditValue.length !== 6) {
-        pincodeEditError.textContent = 'Please enter a valid 6-digit pincode';
-        return false;
-    } else {
-        pincodeEditError.textContent = '';
-    }
+            if (house.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'House name and Street name is required.<br>';
+            }
 
-    
-    if (!landmarkEditValue) {
-        landmarkEditError.textContent = 'Please enter a landmark';
-        return false;
-    } else {
-        landmarkEditError.textContent = '';
-    }
+            if (city.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'City name is required.<br>';
+            }
 
-    formEdit.submit();
-  });
+            if (state.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'State name is required.<br>';
+            }
+
+            
+            if (isNaN(pincode) || pincode.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Pincode is required and must be a number.<br>';
+            }
+
+            if (pincode.trim().length < 6 || pincode.trim().length > 6) {
+                isValid = false;
+                errorDiv.innerHTML += 'Please enter a valid pincode.<br>';
+            }
+
+            if (mobile.trim().length != 10 || mobile2.trim().length != 10 || isNaN(mobile) || isNaN(mobile2)) {
+                isValid = false;
+                errorDiv.innerHTML += 'Please enter valid mobile numbers.<br>';
+            }
+
+            if (isValid) {
+                form.submit();
+            }
+        });
+    });
 
 </script> 
 <%- include("../user/layouts/user_footer.ejs") %>

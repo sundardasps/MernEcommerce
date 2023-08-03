@@ -28,12 +28,12 @@
                                  <div class="row">
                                     <div class="col-sm-6">
                                         <label>Mobile Number*</label>
-                                        <input type="number" id="mobile" name="mobile" class="form-control" >
+                                        <input type="text" id="mobile" name="mobile" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
                                         <label>Alternative number </label>
-                                        <input type="number" id="alternativenumber" name="alternativenumber" class="form-control" >
+                                        <input type="text" id="alternativenumber" name="alternativenumber" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
@@ -55,7 +55,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>Postcode</label>
-                                        <input type="number"  id="pincode" name="pincode" class="form-control" >
+                                        <input type="text"  id="pincode" name="pincode" class="form-control" >
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
@@ -75,61 +75,84 @@
 <script>
 
 
-    const name = document.getElementById('userName');
-    const mob = document.getElementById('mobile');
-    const  mob2  = document.getElementById('alternativenumber')
-    const  home  = document.getElementById('hoseName')
-    const  city  = document.getElementById('city')
-    const  state  = document.getElementById('state')
-    const  pin  = document.getElementById('pincode')
-    const  form  = document.getElementById('form')
+document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-    const errorElement = document.getElementById("error")
-
-    form.addEventListener('submit',(e)=>{
-    let messages = []
-    if(  name.value =="" || name.value == null){
-      messages.push('name is required')
-    }
-
-    if( mob.value =="" || mob.value == null){
-         messages.push("number is required!")
-    }
-
-    if( mob2.value =="" || mob2.value == null){
-         messages.push("alternativenumber is required!")
-    }
-      
-    
-    if( home.value =="" || home.value == null){
-         messages.push("Housing address is required!")
-    }
-    
-    if( city.value =="" || city.value == null){
-         messages.push("city address is required!")
-    }
-   
-    if( state.value =="" || state.value == null){
-         messages.push("state address is required!")
-    }
-
-    if( pin.value =="" || pin.value == null){
-         messages.push("pincode is required!")
-    }
-
-    if( mob.value.length < 10 || mob2.value.length < 10){
-         messages.push("Please add valid numbrs")
-    }
+            // Get input field values
+            const userName = document.getElementById('userName').value;
+            const mobile = document.getElementById('mobile').value;
+            const mobile2 = document.getElementById('alternativenumber').value;
+            const house = document.getElementById('hoseName').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const pincode = document.getElementById('pincode').value;
 
 
-    if( messages.length > 0  ){
-      e.preventDefault()
-      errorElement.innerText = messages.join(' & ')
-      
-    }
 
-    })
-    
+
+            
+
+            
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerHTML = ''; // Clear previous error messages
+
+            // Perform validation checks
+            let isValid = true;
+            
+            if (userName.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'User Name is required.';
+            }
+           
+            if (mobile.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Mobile number is required.';
+            }
+
+                
+            if (mobile2.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Alternative number is required.';
+            }
+
+            if (house.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'House name and Street name is required.';
+            }
+
+            if (city.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'City name is required.';
+            }
+
+            if (state.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'State name is required.';
+            }
+
+            
+            if (isNaN(pincode) || pincode.trim() === '') {
+                isValid = false;
+                errorDiv.innerHTML += 'Pincode is required and must be a number.';
+            }
+
+            if (pincode.trim().length < 6 || pincode.trim().length > 6) {
+                isValid = false;
+                errorDiv.innerHTML += 'Please enter a valid pincode.';
+            }
+
+            if (mobile.trim().length != 10 || mobile2.trim().length != 10 || isNaN(mobile) || isNaN(mobile2)) {
+                isValid = false;
+                errorDiv.innerHTML += 'Please enter valid mobile numbers.';
+            }
+
+            if (isValid) {
+                form.submit();
+            }
+        });
+    });
 
 
   </script>

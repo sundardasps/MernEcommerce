@@ -13,11 +13,11 @@ const addressSchema = new mongoose.Schema({
             required:true,
         },
         mobile:{
-            type:Number,
+            type:String,
             required:true,
         },
         altrenativeMob:{
-            type:Number,
+            type:String,
             required:true,
         },
         houseName:{
@@ -33,7 +33,7 @@ const addressSchema = new mongoose.Schema({
             required:true,
         },
         pincode:{
-            type:Number,
+            type:String,
             required:true,
         },
      
