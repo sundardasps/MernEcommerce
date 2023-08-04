@@ -184,7 +184,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews</a>
                         </li>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color: rgb(46, 202, 88);" >Add feedback</button>
+                       
                         
                                              
                     </ul>
@@ -337,117 +337,10 @@
 
 
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-        <div class="rating-box" >
-    <div  id="error" style="color: red;"></div>
-          <form action="/addFeedback" method="post" id="form">
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Name:</label>
-             <input  type="text" name="name" class="form-control" id="name">  
-              <label for="recipient-name" class="col-form-label">Email:</label>
-              <input  type="text" name="email" class="form-control" id="email" >
-              <label for="recipient-name" class="col-form-label">Title:</label>
-              <input  type="text" name="title" class="form-control" id="title" >
-              <input type="hidden" name="id" value="<%= products._id %>">
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">review:</label>
-              <textarea class="form-control" name="review" id="review"></textarea>
-            </div>
-       
-            <div class="rating-box">
-                <header style="color: #040a04;">How was your experience?</header>
-                <div class="stars">
-                  <i class="fa-solid fa-star star" data-rating="1"></i>
-                  <i class="fa-solid fa-star star" data-rating="2"></i>
-                  <i class="fa-solid fa-star star" data-rating="3"></i>
-                  <i class="fa-solid fa-star star" data-rating="4"></i>
-                  <i class="fa-solid fa-star star" data-rating="5"></i>
-                  <input type="hidden" id="rating-input" name="rating" value="0"  >
-                </div>
-              </div>
-              
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"  style="background-color: rgb(46, 202, 88);"  >Close</button>
-        <button type="submit" class="btn btn-primary" style="background-color: rgb(46, 202, 88);"   >Send message</button>
-        </div>
-      </form>
-    </div>
-      </div>
-    </div>
-  </div>
+
  </main>
 
- <script>
-  const name = document.getElementById('name')
-  const email = document.getElementById('email')
-  const title = document.getElementById('title')
-  const review = document.getElementById('review')
-  const star = document.getElementById('rating-input')
-  const form = document.getElementById('form')
-  const errorElement = document.getElementById('error')
 
-  form.addEventListener('submit',(e)=>{
-      let messages = []
-
-      if(  name.value =="" || name.value == null){
-      messages.push('Name is required')
-    }
-
-    if(  email.value =="" || email.value == null){
-      messages.push('Email is required')
-    }
-
-    if(  title.value =="" || title.value == null){
-      messages.push('Title is required')
-    }
-
-    if(  review.value =="" || review.value == null){
-      messages.push('Review is required')
-    }
-
-    if( star.value == 0 ){
-        messages.push('Please add stars')
-    }
-
-    if(messages.length >0){
-        e.preventDefault()
-        errorElement.innerText = messages.join(' & ')
-    }
-   
-  })
-
- </script>
-
-
-
-         <script>
-            // Select all elements with the "i" tag and store them in a NodeList called "stars"
-         const  stars = document.querySelectorAll(".stars i");
-         // Loop through the "stars" NodeList
-         stars.forEach((star, index1) => {
-         // Add an event listener that runs a function when the "click" event is triggered
-          star.addEventListener("click", () => {
-            // Loop through the "stars" NodeList Again
-           stars.forEach((star, index2) => {
-             // Add the "active" class to the clicked star and any stars with a lower index
-             // and remove the "active" class from any stars with a higher index
-               index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
-           });
-           });
-         });
-       
-         </script>
-  
     <script>
 
         
@@ -559,60 +452,6 @@
       </script>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-    // Get all star elements with the "star" class
-    const stars = $(".star");
 
-    // Attach a click event handler to each star
-    stars.on("click", function() {
-      // Get the rating value from the data attribute
-      const rating = $(this).data("rating");
-
-      // Update the input value with the selected rating
-      $("#rating-input").val(rating);
-
-      // Update the appearance of the stars (optional: for visual feedback)
-      stars.removeClass("selected");
-      $(this).prevAll(".star").addBack().addClass("selected");
-    });
-  });
-</script>
-
-
-<style>
-    /* Import Google font - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-
-.rating-box {
-  position: relative;
-  background: #fff;
-  padding: 25px 50px 35px;
-  border-radius: 25px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-}
-.rating-box header {
-  font-size: 22px;
-  color: #dadada;
-  font-weight: 500;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.rating-box .stars {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-.stars i {
-  color: #e6e6e6;
-  font-size: 35px;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.stars i.active {
-  color: #1bda1b;
-}
-</style>
 
     <%- include("../user/layouts/user_footer.ejs") %>

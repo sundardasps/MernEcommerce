@@ -125,7 +125,6 @@ const addCartItem = async (req, res) => {
     
     const discount =  productData.discountPercentage;          
     const price =  productData.price 
-    // const discountAmount = Math.round((price*discount)/100)
     const total = price 
    
     if (updatedProduct) {

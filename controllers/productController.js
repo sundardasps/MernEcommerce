@@ -210,13 +210,23 @@ const addFeedback = async (req, res) => {
     const prodId = req.body.id;
     const review = req.body.review;
     const title = req.body.title;
+   
+    
+    const product =await productdb.findOne({_id:prodId});
+   
+    let totalStars = 0;
 
-    const productData = await productdb.findById({ _id: prodId });
-
+    for (let i = 0; i < product.product_review.length; i++) {
+        if (product.product_review[i].stars !== undefined && typeof product.product_review[i].stars === 'number') {
+            totalStars += product.product_review[i].stars;
+        }
+    }
+    
     const rateProduct = await productdb.findByIdAndUpdate(
       prodId,
       {
         $push: {
+          
           product_review: [
             {
               stars: star,
@@ -224,15 +234,17 @@ const addFeedback = async (req, res) => {
               email: email,
               review: review,
               title: title,
+              
             },
           ],
+          
         },
       },
       {
         new: true,
       }
     );
-    // }
+   
 
     res.redirect("/product_details?id=" + prodId);
   } catch (error) {
