@@ -303,11 +303,12 @@ const resetPasswordLoad = async (req, res) => {
   try {
   
     const token = req.query.token;
+    const session = req.session.user_id
     const userData = await User.findOne({ token: token });
     if (userData) {
       res.render("reset_password", { email: userData.email });
     } else {
-      res.render("404", { message: "Invalid Token" });
+      res.render("404", {session, message: "Invalid Token" });
     }
   } catch (error) {
     console.log(error.message);
