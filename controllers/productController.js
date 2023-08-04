@@ -31,7 +31,8 @@ const productDetails = async (req, res) => {
   try {
     const id = req.query.id;
     const productData = await productdb.findById({ _id: id });
-    res.render("product_details", { product: productData });
+    const productImages = productData.productImages;
+    res.render("product_details", { product: productData,productImages });
   } catch (error) {
     console.log(error.message);
   }
@@ -212,28 +213,6 @@ const addFeedback = async (req, res) => {
 
     const productData = await productdb.findById({ _id: prodId });
 
-    // let alreadyRated = productData.product_review.find({email:email});
-
-    // console.log(alreadyRated,"already rated ===================");
-
-    // if (alreadyRated) {
-    //   const updateRating = await productdb.updateOne(
-    //     {
-    //       product_review: { $elemMatch: { email: alreadyRated }},
-    //     },
-    //     {
-    //       $set: {
-    //         star: star,
-    //         email: email,
-    //         review: review,
-    //         title: title,
-    //        },
-    //     },
-    //     {
-    //       new: true,
-    //     }
-    //   );
-    // } else {
     const rateProduct = await productdb.findByIdAndUpdate(
       prodId,
       {

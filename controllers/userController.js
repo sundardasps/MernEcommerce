@@ -232,7 +232,7 @@ const loadHome = async (req, res) => {
 
   try {
     res.render("home", {
-      session: session,
+     session,
       category: data,
       products: productdata,
       cartProducts:cartData,
@@ -402,7 +402,7 @@ const loadShop = async (req, res) => {
 
    
     res.render("shop", {
-      session: session,
+      session,
       category: data,
       products: productdata,
       totalPages:Math.ceil(count/limit),

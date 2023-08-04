@@ -19,8 +19,8 @@ const loadCoupon = async (req, res) => {
 const addCoupon = async (req, res) => {
   try {
 
-   const alreadyCoupon = await couponDb.findOne({couponCode:req.body.couponCode,})
-   console.log(alreadyCoupon,"already coupon");
+   const alreadyCoupon = await couponDb.findOne({couponCode:req.body.couponCode})
+
    if(alreadyCoupon){
        res.json({already:true})
    }else{

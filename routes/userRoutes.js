@@ -40,7 +40,7 @@ user_route.get("/login", auth.isLogin, userController.userLogin);
 user_route.get("/category", userController.loadHome);
 user_route.get('/product_details',userController.loadProductdetails)
 user_route.get('/shop',userController.loadShop)
-user_route.get('/filterCategory/:id',auth.isLogin,userController.filterCategory)
+user_route.get('/filterCategory/:id',userController.filterCategory)
 
 
 //======================  WISHLIST ===============================

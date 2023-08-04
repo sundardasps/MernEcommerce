@@ -91,7 +91,7 @@
                         aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.682);">
                       <div class="modal-dialog" role="document">
                    <div class="modal-content">
-                   <div id="error1" style="color: chocolate;"></div>
+                   <div id="erroredit" style="color: chocolate;"></div>
                    <form action="/admin/editCoupon/<%= data._id %>" method="post" id="form"  >
                     <div class="modal-header text-center">
                       <h4 class="modal-title w-100 font-weight-bold">Code</h4>
@@ -102,35 +102,35 @@
                      <div class="modal-body mx-3">
                       <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon Name</label>
-                      <input type="text" id="orangeForm-name" name="couponName" class="form-control validate" value="<%= data.couponName %>" required>
+                      <input type="text" id="couponNameedit" name="couponName" class="form-control validate" value="<%= data.couponName %>" >
                      </div>
                       <div class="md-form mb-5">
                           <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon code</label>
-                        <input type="text" id="orangeForm-name" name="couponCode" class="form-control validate" value="<%= data.couponCode %>" required>
+                        <input type="text" id="couponCodeedit" name="couponCode" class="form-control validate" value="<%= data.couponCode %>" >
                       </div>
                       <div class="md-form mb-5">
                           <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
-                        <input type="number" id="orangeForm-email" name="discountPercentage" class="form-control validate" value="<%= data.discountPercentage %>" required>
+                        <input type="number" id="discountPercentageedit" name="discountPercentage" class="form-control validate" value="<%= data.discountPercentage %>" >
                       </div>
 
                       <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
-                      <input type="number" id="orangeForm-email" name="criteriaAmount" class="form-control validate" value="<%= data.criteriaAmount %>" required>
+                      <input type="number" id="criteriaAmountedit" name="criteriaAmount" class="form-control validate" value="<%= data.criteriaAmount %>" >
                     </div>
               
                       <div class="md-form mb-4">
                           <label data-error="wrong" data-success="right" for="orangeForm-pass">Activation date</label>    
-                        <input type="text" id="activationDate1"  name="activationDate" class="form-control validate" value="<%= data.activationDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" required>
+                        <input type="text" id="activationDateedit"  name="activationDate" class="form-control validate" value="<%= data.activationDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" >
                       </div>
               
                       <div class="md-form mb-4">
                           <label data-error="wrong" data-success="right" for="orangeForm-pass">Expiry date</label>       
-                          <input type="text" id="expiryDate1" name="expiryDate" class="form-control validate" value="<%= data.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" required>
+                          <input type="text" id="expiryDateedit" name="expiryDate" class="form-control validate" value="<%= data.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %>" >
                         </div>
                        
                         <div class="md-form mb-4">
                           <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
-                          <input type="number" id="orangeForm-pass" name="usersLimit" class="form-control validate" value="<%= data.usersLimit %>" required>
+                          <input type="number" id="usersLimitedit" name="usersLimit" class="form-control validate" value="<%= data.usersLimit %>" >
                         </div>
 
                     </div>
@@ -174,35 +174,35 @@
        <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon Name</label>
-        <input type="text" id="couponName" name="couponName" class="form-control validate" required>
+        <input type="text" id="couponName" name="couponName" class="form-control validate">
        </div>
         <div class="md-form mb-5">
             <label data-error="wrong" data-success="right" for="orangeForm-name">Coupon code</label>
-          <input type="text" id="couponCode" name="couponCode" class="form-control validate" required>
+          <input type="text" id="couponCode" name="couponCode" class="form-control validate" >
         </div>
         <div class="md-form mb-5">
             <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
-          <input type="number" id="discountPercentage" name="discountPercentage" class="form-control validate" required>
+          <input type="number" id="discountPercentage"  name="discountPercentage" class="form-control validate" >
         </div>
 
         <div class="md-form mb-5">
           <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
-        <input type="number" id="criteriaAmount" name="criteriaAmount" class="form-control validate" required>
+        <input type="number" id="criteriaAmount"  name="criteriaAmount" class="form-control validate" >
        </div>
 
         <div class="md-form mb-4">
             <label data-error="wrong" data-success="right" for="orangeForm-pass">Activation date</label>    
-          <input type="date" id="activationDate" name="activationDate" class="form-control validate" required>
+          <input type="date" id="activationDate" name="activationDate" class="form-control validate" >
         </div>
 
         <div class="md-form mb-4">
             <label data-error="wrong" data-success="right" for="orangeForm-pass">Expiry date</label>       
-            <input type="date" id="expiryDate" name="expiryDate" class="form-control validate" required>
+            <input type="date" id="expiryDate" name="expiryDate" class="form-control validate" >
           </div>
 
           <div class="md-form mb-4">
             <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
-            <input type="number" min="0" id="usersLimit" name="usersLimit" class="form-control validate" required>
+            <input type="number" id="usersLimit" name="usersLimit" class="form-control validate" >
           </div>
 
       </div>
@@ -218,11 +218,11 @@
 <script>
 
 function checkCoupon(){
-const couponName = document.getElementById('couponCode')
-const couponCode = document.getElementById('discountPercentage')
-const discountPercentage = document.getElementById('criteriaAmount')
+const couponName = document.getElementById('couponName')
+const couponCode = document.getElementById('couponCode')
+const discountPercentage = document.getElementById('discountPercentage')
 const activationDate = document.getElementById('activationDate')
-const criteriaAmount = document.getElementById('expiryDate')
+const criteriaAmount = document.getElementById('criteriaAmount')
 const expiryDate = document.getElementById('expiryDate')
 const usersLimit = document.getElementById('usersLimit')
 
@@ -256,6 +256,12 @@ const usersLimit = document.getElementById('usersLimit')
 const formAdd = document.getElementById('formAdd')
 const actdate = document.getElementById('activationDate')
 const expdate = document.getElementById('expiryDate')
+const couponName = document.getElementById('couponName')
+const couponCode = document.getElementById('couponCode')
+const usersLimit = document.getElementById('usersLimit')
+const criteriaAmount = document.getElementById('criteriaAmount')
+const discountAmount = document.getElementById('discountPercentage')
+
 const errorElement = document.getElementById('error')
 
 formAdd.addEventListener("submit",(e)=>{
@@ -265,6 +271,60 @@ formAdd.addEventListener("submit",(e)=>{
     messages.push("Please add valid dates")
   }
 
+  if(couponName.value.trim() == null||couponName.value.trim() ==""){
+    messages.push("Please add coupon name")
+  }
+
+  if(couponName.value.trim().length > 15 ){
+    messages.push("Coupon name only containe 15 characters")
+  }
+  if(couponName.value.trim().length < 5 ){
+    messages.push("Coupon name minimum containe 5 characters")
+  }
+
+  if(couponCode.value.trim() == null||couponCode.value.trim() ==""){
+    messages.push("Please add couponcode ")
+  }
+
+
+  if(usersLimit.value.trim() == null||usersLimit.value.trim() ==""){
+    messages.push("Please add userslimit ")
+  }
+  
+  if(usersLimit.value.trim() == 0){
+    messages.push("Add a minimum userslimit ")
+  }
+  
+  if(criteriaAmount.value.trim() == null||criteriaAmount.value.trim() ==""){
+    messages.push("Please add critiria amount ")
+  }
+  
+  
+  if(criteriaAmount.value.trim() == 0 ){
+    messages.push("Add a minimum criteria amount ")
+  }
+ 
+   
+  
+  if(couponCode.value.trim().length < 6){
+    messages.push("Coupon code minimum contain 6 characters ")
+  }
+
+  if(couponCode.value.trim().length > 10 ){
+    messages.push("Coupon code maximum contain 10 characters only ")
+  }
+
+ 
+  if(discountAmount.value.trim() == null||discountAmount.value.trim() ==""){
+    messages.push("Please add discount amount ")
+  }
+ 
+  if(criteriaAmount.value.trim() == 0 ){
+    messages.push("Add a minimum discount amount ")
+  }
+  
+
+
   if( messages.length >0){
     e.preventDefault()
     errorElement.innerText = messages.join(',')
@@ -272,17 +332,76 @@ formAdd.addEventListener("submit",(e)=>{
 
 })
 
+
+
+
 const form = document.getElementById('form')
-const actidate = document.getElementById('activationDate1')
-const expydate = document.getElementById('expiryDate1')
-const errorElements = document.getElementById('error1')
+const actdateedit = document.getElementById('activationDateedit')
+const expdateedit = document.getElementById('expiryDateedit')
+const couponNameedit = document.getElementById('couponNameedit')
+const couponCodeedit = document.getElementById('couponCodeedit')
+const usersLimitedit = document.getElementById('usersLimitedit')
+const criteriaAmountedit = document.getElementById('criteriaAmountedit')
+const discountAmountedit = document.getElementById('discountPercentageedit')
+const errorElementedit = document.getElementById('erroredit')
 
 form.addEventListener("submit",(e)=>{
   let messages = []
 
-  if( actidate.value > expydate.value){
+  if( actdateedit.value > expdateedit.value){
     messages.push("Please add valid dates")
   }
+
+  if(couponNameedit.value.trim() == null||couponNameedit.value.trim() ==""){
+    messages.push("Please add coupon name")
+  }
+
+  if(couponNameedit.value.trim().length > 15 ){
+    messages.push("Coupon name only containe 15 characters")
+  }
+  if(couponNameedit.value.trim().length < 5 ){
+    messages.push("Coupon name minimum containe 5 characters")
+  }
+
+  if(couponCodeedit.value.trim() == null||couponCodeedit.value.trim() ==""){
+    messages.push("Please add couponcode ")
+  }
+
+  if(usersLimitedit.value.trim() == null||usersLimitedit.value.trim() ==""){
+    messages.push("Please add userslimit ")
+  }
+  
+  if(usersLimitedit.value.trim() == 0){
+    messages.push("Add a minimum userslimit ")
+  }
+  
+  if(criteriaAmountedit.value.trim() == null||criteriaAmountedit.value.trim() ==""){
+    messages.push("Please add critiria amount ")
+  }
+  
+  
+  if(criteriaAmountedit.value.trim() == 0 ){
+    messages.push("Add a minimum criteria amount ")
+  }
+
+  if(couponCodeedit.value.trim().length < 6){
+    messages.push("Coupon code minimum  contain 6 characters ")
+  }
+
+  if(couponCodeedit.value.trim().length > 10 ){
+    messages.push("Coupon code maximum contain 10 characters ")
+  }
+
+ 
+  if(discountAmountedit.value.trim() == null||discountAmountedit.value.trim() ==""){
+    messages.push("Please add discount amount ")
+  }
+ 
+  if(criteriaAmountedit.value.trim() == 0 ){
+    messages.push("Add a minimum criteria amount ")
+  }
+  
+
 
   if( messages.length >0){
     e.preventDefault()
@@ -290,7 +409,6 @@ form.addEventListener("submit",(e)=>{
   }
 
 })
-
 
 
 

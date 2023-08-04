@@ -54,7 +54,7 @@
                                         <a onclick="show('<%= data._id %>')" class="btn-product-icon btn-wishlist"><span>add to wishlist</span></a>
                                         <% }else {
                                             %>
-                                            <a href="/login" class="btn-product-icon btn-wishlist"><span>add to wishlist</span></a>
+                                            <a href="./login" class="btn-product-icon btn-wishlist"><span>add to wishlist</span></a>
                                         <% } %>
                                     </div><!-- End .product-action-vertical -->
                                 </figure><!-- End .product-media -->
@@ -83,8 +83,13 @@
                                         
                                           
                                         <% }else{%>
-                             
-                                        <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+                                            <% if(session != null ){
+                                                %>
+                                                <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+                                            <% }else {
+                                                %>
+                                               <a href="/login"> <button class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button></a> 
+                                            <% } %>
                                           <%}%>
                                   
                                     </div><!-- End .product-action -->

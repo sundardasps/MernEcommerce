@@ -103,7 +103,15 @@
                                     <% if(data.quantity <=0 ){ %>        
                                       <button  class="btn-product " style="background-color: rgb(229, 80, 80);"  ><span>Out of stock</span></button>
                                       <% }else{%>
-                                      <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+
+                                        <% if(session != null ){
+                                            %>
+                                            <button onclick="addToCart('<%= data._id %>')" class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button>
+                                     
+                                        <% }else {
+                                            %>
+                                            <a href="/login"> <button class="btn-product " style="background-color: rgb(46, 202, 88);"  ><span>add to cart >></span></button></a> 
+                                        <% } %>
                                         <%}%>
                                   </div><!-- End .product-action -->
                             </div><!-- End .product -->
