@@ -19,15 +19,15 @@ const loadCoupon = async (req, res) => {
 const addCoupon = async (req, res) => {
   try {
     const alreadyCoupon = await couponDb.findOne({
-      couponCode: req.body.couponCode,
+      couponCode: req.body.couponCode.trim(),
     });
-
+     console.log(alreadyCoupon);
     if (alreadyCoupon) {
-      res.json({ already: true });
+      res.redirect('/admin/couponList')
     } else {
       const data = new couponDb({
         couponName: req.body.couponName,
-        couponCode: req.body.couponCode,
+        couponCode: req.body.couponCode.trim(),
         discountPercentage: req.body.discountPercentage,
         activationDate: req.body.activationDate,
         criteriaAmount: req.body.criteriaAmount,

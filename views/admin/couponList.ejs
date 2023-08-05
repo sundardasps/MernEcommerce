@@ -110,12 +110,12 @@
                       </div>
                       <div class="md-form mb-5">
                           <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
-                        <input type="number" id="discountPercentageedit" name="discountPercentage" class="form-control validate" value="<%= data.discountPercentage %>" >
+                        <input type="number" min="1" id="discountPercentageedit" name="discountPercentage" class="form-control validate" value="<%= data.discountPercentage %>" >
                       </div>
 
                       <div class="md-form mb-5">
                         <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
-                      <input type="number" id="criteriaAmountedit" name="criteriaAmount" class="form-control validate" value="<%= data.criteriaAmount %>" >
+                      <input type="number" min="1" id="criteriaAmountedit" name="criteriaAmount" class="form-control validate" value="<%= data.criteriaAmount %>" >
                     </div>
               
                       <div class="md-form mb-4">
@@ -130,7 +130,7 @@
                        
                         <div class="md-form mb-4">
                           <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
-                          <input type="number" id="usersLimitedit" name="usersLimit" class="form-control validate" value="<%= data.usersLimit %>" >
+                          <input type="number" min="1" id="usersLimitedit" name="usersLimit" class="form-control validate" value="<%= data.usersLimit %>" >
                         </div>
 
                     </div>
@@ -182,12 +182,12 @@
         </div>
         <div class="md-form mb-5">
             <label data-error="wrong" data-success="right" for="orangeForm-email">Discount</label>
-          <input type="number" id="discountPercentage"  name="discountPercentage" class="form-control validate" >
+          <input type="number" min="1" id="discountPercentage"  name="discountPercentage" class="form-control validate" >
         </div>
 
         <div class="md-form mb-5">
           <label data-error="wrong" data-success="right" for="orangeForm-email">CriteriaAmount</label>
-        <input type="number" id="criteriaAmount"  name="criteriaAmount" class="form-control validate" >
+        <input type="number" min="1" id="criteriaAmount"  name="criteriaAmount" class="form-control validate" >
        </div>
 
         <div class="md-form mb-4">
@@ -197,12 +197,12 @@
 
         <div class="md-form mb-4">
             <label data-error="wrong" data-success="right" for="orangeForm-pass">Expiry date</label>       
-            <input type="date" id="expiryDate" name="expiryDate" class="form-control validate" >
+            <input type="date"  id="expiryDate" name="expiryDate" class="form-control validate" >
           </div>
 
           <div class="md-form mb-4">
             <label data-error="wrong" data-success="right" for="orangeForm-pass">Users limit</label>       
-            <input type="number" id="usersLimit" name="usersLimit" class="form-control validate" >
+            <input type="number" min="1" id="usersLimit" name="usersLimit" class="form-control validate" >
           </div>
 
       </div>
@@ -239,7 +239,7 @@ const usersLimit = document.getElementById('usersLimit')
     },
     method:"post",
     success: (response) => {
-  if (response.already) {
+  if (response.success) {
     swal.fire({
       title: 'Error',
       text: 'Coupon already exists!',
