@@ -1,78 +1,67 @@
 const UserDb = require("../models/userModel");
 const CartDb = require("../models/cart_model");
 const ProductDb = require("../models/product_model");
-const addressDb = require("../models/userAddress_model")
-const couponsDb = require("../models/coupon_model")
+const addressDb = require("../models/userAddress_model");
+const couponsDb = require("../models/coupon_model");
 //=================== LOAD CART ======================
 
 const loadCart = async (req, res) => {
   try {
-    
     let id = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
- 
-   
 
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
-   
+
     const session = req.session.user_id;
 
-      if (cartData) {
-        if (cartData.products.length > 0) {
-          const products = cartData.products;
-         
-          const total = await CartDb.aggregate([
-            { $match: { userId: req.session.user_id } },
-            { $unwind: "$products" },
-            {
-              $group: {
-                _id: null,
-                total: {
-                  $sum: {
-                    $multiply:["$products.productPrice","$products.count"],
-                  },
+    if (cartData) {
+      if (cartData.products.length > 0) {
+        const products = cartData.products;
+
+        const total = await CartDb.aggregate([
+          { $match: { userId: req.session.user_id } },
+          { $unwind: "$products" },
+          {
+            $group: {
+              _id: null,
+              total: {
+                $sum: {
+                  $multiply: ["$products.productPrice", "$products.count"],
                 },
               },
             },
-          ]);
-          
-          const Total = total.length > 0 ? total[0].total : 0;
-          const totalamout = Total
-          const userId = userName._id;
-          const userData = await UserDb.find();
-   
-          res.render("cart", {
-            products: products,
-            Total: Total,
-            userId,
-            session,
-            totalamout,
-            user: userName,
-            
-      
-            
-          });
+          },
+        ]);
 
-       
-        } else {
-          res.render("emptyCart", {
-            user: userName,
-            session,
-            massage: "Your cart is empty !",
-            
-          });
-        }
+        const Total = total.length > 0 ? total[0].total : 0;
+        const totalamout = Total;
+        const userId = userName._id;
+        const userData = await UserDb.find();
+
+        res.render("cart", {
+          products: products,
+          Total: Total,
+          userId,
+          session,
+          totalamout,
+          user: userName,
+        });
       } else {
         res.render("emptyCart", {
           user: userName,
           session,
-          massage: "No products Added to cart",
-          
+          massage: "Your cart is empty !",
         });
       }
-   
+    } else {
+      res.render("emptyCart", {
+        user: userName,
+        session,
+        massage: "No products Added to cart",
+      });
+    }
   } catch (error) {
     console.log(error.message);
     res.render("404");
@@ -83,7 +72,6 @@ const loadCart = async (req, res) => {
 
 const emptyCartLoad = async (req, res) => {
   try {
-
     res.render("emptyCart");
   } catch (error) {
     console.log(error.massage);
@@ -122,11 +110,10 @@ const addCartItem = async (req, res) => {
       });
     }
 
-    
-    const discount =  productData.discountPercentage;          
-    const price =  productData.price 
-    const total = price 
-   
+    const discount = productData.discountPercentage;
+    const price = productData.price;
+    const total = price;
+
     if (updatedProduct) {
       await CartDb.updateOne(
         { userId: userId, "products.productId": proId },
@@ -140,16 +127,13 @@ const addCartItem = async (req, res) => {
     } else {
       cartData.products.push({
         productId: proId,
-        productPrice:total,
+        productPrice: total,
         totalPrice: total,
       });
       await cartData.save();
-     
     }
 
     res.json({ success: true });
-
-
   } catch (error) {
     console.log(error.massage);
   }
@@ -183,7 +167,7 @@ const cartQuantityIncrease = async (req, res, next) => {
     const proId = req.body.product;
     let count = req.body.count;
     count = parseInt(count);
-  
+
     const cartData = await CartDb.findOne({ userId: userData });
     const product = cartData.products.find(
       (product) => product.productId === proId
@@ -195,12 +179,12 @@ const cartQuantityIncrease = async (req, res, next) => {
       (product) => product.productId === proId
     );
     const updatedQuantity = updatedProduct.count;
-   
+
     if (count > 0) {
       if (updatedQuantity + count > productQuantity) {
         res.json({ success: false, message: "Quantity limit reached!" });
         return;
-      } 
+      }
     } else if (count < 0) {
       // Quantity is being decreased
       if (updatedQuantity <= 1 || Math.abs(count) > updatedQuantity) {
@@ -223,7 +207,7 @@ const cartQuantityIncrease = async (req, res, next) => {
     );
     const updateQuantity = updateProduct.count;
     const productPrice = productData.price;
-  
+
     const productTotal = productPrice * updateQuantity;
     await CartDb.updateOne(
       { userId: userData, "products.productId": proId },
@@ -235,48 +219,47 @@ const cartQuantityIncrease = async (req, res, next) => {
   }
 };
 
-
 //==================================== LOAD CHECKOUT ======================================
 
 const loadcheckOut = async (req, res) => {
   try {
-   
-    const  session = req.session.user_id;
+    const session = req.session.user_id;
     const userName = await UserDb.findOne({ _id: req.session.user_id });
-    const addressdata = await addressDb.findOne({userId:req.session.user_id});
-    const couponsData = await couponsDb.find()
-    const todayDate = new Date()
+    const addressdata = await addressDb.findOne({
+      userId: req.session.user_id,
+    });
+    const couponsData = await couponsDb.find();
+    const todayDate = new Date();
     const cartData = await CartDb.findOne({
       userId: req.session.user_id,
     }).populate("products.productId");
     const products = cartData.products;
-          const total = await CartDb.aggregate([
-            { $match: { userId: req.session.user_id } },
-            { $unwind: "$products" },
-            {
-              $group: {
-                _id: null,
-                total: {
-                  $sum: {
-                    $multiply: ["$products.productPrice","$products.count"],
-                  },
-                },
-              },
+    const total = await CartDb.aggregate([
+      { $match: { userId: req.session.user_id } },
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: {
+              $multiply: ["$products.productPrice", "$products.count"],
             },
-          ]);
-           
-         
-          if (req.session.user_id) {
-            if(addressdata) {
-              if(addressdata.addresses.length > 0){
-                const address = addressdata.addresses
-          const Total = total.length > 0 ? total[0].total : 0;
-          const totalamout = Total
-          const userWallet = userName.wallet
-          const userId = userName._id;
-          const couponCode = undefined
+          },
+        },
+      },
+    ]);
 
-          res.render("checkOut",{
+    if (req.session.user_id) {
+      if (addressdata) {
+        if (addressdata.addresses.length > 0) {
+          const address = addressdata.addresses;
+          const Total = total.length > 0 ? total[0].total : 0;
+          const totalamout = Total;
+          const userWallet = userName.wallet;
+          const userId = userName._id;
+          const couponCode = undefined;
+
+          res.render("checkOut", {
             products: products,
             Total: Total,
             userId,
@@ -286,18 +269,23 @@ const loadcheckOut = async (req, res) => {
             address,
             couponCode,
             userWallet,
-            coupons:couponsData,
+            coupons: couponsData,
             todayDate,
-           
           });
-
-          } else {
-            res.render("emptyCheckOut",{session,user:userName,message:"Please enter a valid addresss"})
-          }
-
         } else {
-           res.render("emptyCheckOut",{session,user:userName,message:"Please enter a valid addresss"})
+          res.render("emptyCheckOut", {
+            session,
+            user: userName,
+            message: "Please enter a valid addresss",
+          });
         }
+      } else {
+        res.render("emptyCheckOut", {
+          session,
+          user: userName,
+          message: "Please enter a valid addresss",
+        });
+      }
     } else {
       res.redirect("/login");
     }
@@ -307,7 +295,6 @@ const loadcheckOut = async (req, res) => {
   }
 };
 
-
 //==============================================================================
 
 module.exports = {
@@ -316,5 +303,4 @@ module.exports = {
   loadcheckOut,
   removeFromCart,
   cartQuantityIncrease,
-
 };

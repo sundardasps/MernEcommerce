@@ -9,7 +9,7 @@
                     <th>Product</th>
                     <th>Price</th>
                     <th></th>
-                    <th>Stock Status</th>
+                    <th>Category</th>
                     <th>Add to Cart </th>
                     <th></th>
                 </tr>
@@ -40,7 +40,7 @@
                         <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Only <%= wish.productId.quantity %> left !</p>
 
                                 <% } %></td>
-                    <td class="stock-col"><span  class="in-stock"><%=  wish.productId.quantity %> </span>Products</td>
+                    <td class="stock-col"><span  class="in-stock"><%=  wish.productId.category %> </span></td>
                     <!-- <td class="action-col">
                         <div class="dropdown">
                         <button class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

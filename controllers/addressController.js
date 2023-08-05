@@ -5,7 +5,7 @@ const orderDb = require("..//models/order_model");
 const { query } = require("express");
 
 //==================== LOAD USER DASHBOARD ==========================
-const loadUserDashboard = async (req, res) => {
+const loadUserDashboard = async (req, res,) => {
   try {
     const id = req.session.user_id;
     const userData = await UserDb.findOne({ _id: id });
@@ -25,7 +25,7 @@ const loadUserDashboard = async (req, res) => {
   }
 };
 
-//=========================LOAD ADD ADDRESS FORM =================================
+//=========================LOAD ADD ADDRESS FORM ============================
 
 const loadAddAddress = async (req, res) => {
   try {
@@ -80,7 +80,7 @@ const addUserAddress = async (req, res) => {
           },
         ],
       });
-      console.log(address);
+     
       const savedAddress = await newAddress.save();
 
       if (savedAddress) {
@@ -90,6 +90,7 @@ const addUserAddress = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+
   }
 };
 
@@ -111,12 +112,13 @@ const loadEditAddress = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+
   }
 };
 
 //============================INSERT UPDATED ADDRESS =================
 
-const updateAddress = async (req, res) => {
+const updateAddress = async (req,res) => {
   try {
     const id = req.query.id;
     const session = req.session.user_id;
@@ -143,8 +145,8 @@ const updateAddress = async (req, res) => {
       }
     );
     res.redirect("/checkOut");
-  } catch (error) {
-    console.log(error.message);
+  } catch (error){
+   console.log(error.message);
   }
 };
 
@@ -335,7 +337,6 @@ module.exports = {
   updateAddress,
   emptyCheckOut,
   showAddress,
-
   loadAddressFromDash,
   loadEditAddressfromDash,
   addUserAddressFromDash,

@@ -92,7 +92,7 @@
                       <div class="modal-dialog" role="document">
                    <div class="modal-content">
                    <div id="erroredit" style="color: chocolate;"></div>
-                   <form action="/admin/editCoupon/<%= data._id %>" method="post" id="form"  >
+                   <form  id="form"  action="/admin/editCoupon/<%= data._id %>" method="post"  >
                     <div class="modal-header text-center">
                       <h4 class="modal-title w-100 font-weight-bold">Code</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -346,6 +346,7 @@ const discountAmountedit = document.getElementById('discountPercentageedit')
 const errorElementedit = document.getElementById('erroredit')
 
 form.addEventListener("submit",(e)=>{
+  
   let messages = []
 
   if( actdateedit.value > expdateedit.value){

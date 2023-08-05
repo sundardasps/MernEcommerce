@@ -24,5 +24,4 @@ const addBanner = async (req,res) => {
     }
 
 
-
 }

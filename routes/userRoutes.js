@@ -93,5 +93,6 @@ user_route.post('/applyCoupon',couponController.varifyCoupon)
 user_route.get('/about',userController.loadAbout)
 
 
+
 module.exports = user_route;
 

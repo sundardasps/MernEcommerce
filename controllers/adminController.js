@@ -158,36 +158,202 @@ const loadHome = async (req, res) => {
     } else {
       console.log("No wallet orders found.");
     }
-    
 
-    const totalNormalCatResult = await orderDb.aggregate([
+    // first year sales report
+
+    const firstYear = new Date();
+    const secondyear = new Date(
+      firstYear.getTime() - 365 * 24 * 60 * 60 * 1000
+    );
+
+    const totalSalesYear = await orderDb.aggregate([
       {
         $unwind: "$products",
       },
       {
         $match: {
           "products.status": "Delivered",
-          "products.productId.category":"Normal",
+          date: { $gte: secondyear, $lt: firstYear }, // Filter by the specific year
         },
       },
       {
         $group: {
           _id: null,
-          totalNormalAmount: { $sum: "$products.totalPrice" },
+          totalYearAmount: { $sum: "$products.totalPrice" },
         },
       },
     ]);
 
-    let totalNormalCate = 0;
-    if (totalNormalCatResult.length > 0) {
-      totalNormalCate = totalNormalCatResult[0].totalNormalAmount;
-    } else {
-      console.log("No wallet orders found.");
-    }
-    
-  console.log(totalNormalCatResult,"normal emount");
-  
+    let totalAmountYear = 0;
 
+    if (totalSalesYear.length > 0) {
+      totalAmountYear = totalSalesYear[0].totalYearAmount;
+      console.log("Total amount of delivered orders:", totalAmountYear);
+    } else {
+      console.log("No delivered orders found.");
+    }
+
+    //====================SECOND YEAR AGRIGATION =============//
+
+    const thiredyear = new Date(
+      secondyear.getTime() - 365 * 24 * 60 * 60 * 1000
+    );
+
+    const totalSalesSecondYear = await orderDb.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: {
+          "products.status": "Delivered",
+          date: { $gte: thiredyear, $lt: secondyear }, // Filter by the specific year
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalSecondYearAmount: { $sum: "$products.totalPrice" },
+        },
+      },
+    ]);
+
+    let totalAmountSecondYear = 0;
+
+    if (totalSalesSecondYear.length > 0) {
+      totalAmountSecondYear = totalSalesSecondYear[0].totalSecondYearAmount;
+      console.log(
+        "Total amount of delivered second orders:",
+        totalAmountSecondYear
+      );
+    } else {
+      console.log("No delivered orders found.");
+    }
+
+    //=================THIRD YEAR SALES =================//
+
+    const FOURTHYEAR = new Date(
+      thiredyear.getTime() - 365 * 24 * 60 * 60 * 1000
+    );
+
+    const totalSalesThirdYear = await orderDb.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $match: {
+          "products.status": "Delivered",
+          date: { $gte: FOURTHYEAR, $lt: thiredyear }, // Filter by the specific year
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalThirdYearAmount: { $sum: "$products.totalPrice" },
+        },
+      },
+    ]);
+
+    let totalAmountThirdYear = 0;
+
+    if (totalSalesThirdYear.length > 0) {
+      totalAmountThirdYear = totalSalesThirdYear[0].totalThirdYearAmount;
+      console.log(
+        "Total amount of delivered second orders:",
+        totalAmountThirdYear
+      );
+    } else {
+      console.log("No delivered orders found.");
+    }
+
+//================ WEEKLY SALES ================//
+
+const currentDate = new Date();
+const weekStart = new Date(
+  currentDate.getFullYear(),
+  currentDate.getMonth(),
+  currentDate.getDate() - currentDate.getDay()
+);
+const weekEnd = new Date(
+  currentDate.getFullYear(),
+  currentDate.getMonth(),
+  currentDate.getDate() - currentDate.getDay() + 6
+);
+
+const weeklysales = await orderDb.aggregate([
+  {
+    $match: {
+      date: { $gte: weekStart, $lte: weekEnd },
+    },
+  },
+  {
+    $group: {
+      _id: {
+        dayOfWeek: { $dayOfWeek: "$date" },
+        date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+      },
+      totalSales: { $sum: "$totalAmount" },
+      orderCount: { $sum: 1 },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      dayOfWeek: "$_id.dayOfWeek",
+      date: "$_id.date",
+      totalSales: 1,
+      orderCount: 1,
+    },
+  },
+  {
+    $sort: { dayOfWeek: 1, date: 1 },
+  },
+]);
+
+const dailySalesData = Array.from({ length: 7 }, (_, day) => {
+  const dayOfWeek = (day + 1) % 7;
+  const salesForDay = weeklysales.filter(
+    (entry) => entry.dayOfWeek === dayOfWeek
+  );
+  return {
+    dayOfWeek: dayOfWeek,
+    salesData: salesForDay,
+  };
+});
+
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+const dailySalesTotalByDay = {};
+
+daysOfWeek.forEach((day) => {
+  dailySalesTotalByDay[day] = 0;
+});
+
+dailySalesData.forEach((dayData) => {
+  const dayName = daysOfWeek[dayData.dayOfWeek - 1];
+  const totalSalesForDay = dayData.salesData.reduce(
+    (acc, entry) => acc + entry.totalSales,
+    0
+  );
+  dailySalesTotalByDay[dayName] = totalSalesForDay;
+});
+
+const mondayTotalSales = dailySalesTotalByDay["Monday"];
+const tuesdayTotalSales = dailySalesTotalByDay["Tuesday"];
+const wednesdayTotalSales = dailySalesTotalByDay["Wednesday"];
+const thursdayTotalSales = dailySalesTotalByDay["Thursday"];
+const fridayTotalSales = dailySalesTotalByDay["Friday"];
+const saturdayTotalSales = dailySalesTotalByDay["Saturday"];
+const sundayTotalSales = dailySalesTotalByDay["Sunday"];
+
+//================WEEKLY SALES ENDING=====//
 
     res.render("home", {
       product: productData,
@@ -197,6 +363,19 @@ const loadHome = async (req, res) => {
       totalCod,
       totalWallet,
       totalOnline,
+      firstYear,
+      totalAmountYear,
+      secondyear,
+      totalAmountSecondYear,
+      thiredyear,
+      totalAmountThirdYear,
+      mondayTotalSales,
+      tuesdayTotalSales,
+      wednesdayTotalSales,
+      thursdayTotalSales,
+      fridayTotalSales,
+      saturdayTotalSales,
+      sundayTotalSales,
       
     });
   } catch (error) {
@@ -204,7 +383,7 @@ const loadHome = async (req, res) => {
   }
 };
 
-//====================== ADMIN LOGOUT ==========================
+//====================== ADMIN LOGOUT ===================//
 const logout = async (req, res) => {
   try {
     req.session.admin_id = false;
@@ -214,7 +393,7 @@ const logout = async (req, res) => {
   }
 };
 
-//================== LOAD USER DETAILS ======================
+//================== LOAD USER DETAILS ===================//
 const loadusers = async (req, res) => {
   try {
     const userData = await UserDb.find({ is_admin: 0 });
@@ -225,7 +404,7 @@ const loadusers = async (req, res) => {
   }
 };
 
-//================== VARIFY USER BY ADMIN ======================
+//================== VARIFY USER BY ADMIN ====================///
 
 const verifyUser = async (req, res) => {
   try {
@@ -246,7 +425,7 @@ const verifyUser = async (req, res) => {
   }
 };
 
-//=================== BLOCK OR UNBLOCK BY ADMIN ===========================
+//=================== BLOCK OR UNBLOCK BY ADMIN ======================//
 const blockOrUnblock = async (req, res) => {
   try {
     const id = req.query.id;
@@ -271,7 +450,7 @@ const blockOrUnblock = async (req, res) => {
   }
 };
 
-//========================== SEARCH USERS =================================
+//========================== SEARCH USERS ============================//
 
 const searchUser = async (req, res) => {
   try {
@@ -287,7 +466,7 @@ const searchUser = async (req, res) => {
   }
 };
 
-//============================== LOAD CATEGORY ===============================
+//============================== LOAD CATEGORY =========================//
 
 const LoadCategoryList = async (req, res) => {
   try {
@@ -299,7 +478,7 @@ const LoadCategoryList = async (req, res) => {
   }
 };
 
-//=======================LOAD ADD-CATEGORY ==================================
+//=======================LOAD ADD-CATEGORY ===============================//
 
 const loadAddCate = async (req, res) => {
   try {
@@ -309,7 +488,7 @@ const loadAddCate = async (req, res) => {
   }
 };
 
-//================================ ADD CATEGORY =============================
+//================================ ADD CATEGORY ==========================//
 
 const addCategory = async (req, res) => {
   try {
@@ -341,7 +520,7 @@ const addCategory = async (req, res) => {
   }
 };
 
-//=================================== EDIT CATEGORY=================================
+//=================================== EDIT CATEGORY==============================//
 
 const loadEditCat = async (req, res) => {
   try {
@@ -353,7 +532,7 @@ const loadEditCat = async (req, res) => {
   }
 };
 
-//================================== UPDATE CATEGORY ================================
+//================================== UPDATE CATEGORY =============================//
 const updateCate = async (req, res) => {
   try {
     const name = req.body.name;
@@ -372,7 +551,7 @@ const updateCate = async (req, res) => {
   }
 };
 
-//============================ ACTIVE OR INACTIVE ==================
+//============================ ACTIVE OR INACTIVE =============================//
 
 const activeOrNot = async (req, res) => {
   try {
@@ -397,7 +576,7 @@ const activeOrNot = async (req, res) => {
   }
 };
 
-//========================= ADMIN SALES REPORT =======================
+//========================= ADMIN SALES REPORT ============================//
 
 const loadSalesReport = async (req, res) => {
   try {
@@ -431,7 +610,7 @@ const loadSalesReport = async (req, res) => {
   }
 };
 
-//===================== SALES REPORT SORTING ======================
+//===================== SALES REPORT SORTING ======================//
 
 const sortsalesReport = async (req, res) => {
   try {
@@ -473,7 +652,7 @@ const sortsalesReport = async (req, res) => {
   }
 };
 
-//======================== DAILY WEEKLY YEARLY SELES REPORT SORT ========================
+//======================== DAILY WEEKLY YEARLY SELES REPORT SORT =====================//
 
 const salesReportFilter = async (req, res) => {
   try {
@@ -509,7 +688,7 @@ const salesReportFilter = async (req, res) => {
       },
     ]);
 
-    res.render("salesReport",{ order});
+    res.render("salesReport", { order });
   } catch (error) {
     console.log(error.message);
   }
