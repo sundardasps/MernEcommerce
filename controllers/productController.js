@@ -214,13 +214,25 @@ const addFeedback = async (req, res) => {
     
     const product =await productdb.findOne({_id:prodId});
    
-    let totalStars = 0;
+    let totalStars = [];
 
     for (let i = 0; i < product.product_review.length; i++) {
         if (product.product_review[i].stars !== undefined && typeof product.product_review[i].stars === 'number') {
-            totalStars += product.product_review[i].stars;
+            if (totalStars[i] === undefined) {
+                totalStars[i] = 0;  // Initialize totalStars[i] if it's undefined
+            }
+            totalStars[i] += product.product_review[i].stars;
         }
     }
+    let totalStarSum = 0
+
+    for(let i=0;i<totalStars.length;i++){
+      totalStarSum += totalStars[i]
+    }
+    
+    let Outof5 = Math.round(totalStarSum/totalStars.length)
+    
+
     
     const rateProduct = await productdb.findByIdAndUpdate(
       prodId,
@@ -237,8 +249,9 @@ const addFeedback = async (req, res) => {
               
             },
           ],
-          
+    
         },
+        $set: { totalRating: totalStars ,ratingOutof: Outof5}
       },
       {
         new: true,

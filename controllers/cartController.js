@@ -87,6 +87,9 @@ const addCartItem = async (req, res) => {
     const proId = req.body.id;
     const productData = await ProductDb.findOne({ _id: proId });
     const productQuantity = productData.quantity;
+    if(userId === undefined){
+      res.json({login:true,message:"Please login and continueshopping!"})
+    }
     const cartData = await CartDb.findOneAndUpdate(
       { userId: userId },
       {

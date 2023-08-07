@@ -224,11 +224,12 @@ const varifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   const session = req.session.user_id;
-  const productdata = await productDb.find();
+  const productdata = await productDb.find({is_delete:false});
   const data = await categoryDb.find();
   const cartData = await cartDb.find();
   const wishData = await wishListDb.find();
- 
+  
+  
 
   try {
     res.render("home", {
@@ -342,11 +343,6 @@ const loadProductdetails = async (req, res) => {
     const productData = await productDb.findById({ _id: id });
     const productsinDb = await productDb.find();
     const data = await categoryDb.find();
-
- 
-
-
-
 
     res.render("product_details", {
       products: productData,
@@ -505,7 +501,7 @@ const updateUser = async (req,res) =>{
 
 }
 
-//=========================================================
+//===========================LOAD USERSIDE ABOUT PAGE ==============================
 
 const loadAbout  = async  (req,res) =>{
 
@@ -532,7 +528,6 @@ module.exports = {
   forgetSendEmail,
   resetPasswordLoad,
   resetPasswordVerify,
-  // loadWishList
   loadShop,
   filterCategory,
   updateUser,

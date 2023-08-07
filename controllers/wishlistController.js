@@ -42,8 +42,10 @@ const addToWishList = async (req, res) => {
     const user = req.session.user_id;
     const userData = await User.findById(user);
     const wishlistData = await wishListDb.findOne({ user: user });
-    console.log(user);
-    
+    if(user === undefined){
+      console.log("hiiiiiii");
+      res.json({login:true,message:"Please login and continueshopping!"})
+    }
 
     if (wishlistData) {
       const checkWishlist =  wishlistData.products.findIndex(
