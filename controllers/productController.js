@@ -230,6 +230,7 @@ const addFeedback = async (req, res) => {
       totalStarSum += totalStars[i]
     }
     
+     console.log(totalStarSum,"total star sum");
     let Outof5 = Math.round(totalStarSum/totalStars.length)
     
 
