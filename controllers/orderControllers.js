@@ -260,7 +260,7 @@ const orderCancel = async (req, res) => {
 
 const showOrders = async (req, res) => {
   try {
-    const orderData = await orderDb.find();
+    const orderData = await orderDb.find({_id:req.session.user_id});
     const session = req.session.user_id
  
 
