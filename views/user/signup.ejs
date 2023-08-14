@@ -264,7 +264,31 @@ input[type=text]:placeholder {
   width:60%;
 }
 
+/* Password Input Field Styling */
+input[type=password].fadeIn.third {
+  background-color: #f6f6f6;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
+  transition: all 0.5s ease-in-out;
+  border-radius: 5px 5px 5px 5px;
+}
 
+input[type=password].fadeIn.third:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #33af28;
+}
+
+input[type=password].fadeIn.third::placeholder {
+  color: #362c2c;
+}
 </style>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -299,10 +323,10 @@ input[type=text]:placeholder {
       <input type="text" id="number" class="fadeIn third" name="number" placeholder="Phonenumber" style="padding: 1%;text-align: start; font-size: small;">
     </div>
     <div>
-            <input type="text" id="password" class="fadeIn third" name="password" placeholder="password" style="padding: 1%;text-align: start; font-size: small;" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"  >
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" style="padding: 1%;text-align: start; font-size: small;" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"  >
           </div>
      <div>    
-        <input type="text" id="password2" class="fadeIn third" name="password2" placeholder="Confirm password" style="padding: 1%;text-align: start; font-size: small;">
+        <input type="password" id="password2" class="fadeIn third" name="password2" placeholder="Confirm password" style="padding: 1%;text-align: start; font-size: small;">
      </div>
 
     
