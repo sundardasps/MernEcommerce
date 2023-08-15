@@ -166,6 +166,7 @@ const removeFromCart = async (req, res) => {
 
 const cartQuantityIncrease = async (req, res, next) => {
   try {
+    console.log("hiiiiiiiiiiiiiii");
     const userData = req.session.user_id;
     const proId = req.body.product;
     let count = req.body.count;

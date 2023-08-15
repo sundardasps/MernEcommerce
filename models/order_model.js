@@ -6,9 +6,9 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    // user:{
-    //   type: mongoose.Types.ObjectId,
-    // },
+    user:{
+      type: mongoose.Types.ObjectId,
+    },
     uniqId:{
       type:Number,
     },
