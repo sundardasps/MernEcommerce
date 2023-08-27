@@ -10,6 +10,7 @@ const adminController = require('../controllers/adminController');
 const orderController = require('../controllers/orderControllers')
 const productController = require('../controllers/productController');
 const couponController = require('../controllers/couponController')
+const bannerController= require('../controllers/bannerContoller')
 admin_route.use(bodyparser.json());
 admin_route.use(bodyparser.urlencoded({extended:true}));
 
@@ -61,4 +62,9 @@ admin_route.get('/couponList',couponController.loadCoupon)
 admin_route.post('/couponList',couponController.addCoupon)
 admin_route.post('/editCoupon/:id',couponController.editCoupon)
 admin_route.get('/deleteCoupon',auth.isLogin,couponController.adminDeleteCoupon)
+
+//==========================  BANNER MANAEMENT ======================
+admin_route.get('/banners',bannerController.loadBanners)
+admin_route.post('/banners',upload.array("image", 1),bannerController.addBanner)
+
 module.exports = admin_route;
