@@ -20,7 +20,7 @@ const addBanner = async (req, res) => {
     const title = req.body.title;
     const image = req.file.filename;
     const description = req.body.description;
-
+    
     const data = new bannerDb({
       title: title,
       description: description,
@@ -37,8 +37,42 @@ const addBanner = async (req, res) => {
   }
 };
 
+//=======================ACTIVE AND INNACTIVE BANNER===================//
+
+const activeOrInactiveBanner = async (req, res) => {
+  try {
+    const id = req.query.id;
+     console.log(id);
+    const data = await bannerDb.findOne({ _id: id, isActive: false });
+    console.log(data,"false data ");
+    if (data) {
+      await bannerDb.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            isActive: true,
+          },
+        }
+      );
+    } else {
+      await bannerDb.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            isActive: false,
+          },
+        }
+      );
+    }
+   console.log("done");
+    res.redirect("/admin/banners");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 module.exports = {
   loadBanners,
   addBanner,
+  activeOrInactiveBanner,
 };
