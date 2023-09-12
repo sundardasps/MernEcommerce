@@ -92,10 +92,10 @@
 
                                 <div class="product-body">
                                     <h3 class="product-title"><a href="product.html" style="font-weight: 600; font-size: 20px; color: #515151;"><%= data.name %></a></h3><!-- End .product-title -->
-                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                    <div style="display: flex; justify-content: center; align-items: center;"><P>Ratings:&nbs</P>      
                                         <% for(let i = 0; i < data.ratingOutof; i++) { %>
                                             <div>
-                                                <img src="/adminassets/images/icons8-star-24.png" alt="" style="width: 15px;">
+                                             <img src="/adminassets/images/icons8-star-24.png" alt="" style="width: 15px;">
                                             </div>
                                         <% } %>
                                     </div>
@@ -107,11 +107,12 @@
                                     style="color: rgb(0, 0, 0); font-family: Verdana, Geneva, Tahoma, sans-serif"><span
                                         style="font-size: large;font-weight: 600;">
                                         <%= data.price %>/-
-                                    </span></span>
-                                    <% if(data.quantity <=0 ){ %>
-                                        <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
-                                        <%}%>
-                                </div><!-- End .product-body -->
+                                   
+                                        <% if(data.quantity <=0 ){ %>
+                                            <p style="font-size: medium; color: rgb(246, 79, 19);font-weight: 300;">Out of stock</p>
+                                            <%}%>
+                                            <p >(incl.of all taxes)</p>
+                                        </div><!-- End .product-body -->
                                 <div class="product-action">                     
                                     <% if(data.quantity <=0 ){ %>        
                                       <button  class="btn-product " style="background-color: rgb(229, 80, 80);"  ><span>Out of stock</span></button>
@@ -123,7 +124,7 @@
         
                                         <%}%>
                                   </div><!-- End .product-action -->
-                            </div><!-- End .product -->
+                                </div><!-- End .product -->
                     
                             <% }) %>
                             <% } else {%>
