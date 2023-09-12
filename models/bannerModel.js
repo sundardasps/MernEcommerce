@@ -5,8 +5,12 @@ const bannerSchema = new mongoose.Schema({
         type:String,
          required:true
        } ,
-       bannerImage:{
-        type:Array,
+       description:{
+           type:String,
+           required:true
+       },
+       bannerimage:{
+        type:String,
         required:true
        }
     

@@ -211,7 +211,7 @@ const addFeedback = async (req, res) => {
     const review = req.body.review;
     const title = req.body.title;
    
-    
+  
     const product =await productdb.findOne({_id:prodId});
    
     let totalStars = [];
@@ -225,14 +225,21 @@ const addFeedback = async (req, res) => {
         }
     }
     let totalStarSum = 0
+    let Outof5 
 
-    for(let i=0;i<totalStars.length;i++){
-      totalStarSum += totalStars[i]
+    if(totalStars.length > 0){
+      for(let i=0;i<totalStars.length;i++){
+        totalStarSum += totalStars[i]
+      }
+      console.log("kkkkkkkkkk");
+      
+       Outof5 = Math.round(totalStarSum/totalStars.length)
+      
+    }else{
+      console.log("gggggg");
+      Outof5 = star
     }
-    
-     console.log(totalStarSum,"total star sum");
-    let Outof5 = Math.round(totalStarSum/totalStars.length)
-    
+
 
     
     const rateProduct = await productdb.findByIdAndUpdate(

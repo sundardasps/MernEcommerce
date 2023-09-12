@@ -25,7 +25,7 @@ const loadWishList = async (req, res) => {
       
       res.render("wishList", { user: session, session, wishlist, products ,});
     } else {
-      res.render("wishList", { user: session, wishlist: [], products: [] ,});
+      res.render("wishList", { user: session,session, wishlist: [], products: [] ,});
     }
   } catch (error) {
     console.log(error.message);
@@ -43,7 +43,7 @@ const addToWishList = async (req, res) => {
     const userData = await User.findById(user);
     const wishlistData = await wishListDb.findOne({ user: user });
     if(user === undefined){
-      console.log("hiiiiiii");
+     
       res.json({login:true,message:"Please login and continueshopping!"})
     }
 

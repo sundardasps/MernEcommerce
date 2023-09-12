@@ -65,6 +65,6 @@ admin_route.get('/deleteCoupon',auth.isLogin,couponController.adminDeleteCoupon)
 
 //==========================  BANNER MANAEMENT ======================
 admin_route.get('/banners',bannerController.loadBanners)
-admin_route.post('/banners',upload.array("image", 1),bannerController.addBanner)
+admin_route.post('/addbanners',upload.single("image"),bannerController.addBanner)
 
 module.exports = admin_route;
