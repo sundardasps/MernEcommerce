@@ -85,7 +85,7 @@ const adminDeleteCoupon = async (req, res) => {
   }
 };
 
-//=============== VARIFY COUPON FOR USER =====================
+//=============== VARIFY COUPON FOR USER ====================//
 
 const varifyCoupon = async (req, res) => {
   try {

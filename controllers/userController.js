@@ -5,6 +5,7 @@ const otpGenerator = require("otp-generator");
 const categoryDb = require("../models/category_model");
 const productDb = require("../models/product_model");
 const wishListDb = require('../models/wishlistModel')
+const bannerDb = require('../models/bannerModel')
 const cartDb = require('../models/cart_model')
 const { name } = require("ejs");
 
@@ -228,7 +229,8 @@ const loadHome = async (req, res) => {
   const data = await categoryDb.find();
   const cartData = await cartDb.find();
   const wishData = await wishListDb.find();
-  
+  const bannerData = await bannerDb.find({isActive:true})
+  console.log(bannerData);
   
 
   try {
@@ -238,6 +240,7 @@ const loadHome = async (req, res) => {
       products: productdata,
       cartProducts:cartData,
       wishProducts:wishData,
+      banner:bannerData,
       
     });
   } catch (error) {
