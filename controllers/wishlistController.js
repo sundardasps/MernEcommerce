@@ -23,7 +23,7 @@ const loadWishList = async (req, res) => {
       const wishlist = wishlistData[0].products;
       const products = wishlist.map((wish) => wish.productId);
       
-      res.render("wishList", { user: session, session, wishlist, products ,});
+      res.render("wishList", { user: session, session, wishlist, products });
     } else {
       res.render("wishList", { user: session,session, wishlist: [], products: [] ,});
     }

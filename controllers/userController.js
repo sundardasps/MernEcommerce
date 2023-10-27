@@ -8,6 +8,7 @@ const wishListDb = require('../models/wishlistModel')
 const bannerDb = require('../models/bannerModel')
 const cartDb = require('../models/cart_model')
 const { name } = require("ejs");
+const { session } = require("passport");
 
 
 
@@ -259,7 +260,7 @@ const logout = async (req, res) => {
   }
 };
 
-//================================= FORGOT PASSWORD LOAD =================================
+//================================= FORGOT PASSWORD LOAD =============================
 
 const loadForget = async (req, res) => {
   try {

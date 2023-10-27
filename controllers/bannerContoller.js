@@ -67,7 +67,7 @@ const activeOrInactiveBanner = async (req, res) => {
    console.log("done");
     res.redirect("/admin/banners");
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
